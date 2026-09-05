@@ -49,7 +49,7 @@ class ThemeManager {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorManager.green,
+        backgroundColor: ColorManager.darkAccentGreen,
         foregroundColor: ColorManager.white,
         minimumSize: Size(double.infinity, 52.h),
         elevation: 0,
@@ -61,7 +61,7 @@ class ThemeManager {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         minimumSize: Size(double.infinity, 52.h),
-        side: BorderSide(color: ColorManager.blueLightTint, width: 1.w),
+        side: BorderSide(color: ColorManager.darkAccentGreen, width: 1.w),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         textStyle: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.bold),
       ),

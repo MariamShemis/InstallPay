@@ -215,6 +215,12 @@ abstract class AppLocalizations {
   /// **'Sign Up'**
   String get sign_up;
 
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
   /// No description provided for @welcome.
   ///
   /// In en, this message translates to:
@@ -226,6 +232,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome back'**
   String get welcome_back;
+
+  /// No description provided for @sign_in_to_access_your_installment_management_workspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to access your installment management workspace'**
+  String get sign_in_to_access_your_installment_management_workspace;
 
   /// No description provided for @login_with_Google.
   ///

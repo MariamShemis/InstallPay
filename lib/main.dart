@@ -5,16 +5,9 @@ import 'package:smart_installment_management/core/theme/cubit/theme_cubit.dart';
 import 'package:smart_installment_management/smart_instalment_management.dart';
 
 Future<void> main() async {
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-  FlutterNativeSplash.preserve(
-    widgetsBinding: widgetsBinding,
-  );
-
+  WidgetsFlutterBinding.ensureInitialized();
   final themeCubit = ThemeCubit();
-
   await themeCubit.loadTheme();
-
   runApp(
     BlocProvider.value(
       value: themeCubit,

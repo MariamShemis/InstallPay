@@ -69,10 +69,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sign_up => 'Sign Up';
 
   @override
+  String get createAccount => 'Create Account';
+
+  @override
   String get welcome => 'Welcome';
 
   @override
   String get welcome_back => 'Welcome back';
+
+  @override
+  String get sign_in_to_access_your_installment_management_workspace => 'Sign in to access your installment management workspace';
 
   @override
   String get login_with_Google => 'Login with Google';

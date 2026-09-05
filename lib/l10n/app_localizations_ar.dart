@@ -69,10 +69,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sign_up => 'إنشاء حساب';
 
   @override
+  String get createAccount => 'إنشاء حساب';
+
+  @override
   String get welcome => 'مرحباً';
 
   @override
   String get welcome_back => 'مرحباً بعودتك';
+
+  @override
+  String get sign_in_to_access_your_installment_management_workspace => 'تسجيل الدخول للوصول إلى مساحة عمل إدارة الأقساط الخاصة بك';
 
   @override
   String get login_with_Google => 'تسجيل الدخول باستخدام Google';
