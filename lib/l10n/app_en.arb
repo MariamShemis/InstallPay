@@ -122,5 +122,7 @@
   "continue_": "Continue",
   "resend_to_Email": "Resend to Email",
   "send_a_verification_email_to_your_email_address": "Send a verification email to your email address",
+  "smartFinancialSolutions_FieldCollection": "Smart Financial Solutions & Field Collection",
+  "initializingSecureWorkspace": "Initializing Secure Workspace",
   "delete": "Delete"
 }

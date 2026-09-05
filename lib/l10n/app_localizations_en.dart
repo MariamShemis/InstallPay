@@ -369,5 +369,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get send_a_verification_email_to_your_email_address => 'Send a verification email to your email address';
 
   @override
+  String get smartFinancialSolutions_FieldCollection => 'Smart Financial Solutions & Field Collection';
+
+  @override
+  String get initializingSecureWorkspace => 'Initializing Secure Workspace';
+
+  @override
   String get delete => 'Delete';
 }

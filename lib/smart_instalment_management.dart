@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:smart_installment_management/core/routes/app_routes.dart';
 import 'package:smart_installment_management/core/routes/routes_generator.dart';
+import 'package:smart_installment_management/core/theme/cubit/theme_cubit.dart';
+import 'package:smart_installment_management/core/theme/cubit/theme_state.dart';
 import 'package:smart_installment_management/core/theme/theme_manager.dart';
 
 import 'l10n/app_localizations.dart';
@@ -17,24 +20,30 @@ class SmartInstalmentManagement extends StatelessWidget {
       designSize: const Size(390, 882),
       splitScreenMode: true,
       minTextAdapt: true,
-      builder: (context, child) => MaterialApp(
-        title: "Smart Salary",
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: RoutesGenerator.router,
-        initialRoute: AppRoutes.splashScreen,
-        theme: ThemeManager.light,
-        darkTheme: ThemeManager.dark,
-        themeMode: ThemeMode.dark,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          MonthYearPickerLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: Locale("en"),
-      ),
+      builder: (context, child) {
+        return BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, themeState) {
+            return MaterialApp(
+              title: 'Smart Installment Management',
+              debugShowCheckedModeBanner: false,
+              onGenerateRoute: RoutesGenerator.router,
+              initialRoute: AppRoutes.splashScreen,
+              theme: ThemeManager.light,
+              darkTheme: ThemeManager.dark,
+              themeMode: themeState.themeMode,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                MonthYearPickerLocalizations.delegate,
+              ],
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('en'),
+            );
+          },
+        );
+      },
     );
   }
 }

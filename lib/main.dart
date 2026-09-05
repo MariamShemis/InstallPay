@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:smart_installment_management/core/theme/cubit/theme_cubit.dart';
 import 'package:smart_installment_management/smart_instalment_management.dart';
 
-void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const SmartInstalmentManagement());
+Future<void> main() async {
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  FlutterNativeSplash.preserve(
+    widgetsBinding: widgetsBinding,
+  );
+
+  final themeCubit = ThemeCubit();
+
+  await themeCubit.loadTheme();
+
+  runApp(
+    BlocProvider.value(
+      value: themeCubit,
+      child: const SmartInstalmentManagement(),
+    ),
+  );
 }

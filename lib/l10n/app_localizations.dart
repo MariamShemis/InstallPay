@@ -815,6 +815,18 @@ abstract class AppLocalizations {
   /// **'Send a verification email to your email address'**
   String get send_a_verification_email_to_your_email_address;
 
+  /// No description provided for @smartFinancialSolutions_FieldCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Financial Solutions & Field Collection'**
+  String get smartFinancialSolutions_FieldCollection;
+
+  /// No description provided for @initializingSecureWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing Secure Workspace'**
+  String get initializingSecureWorkspace;
+
   /// No description provided for @delete.
   ///
   /// In en, this message translates to:

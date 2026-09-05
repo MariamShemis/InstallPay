@@ -121,5 +121,7 @@
   "continue_": "متابعة",
   "resend_to_Email": "إعادة الإرسال إلى البريد الإلكتروني",
   "send_a_verification_email_to_your_email_address": "إرسال إيميل التفعيل إلى عنوان بريدك الإلكتروني",
+  "smartFinancialSolutions_FieldCollection": "حلول التحصيل والإدارة المالية الذكية الموثوقة",
+  "initializingSecureWorkspace": "جاري تهيئة الاتصال المشفر بالنظام",
   "delete": "حذف"
 }

@@ -369,5 +369,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get send_a_verification_email_to_your_email_address => 'إرسال إيميل التفعيل إلى عنوان بريدك الإلكتروني';
 
   @override
+  String get smartFinancialSolutions_FieldCollection => 'حلول التحصيل والإدارة المالية الذكية الموثوقة';
+
+  @override
+  String get initializingSecureWorkspace => 'جاري تهيئة الاتصال المشفر بالنظام';
+
+  @override
   String get delete => 'حذف';
 }
