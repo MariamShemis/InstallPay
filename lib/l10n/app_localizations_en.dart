@@ -382,4 +382,133 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete => 'Delete';
+
+  @override
+  String get nET_SALARY => 'NET SALARY';
+
+  @override
+  String get lE => 'LE';
+
+  @override
+  String get basicSalary => 'Basic Salary';
+
+  @override
+  String get days => 'Days';
+
+  @override
+  String get bonus => 'Bonus';
+
+  @override
+  String get deductions => 'Deductions';
+
+  @override
+  String get days_remaining_from => 'days remaining from';
+
+  @override
+  String get count => 'Count';
+
+  @override
+  String get value => 'Value';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get totalSalary => 'Total Salary';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get partners => 'Partners';
+
+  @override
+  String get groups => 'Groups';
+
+  @override
+  String get customers => 'Customers';
+
+  @override
+  String get tracker => 'Tracker';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get capital => 'Capital';
+
+  @override
+  String get totalNetCapital => 'Total Net Capital';
+
+  @override
+  String get activeVault => 'Active Vault';
+
+  @override
+  String get this_week => 'this week';
+
+  @override
+  String get collection => 'Collection';
+
+  @override
+  String get liquidityRate => 'Liquidity Rate';
+
+  @override
+  String get safe => 'Safe';
+
+  @override
+  String get cash => 'Cash';
+
+  @override
+  String get moM => 'MoM';
+
+  @override
+  String get outMoney => 'Out Money';
+
+  @override
+  String get accounts_due => 'accounts due';
+
+  @override
+  String get monthCollection => 'Month Collection';
+
+  @override
+  String get vs_last_month => 'vs last month';
+
+  @override
+  String get monthTarget => 'Month Target';
+
+  @override
+  String get onTrack => 'On Track';
+
+  @override
+  String get todayCollection => 'Today Collection';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get hubs_assigned => 'Hubs assigned';
+
+  @override
+  String get goodStanding => 'Good Standing';
+
+  @override
+  String get delinquentInstallments => 'Delinquent Installments';
+
+  @override
+  String get delinquent => 'Delinquent';
+
+  @override
+  String get accounts => 'Accounts';
+
+  @override
+  String get overdue_action_required => 'Overdue action required';
+
+  @override
+  String get payOut => 'Pay Out';
+
+  @override
+  String get scheduled_this_week => 'Scheduled this week';
+
+  @override
+  String get basic => 'Basic';
 }

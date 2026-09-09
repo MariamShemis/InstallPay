@@ -132,9 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 24.h),
                           ElevatedButton(
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Perform Sign In Action
-                              }
+                              // if (_formKey.currentState!.validate()) {
+                              //   // Perform Sign In Action
+                              // }
+                              Navigator.pushReplacementNamed(context, AppRoutes.mainLayout);
                             },
                             child: Text(appLocalizations.login),
                           ),

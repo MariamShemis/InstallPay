@@ -98,13 +98,13 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       SizedBox(height: 24.h),
                       Text(
-                        'Smart Installment Management',
+                        'InstallPay',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.headlineMedium,
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        'إدارة الأقساط الذكية',
+                        'تقسيط',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontFamily: 'Arial',

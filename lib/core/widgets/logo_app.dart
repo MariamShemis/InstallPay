@@ -21,7 +21,7 @@ class LogoApp extends StatelessWidget {
         ),
         SizedBox(height: 12.h),
         Text(
-          'Smart Installment\nManagement',
+          'InstallPay - تقسيط',
           textAlign: TextAlign.center,
           style: GoogleFonts.playfairDisplay(
             fontSize: 22.sp,

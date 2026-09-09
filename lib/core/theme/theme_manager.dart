@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../costants/color_manager.dart';
+import 'package:smart_installment_management/core/costants/color_manager.dart';
 
 class ThemeManager {
   // ==========================================================
@@ -112,14 +111,41 @@ class ThemeManager {
       bodySmall: GoogleFonts.inter(fontSize: 12.sp, color: ColorManager.greySecondaryText),
     ),
 
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      elevation: 0,
+    // ================= NAVBAR LIGHT =================
+    navigationBarTheme: NavigationBarThemeData(
       backgroundColor: ColorManager.white,
-      selectedItemColor: ColorManager.primaryColor,
-      unselectedItemColor: ColorManager.greySecondaryText,
-      type: BottomNavigationBarType.fixed,
-      showSelectedLabels: true,
-      showUnselectedLabels: true,
+      elevation: 0,
+      indicatorColor: ColorManager.greenOpacity15,
+      indicatorShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      height: 75.h,
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return GoogleFonts.inter(
+            color: ColorManager.green,
+            fontWeight: FontWeight.bold,
+            fontSize: 11.sp,
+          );
+        }
+        return GoogleFonts.inter(
+          color: ColorManager.greyDark,
+          fontWeight: FontWeight.w500,
+          fontSize: 11.sp,
+        );
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return IconThemeData(
+            color: ColorManager.green,
+            size: 26.r,
+          );
+        }
+        return IconThemeData(
+          color: ColorManager.greyDark,
+          size: 24.r,
+        );
+      }),
     ),
   );
 
@@ -230,14 +256,41 @@ class ThemeManager {
       bodySmall: GoogleFonts.inter(fontSize: 12.sp, color: ColorManager.darkSlateText),
     ),
 
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      elevation: 0,
+    // ================= NAVBAR DARK =================
+    navigationBarTheme: NavigationBarThemeData(
       backgroundColor: ColorManager.darkSurface,
-      selectedItemColor: ColorManager.darkAccentGreen,
-      unselectedItemColor: ColorManager.darkMutedText,
-      type: BottomNavigationBarType.fixed,
-      showSelectedLabels: true,
-      showUnselectedLabels: true,
+      elevation: 0,
+      indicatorColor: ColorManager.darkGreenOpacity30,
+      indicatorShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      height: 75.h,
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return GoogleFonts.inter(
+            color: ColorManager.darkAccentGreen,
+            fontWeight: FontWeight.bold,
+            fontSize: 11.sp,
+          );
+        }
+        return GoogleFonts.inter(
+          color: ColorManager.darkMutedText,
+          fontWeight: FontWeight.w500,
+          fontSize: 11.sp,
+        );
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return IconThemeData(
+            color: ColorManager.darkAccentGreen,
+            size: 26.r,
+          );
+        }
+        return IconThemeData(
+          color: ColorManager.darkMutedText,
+          size: 24.r,
+        );
+      }),
     ),
   );
 }

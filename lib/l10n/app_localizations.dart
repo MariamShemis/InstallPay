@@ -844,6 +844,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
+
+  /// No description provided for @nET_SALARY.
+  ///
+  /// In en, this message translates to:
+  /// **'NET SALARY'**
+  String get nET_SALARY;
+
+  /// No description provided for @lE.
+  ///
+  /// In en, this message translates to:
+  /// **'LE'**
+  String get lE;
+
+  /// No description provided for @basicSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Salary'**
+  String get basicSalary;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get days;
+
+  /// No description provided for @bonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Bonus'**
+  String get bonus;
+
+  /// No description provided for @deductions.
+  ///
+  /// In en, this message translates to:
+  /// **'Deductions'**
+  String get deductions;
+
+  /// No description provided for @days_remaining_from.
+  ///
+  /// In en, this message translates to:
+  /// **'days remaining from'**
+  String get days_remaining_from;
+
+  /// No description provided for @count.
+  ///
+  /// In en, this message translates to:
+  /// **'Count'**
+  String get count;
+
+  /// No description provided for @value.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get value;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @totalSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Salary'**
+  String get totalSalary;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @partners.
+  ///
+  /// In en, this message translates to:
+  /// **'Partners'**
+  String get partners;
+
+  /// No description provided for @groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get groups;
+
+  /// No description provided for @customers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get customers;
+
+  /// No description provided for @tracker.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracker'**
+  String get tracker;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @capital.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital'**
+  String get capital;
+
+  /// No description provided for @totalNetCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Net Capital'**
+  String get totalNetCapital;
+
+  /// No description provided for @activeVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Vault'**
+  String get activeVault;
+
+  /// No description provided for @this_week.
+  ///
+  /// In en, this message translates to:
+  /// **'this week'**
+  String get this_week;
+
+  /// No description provided for @collection.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection'**
+  String get collection;
+
+  /// No description provided for @liquidityRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Liquidity Rate'**
+  String get liquidityRate;
+
+  /// No description provided for @safe.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe'**
+  String get safe;
+
+  /// No description provided for @cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get cash;
+
+  /// No description provided for @moM.
+  ///
+  /// In en, this message translates to:
+  /// **'MoM'**
+  String get moM;
+
+  /// No description provided for @outMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Out Money'**
+  String get outMoney;
+
+  /// No description provided for @accounts_due.
+  ///
+  /// In en, this message translates to:
+  /// **'accounts due'**
+  String get accounts_due;
+
+  /// No description provided for @monthCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Month Collection'**
+  String get monthCollection;
+
+  /// No description provided for @vs_last_month.
+  ///
+  /// In en, this message translates to:
+  /// **'vs last month'**
+  String get vs_last_month;
+
+  /// No description provided for @monthTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Month Target'**
+  String get monthTarget;
+
+  /// No description provided for @onTrack.
+  ///
+  /// In en, this message translates to:
+  /// **'On Track'**
+  String get onTrack;
+
+  /// No description provided for @todayCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Today Collection'**
+  String get todayCollection;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @hubs_assigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Hubs assigned'**
+  String get hubs_assigned;
+
+  /// No description provided for @goodStanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Standing'**
+  String get goodStanding;
+
+  /// No description provided for @delinquentInstallments.
+  ///
+  /// In en, this message translates to:
+  /// **'Delinquent Installments'**
+  String get delinquentInstallments;
+
+  /// No description provided for @delinquent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delinquent'**
+  String get delinquent;
+
+  /// No description provided for @accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get accounts;
+
+  /// No description provided for @overdue_action_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue action required'**
+  String get overdue_action_required;
+
+  /// No description provided for @payOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Out'**
+  String get payOut;
+
+  /// No description provided for @scheduled_this_week.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled this week'**
+  String get scheduled_this_week;
+
+  /// No description provided for @basic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get basic;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -382,4 +382,133 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delete => 'حذف';
+
+  @override
+  String get nET_SALARY => 'صافي الراتب';
+
+  @override
+  String get lE => 'ج.م';
+
+  @override
+  String get basicSalary => 'الراتب الأساسي';
+
+  @override
+  String get days => 'أيام';
+
+  @override
+  String get bonus => 'المكافأة';
+
+  @override
+  String get deductions => 'الخصومات';
+
+  @override
+  String get days_remaining_from => 'يوم متبقي من';
+
+  @override
+  String get count => 'العدد';
+
+  @override
+  String get value => 'القيمة';
+
+  @override
+  String get amount => 'النسبة';
+
+  @override
+  String get totalSalary => 'إجمالي الراتب';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get partners => 'الشركاء';
+
+  @override
+  String get groups => 'المجموعات';
+
+  @override
+  String get customers => 'العملاء';
+
+  @override
+  String get tracker => 'المتابعة';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get capital => 'رأس المال';
+
+  @override
+  String get totalNetCapital => 'إجمالي صافي رأس المال';
+
+  @override
+  String get activeVault => 'الخزينة النشطة';
+
+  @override
+  String get this_week => 'هذا الأسبوع';
+
+  @override
+  String get collection => 'التحصيل';
+
+  @override
+  String get liquidityRate => 'معدل السيولة';
+
+  @override
+  String get safe => 'آمن';
+
+  @override
+  String get cash => 'النقدية';
+
+  @override
+  String get moM => 'مقارنة بالشهر السابق';
+
+  @override
+  String get outMoney => 'الأموال المستحقة';
+
+  @override
+  String get accounts_due => 'حسابات مستحقة';
+
+  @override
+  String get monthCollection => 'تحصيل الشهر';
+
+  @override
+  String get vs_last_month => 'مقارنة بالشهر الماضي';
+
+  @override
+  String get monthTarget => 'هدف الشهر';
+
+  @override
+  String get onTrack => 'في المسار الصحيح';
+
+  @override
+  String get todayCollection => 'تحصيل اليوم';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get hubs_assigned => 'المراكز المعينة';
+
+  @override
+  String get goodStanding => 'وضع جيد';
+
+  @override
+  String get delinquentInstallments => 'الأقساط المتعثرة';
+
+  @override
+  String get delinquent => 'متعثر';
+
+  @override
+  String get accounts => 'حسابات';
+
+  @override
+  String get overdue_action_required => 'يتطلب إجراءً متأخراً';
+
+  @override
+  String get payOut => 'المصروفات';
+
+  @override
+  String get scheduled_this_week => 'مجدول هذا الأسبوع';
+
+  @override
+  String get basic => 'الأساسي';
 }

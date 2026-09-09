@@ -3,6 +3,7 @@ import 'package:smart_installment_management/core/routes/app_routes.dart';
 import 'package:smart_installment_management/features/auth/presentation/view/forget_password.dart';
 import 'package:smart_installment_management/features/auth/presentation/view/login_screen.dart';
 import 'package:smart_installment_management/features/auth/presentation/view/register_screen.dart';
+import 'package:smart_installment_management/features/main_layout/main_layout.dart';
 import 'package:smart_installment_management/features/splash_screen/splash_screen.dart';
 
 abstract class RoutesGenerator {
@@ -23,6 +24,10 @@ abstract class RoutesGenerator {
       case AppRoutes.forgetPassword:
         {
           return CupertinoPageRoute(builder: (context) => ForgetPassword());
+        }
+      case AppRoutes.mainLayout:
+        {
+          return CupertinoPageRoute(builder: (context) => MainLayout());
         }
     }
     return null;

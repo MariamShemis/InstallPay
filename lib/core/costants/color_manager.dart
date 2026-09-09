@@ -10,6 +10,7 @@ abstract class ColorManager {
   static const Color greenMedium = Color(0xFF007352);
   static const Color greenAccent = Color(0xFF88F8C8);
   static const Color secondary = Color(0xFFA3FAEF);
+  static const Color lightBeg = Color(0xFFFFDEAA);
 
   static const Color red = Color(0xFFBA1A1A);
   static const Color redDark = Color(0xFF93000A);
@@ -30,10 +31,9 @@ abstract class ColorManager {
   static const Color greyLight = Color(0xFFF1F4F3);
   static const Color greyText = Color(0xFF6E7977);
   static const Color greyDark = Color(0xFF43474D);
-  static const Color greyDark80 = Color(0xCC43474D); // 80% Opacity
+  static const Color greyDark80 = Color(0xCC43474D);
   static const Color greySecondaryText = Color(0xFF74777E);
 
-  // Blue Tints (Light Theme)
   static const Color blueLightTint = Color(0xFFDFE8FF);
   static const Color blueSoftBackground = Color(0xFFF0F3FF);
   static const Color blueAccent = Color(0xFFD1E4FF);
@@ -43,31 +43,35 @@ abstract class ColorManager {
   static const Color navyText = Color(0xFF111C2D);
   static const Color navyDark = Color(0xFF17324D);
 
-  // Brand Opacities (Light)
-  static const Color greenOpacity10 = Color(0x1A006C4D); // 10% Opacity
-  static const Color greenOpacity15 = Color(0x26006C4D); // 15% Opacity
-  static const Color greenOpacity20 = Color(0x33006C4D); // 20% Opacity
+  static const Color greenOpacity10 = Color(0x1A006C4D);
+  static const Color greenOpacity15 = Color(0x26006C4D);
+  static const Color greenOpacity20 = Color(0x33006C4D);
 
   // ==========================================
-  // Dark Mode Colors
+  // Dark Mode Colors (Lighter & Vibrant Palette)
   // ==========================================
-  static const Color bgDark = Color(0xFF0B1117);
-  static const Color darkSurface = Color(0xFF151F28);
-  static const Color darkSurfaceVariant = Color(0xFF1D2933);
-  static const Color darkCardBg = Color(0xFF243444);
-  static const Color darkAccentGreen = Color(0xFF15966D);
-  static const Color darkMutedText = Color(0xFFAAB4BE);
-  static const Color darkSlateText = Color(0xFF819ABA);
-  static const Color darkBrownContainer = Color(0xFF422C00);
-  static const Color darkRedContainer = Color(0xFF451010);
-  static const Color darkGreenContainer = Color(0xFF104938);
+  static const Color bgDark = Color(0xFF121B22);
 
-  // Dark Mode Opacities & Overlays
-  static const Color darkSurface95 = Color(0xF2151F28); // 95% Opacity
-  static const Color darkGreenOpacity40 = Color(0x6615966D); // 40% Opacity
-  static const Color darkGreenOpacity30 = Color(0x4D15966D); // 30% Opacity
-  static const Color darkRedOpacity30 = Color(0x4DEF4444); // 30% Opacity
-  static const Color darkYellowOpacity30 = Color(0x4DF5BD58); // 30% Opacity
-  static const Color whiteOpacity20 = Color(0x33FFFFFF); // 20% Opacity
-  static const Color whiteOpacity02 = Color(0x05FFFFFF); // 0.2% Opacity
+  static const Color darkSurface = Color(0xFF1C2834);
+  static const Color darkSurface2 = Color(0xFF1A332B);
+  static const Color darkSurfaceVariant = Color(0xFF2B3A4A);
+  static const Color darkCardBg = Color(0xFF233242);
+
+  static const Color darkAccentGreen = Color(0xFF10B981);
+  static const Color darkAccentGreen1 = Color(0xFF34D399);
+
+  static const Color darkMutedText = Color(0xFFC0CAD5);
+  static const Color darkSlateText = Color(0xFF94A3B8);
+
+  static const Color darkBrownContainer = Color(0xFF3B2D12);
+  static const Color darkRedContainer = Color(0xFF3D1919);
+  static const Color darkGreenContainer = Color(0xFF134E3A);
+
+  static const Color darkSurface95 = Color(0xF21C2834);
+  static const Color darkGreenOpacity40 = Color(0x6610B981);
+  static const Color darkGreenOpacity30 = Color(0x4D10B981);
+  static const Color darkRedOpacity30 = Color(0x4DEF4444);
+  static const Color darkYellowOpacity30 = Color(0x4DF5BD58);
+  static const Color whiteOpacity20 = Color(0x33FFFFFF);
+  static const Color whiteOpacity02 = Color(0x05FFFFFF);
 }
