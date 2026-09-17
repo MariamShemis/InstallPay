@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
-import 'package:smart_installment_management/core/utils/currency/currency_cubit.dart';
-import 'package:smart_installment_management/core/utils/currency/currency_state.dart';
+import 'package:smart_installment_management/core/cubits/currency/currency_cubit.dart';
+import 'package:smart_installment_management/core/cubits/currency/currency_state.dart';
 import 'package:smart_installment_management/core/utils/extensions/extensions.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_installment_management/features/main_layout/customers/presentation/view/customers_tab.dart';
+import 'package:smart_installment_management/features/main_layout/groups/presentation/view/group_tab.dart';
 import 'package:smart_installment_management/features/main_layout/home/presentation/view/home_tab.dart';
+import 'package:smart_installment_management/features/main_layout/partners/presentation/view/partners_tab.dart';
+import 'package:smart_installment_management/features/main_layout/profile/presentation/view/Profile_tab.dart';
+import 'package:smart_installment_management/features/main_layout/tracker/presentation/view/tracker_tab.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class MainLayout extends StatefulWidget {
@@ -15,11 +20,11 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> _screens = const [
     HomeTab(),
-    Center(child: Text('Partners')),
-    Center(child: Text('Groups')),
-    Center(child: Text('Customers')),
-    Center(child: Text('Tracker')),
-    Center(child: Text('Profile')),
+    PartnersTab(),
+    GroupTab(),
+    CustomersTab(),
+    TrackerTab(),
+    ProfileTab(),
   ];
 
   @override

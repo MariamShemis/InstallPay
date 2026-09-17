@@ -495,7 +495,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delinquentInstallments => 'الأقساط المتعثرة';
 
   @override
-  String get delinquent => 'متعثر';
+  String get delinquent => 'الاقساط المتاخرة';
 
   @override
   String get accounts => 'حسابات';
@@ -510,5 +510,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String get scheduled_this_week => 'مجدول هذا الأسبوع';
 
   @override
-  String get basic => 'الأساسي';
+  String get appearance_PREFERENCES => 'المظهر والتفضيلات';
+
+  @override
+  String get themeMode => 'وضع المظهر';
+
+  @override
+  String get appLanguage => 'لغة التطبيق';
+
+  @override
+  String get toggle_dark_and_light_theme => 'التبديل بين الوضع الداكن والفاتح';
+
+  @override
+  String get current_interface_language => 'لغة الواجهة الحالية';
+
+  @override
+  String get currencyDisplay => 'عرض العملة';
+
+  @override
+  String get receipt_and_ledger_metric_standard => 'معيار القياس للفواتير والدفتر';
+
+  @override
+  String get basic => 'أساسي';
 }

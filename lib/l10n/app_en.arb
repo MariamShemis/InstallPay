@@ -170,5 +170,12 @@
   "overdue_action_required": "Overdue action required",
   "payOut": "Pay Out",
   "scheduled_this_week": "Scheduled this week",
+  "appearance_PREFERENCES": "APPEARANCE & PREFERENCES",
+  "themeMode": "Theme Mode",
+  "appLanguage": "App Language",
+  "toggle_dark_and_light_theme": "Toggle dark & light theme",
+  "current_interface_language": "Current interface language",
+  "currencyDisplay": "Currency Display",
+  "receipt_and_ledger_metric_standard": "Receipt & ledger metric standard",
   "basic": "Basic"
 }

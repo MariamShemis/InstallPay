@@ -130,14 +130,38 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           SizedBox(height: 24.h),
-                          ElevatedButton(
-                            onPressed: () {
-                              // if (_formKey.currentState!.validate()) {
-                              //   // Perform Sign In Action
-                              // }
-                              Navigator.pushReplacementNamed(context, AppRoutes.mainLayout);
-                            },
-                            child: Text(appLocalizations.login),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // if (_formKey.currentState!.validate()) {
+                                    //   // Perform Sign In Action
+                                    // }
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      AppRoutes.mainLayout,
+                                    );
+                                  },
+                                  child: Text(appLocalizations.login),
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              SizedBox(
+                                width: 56.w,
+                                height: 56.h,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: Icon(Icons.fingerprint, size: 28.sp),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: 24.h),
                           Row(

@@ -164,10 +164,17 @@
   "hubs_assigned": "المراكز المعينة",
   "goodStanding": "وضع جيد",
   "delinquentInstallments": "الأقساط المتعثرة",
-  "delinquent": "متعثر",
+  "delinquent": "الاقساط المتاخرة",
   "accounts": "حسابات",
   "overdue_action_required": "يتطلب إجراءً متأخراً",
   "payOut": "المصروفات",
   "scheduled_this_week": "مجدول هذا الأسبوع",
-  "basic": "الأساسي"
+  "appearance_PREFERENCES": "المظهر والتفضيلات",
+  "themeMode": "وضع المظهر",
+  "appLanguage": "لغة التطبيق",
+  "toggle_dark_and_light_theme": "التبديل بين الوضع الداكن والفاتح",
+  "current_interface_language": "لغة الواجهة الحالية",
+  "currencyDisplay": "عرض العملة",
+  "receipt_and_ledger_metric_standard": "معيار القياس للفواتير والدفتر",
+  "basic": "أساسي"
 }

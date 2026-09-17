@@ -13,7 +13,11 @@ class IconAssets {
 }
 
 class LottieAssets {
-  static const String base = 'assets/lotties/';
+  static const String base = 'assets/lottie/';
+  static const String addToGroupLight = '${base}add_to_group_light.json';
+  static const String addToGroupDark = '${base}add_to_group_dark.json';
+  static const String addToGCustomerDark = '${base}add_to_customer_dark.json';
+  static const String addToGCustomerLight = '${base}add_to_customer_light.json';
 }
 
 class SvgAssets {

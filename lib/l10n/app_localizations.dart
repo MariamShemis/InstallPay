@@ -1097,6 +1097,48 @@ abstract class AppLocalizations {
   /// **'Scheduled this week'**
   String get scheduled_this_week;
 
+  /// No description provided for @appearance_PREFERENCES.
+  ///
+  /// In en, this message translates to:
+  /// **'APPEARANCE & PREFERENCES'**
+  String get appearance_PREFERENCES;
+
+  /// No description provided for @themeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Mode'**
+  String get themeMode;
+
+  /// No description provided for @appLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'App Language'**
+  String get appLanguage;
+
+  /// No description provided for @toggle_dark_and_light_theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle dark & light theme'**
+  String get toggle_dark_and_light_theme;
+
+  /// No description provided for @current_interface_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Current interface language'**
+  String get current_interface_language;
+
+  /// No description provided for @currencyDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency Display'**
+  String get currencyDisplay;
+
+  /// No description provided for @receipt_and_ledger_metric_standard.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt & ledger metric standard'**
+  String get receipt_and_ledger_metric_standard;
+
   /// No description provided for @basic.
   ///
   /// In en, this message translates to:

@@ -9,22 +9,23 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   static const String _themeKey = 'theme_mode';
 
+  Future<void> changeTheme(ThemeMode themeMode) async {
+    await setTheme(themeMode);
+  }
+
   Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-
     final savedTheme = prefs.getString(_themeKey);
 
     switch (savedTheme) {
       case 'dark':
         emit(state.copyWith(themeMode: ThemeMode.dark));
         break;
-
       case 'light':
         emit(state.copyWith(themeMode: ThemeMode.light));
         break;
-
       default:
-        emit(state.copyWith(themeMode: ThemeMode.system));
+        emit(state.copyWith(themeMode: ThemeMode.light));
     }
   }
 
@@ -45,11 +46,9 @@ class ThemeCubit extends Cubit<ThemeState> {
       case ThemeMode.dark:
         await prefs.setString(_themeKey, 'dark');
         break;
-
       case ThemeMode.light:
         await prefs.setString(_themeKey, 'light');
         break;
-
       case ThemeMode.system:
         await prefs.setString(_themeKey, 'system');
         break;

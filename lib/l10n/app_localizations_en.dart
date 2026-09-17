@@ -510,5 +510,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scheduled_this_week => 'Scheduled this week';
 
   @override
+  String get appearance_PREFERENCES => 'APPEARANCE & PREFERENCES';
+
+  @override
+  String get themeMode => 'Theme Mode';
+
+  @override
+  String get appLanguage => 'App Language';
+
+  @override
+  String get toggle_dark_and_light_theme => 'Toggle dark & light theme';
+
+  @override
+  String get current_interface_language => 'Current interface language';
+
+  @override
+  String get currencyDisplay => 'Currency Display';
+
+  @override
+  String get receipt_and_ledger_metric_standard => 'Receipt & ledger metric standard';
+
+  @override
   String get basic => 'Basic';
 }

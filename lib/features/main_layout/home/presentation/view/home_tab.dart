@@ -26,7 +26,7 @@ class HomeTab extends StatelessWidget {
                   radius: 24.r,
                   backgroundColor: ColorManager.navyDark,
                   child: Icon(
-                    Icons.person_outline_outlined,
+                    Icons.person,
                     color: ColorManager.white,
                     size: 24.sp,
                   ),

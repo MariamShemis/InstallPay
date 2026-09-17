@@ -48,12 +48,17 @@ class ThemeManager {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorManager.darkAccentGreen,
+        backgroundColor: ColorManager.primaryColor,
         foregroundColor: ColorManager.white,
         minimumSize: Size(double.infinity, 52.h),
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-        textStyle: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        textStyle: GoogleFonts.inter(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
 
@@ -61,8 +66,13 @@ class ThemeManager {
       style: OutlinedButton.styleFrom(
         minimumSize: Size(double.infinity, 52.h),
         side: BorderSide(color: ColorManager.darkAccentGreen, width: 1.w),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-        textStyle: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        textStyle: GoogleFonts.inter(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
 
@@ -70,8 +80,14 @@ class ThemeManager {
       filled: true,
       fillColor: ColorManager.white,
       contentPadding: REdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      hintStyle: GoogleFonts.inter(color: ColorManager.greySecondaryText, fontSize: 14.sp),
-      labelStyle: GoogleFonts.inter(color: ColorManager.greyDark, fontSize: 14.sp),
+      hintStyle: GoogleFonts.inter(
+        color: ColorManager.greySecondaryText,
+        fontSize: 14.sp,
+      ),
+      labelStyle: GoogleFonts.inter(
+        color: ColorManager.greyDark,
+        fontSize: 14.sp,
+      ),
       floatingLabelStyle: GoogleFonts.inter(
         color: ColorManager.primaryColor,
         fontSize: 14.sp,
@@ -103,12 +119,30 @@ class ThemeManager {
     ),
 
     textTheme: TextTheme(
-      headlineLarge: GoogleFonts.inter(fontSize: 26.sp, fontWeight: FontWeight.bold, color: ColorManager.black),
-      headlineMedium: GoogleFonts.inter(fontSize: 22.sp, fontWeight: FontWeight.bold, color: ColorManager.black),
-      titleMedium: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w600, color: ColorManager.black),
+      headlineLarge: GoogleFonts.inter(
+        fontSize: 26.sp,
+        fontWeight: FontWeight.bold,
+        color: ColorManager.black,
+      ),
+      headlineMedium: GoogleFonts.inter(
+        fontSize: 22.sp,
+        fontWeight: FontWeight.bold,
+        color: ColorManager.black,
+      ),
+      titleMedium: GoogleFonts.inter(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w600,
+        color: ColorManager.black,
+      ),
       bodyLarge: GoogleFonts.inter(fontSize: 16.sp, color: ColorManager.black),
-      bodyMedium: GoogleFonts.inter(fontSize: 14.sp, color: ColorManager.greyDark),
-      bodySmall: GoogleFonts.inter(fontSize: 12.sp, color: ColorManager.greySecondaryText),
+      bodyMedium: GoogleFonts.inter(
+        fontSize: 14.sp,
+        color: ColorManager.greyDark,
+      ),
+      bodySmall: GoogleFonts.inter(
+        fontSize: 12.sp,
+        color: ColorManager.greySecondaryText,
+      ),
     ),
 
     // ================= NAVBAR LIGHT =================
@@ -136,15 +170,9 @@ class ThemeManager {
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return IconThemeData(
-            color: ColorManager.green,
-            size: 26.r,
-          );
+          return IconThemeData(color: ColorManager.green, size: 26.r);
         }
-        return IconThemeData(
-          color: ColorManager.greyDark,
-          size: 24.r,
-        );
+        return IconThemeData(color: ColorManager.greyDark, size: 24.r);
       }),
     ),
   );
@@ -197,8 +225,13 @@ class ThemeManager {
         foregroundColor: ColorManager.white,
         minimumSize: Size(double.infinity, 52.h),
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-        textStyle: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        textStyle: GoogleFonts.inter(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
 
@@ -206,8 +239,13 @@ class ThemeManager {
       style: OutlinedButton.styleFrom(
         minimumSize: Size(double.infinity, 52.h),
         side: BorderSide(color: ColorManager.darkAccentGreen, width: 1.w),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-        textStyle: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        textStyle: GoogleFonts.inter(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
 
@@ -215,8 +253,14 @@ class ThemeManager {
       filled: true,
       fillColor: ColorManager.darkSurfaceVariant,
       contentPadding: REdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      hintStyle: GoogleFonts.inter(color: ColorManager.darkMutedText, fontSize: 14.sp),
-      labelStyle: GoogleFonts.inter(color: ColorManager.darkMutedText, fontSize: 14.sp),
+      hintStyle: GoogleFonts.inter(
+        color: ColorManager.darkMutedText,
+        fontSize: 14.sp,
+      ),
+      labelStyle: GoogleFonts.inter(
+        color: ColorManager.darkMutedText,
+        fontSize: 14.sp,
+      ),
       floatingLabelStyle: GoogleFonts.inter(
         color: ColorManager.darkAccentGreen,
         fontSize: 14.sp,
@@ -226,11 +270,17 @@ class ThemeManager {
       suffixIconColor: ColorManager.darkMutedText,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: ColorManager.whiteOpacity20, width: 1.0.w),
+        borderSide: BorderSide(
+          color: ColorManager.whiteOpacity20,
+          width: 1.0.w,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: ColorManager.darkAccentGreen, width: 1.5.w),
+        borderSide: BorderSide(
+          color: ColorManager.darkAccentGreen,
+          width: 1.5.w,
+        ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
@@ -248,12 +298,30 @@ class ThemeManager {
     ),
 
     textTheme: TextTheme(
-      headlineLarge: GoogleFonts.inter(fontSize: 26.sp, fontWeight: FontWeight.bold, color: ColorManager.white),
-      headlineMedium: GoogleFonts.inter(fontSize: 22.sp, fontWeight: FontWeight.bold, color: ColorManager.white),
-      titleMedium: GoogleFonts.inter(fontSize: 16.sp, fontWeight: FontWeight.w600, color: ColorManager.white),
+      headlineLarge: GoogleFonts.inter(
+        fontSize: 26.sp,
+        fontWeight: FontWeight.bold,
+        color: ColorManager.white,
+      ),
+      headlineMedium: GoogleFonts.inter(
+        fontSize: 22.sp,
+        fontWeight: FontWeight.bold,
+        color: ColorManager.white,
+      ),
+      titleMedium: GoogleFonts.inter(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w600,
+        color: ColorManager.white,
+      ),
       bodyLarge: GoogleFonts.inter(fontSize: 16.sp, color: ColorManager.white),
-      bodyMedium: GoogleFonts.inter(fontSize: 14.sp, color: ColorManager.darkMutedText),
-      bodySmall: GoogleFonts.inter(fontSize: 12.sp, color: ColorManager.darkSlateText),
+      bodyMedium: GoogleFonts.inter(
+        fontSize: 14.sp,
+        color: ColorManager.darkMutedText,
+      ),
+      bodySmall: GoogleFonts.inter(
+        fontSize: 12.sp,
+        color: ColorManager.darkSlateText,
+      ),
     ),
 
     // ================= NAVBAR DARK =================
@@ -281,15 +349,9 @@ class ThemeManager {
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return IconThemeData(
-            color: ColorManager.darkAccentGreen,
-            size: 26.r,
-          );
+          return IconThemeData(color: ColorManager.darkAccentGreen, size: 26.r);
         }
-        return IconThemeData(
-          color: ColorManager.darkMutedText,
-          size: 24.r,
-        );
+        return IconThemeData(color: ColorManager.darkMutedText, size: 24.r);
       }),
     ),
   );

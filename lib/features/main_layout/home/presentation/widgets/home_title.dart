@@ -40,22 +40,6 @@ class HomeTitle extends StatelessWidget {
               ),
               child: image,
             ),
-            Positioned(
-              bottom: 2.h,
-              right: 2.w,
-              child: Container(
-                width: 12.r,
-                height: 12.r,
-                decoration: BoxDecoration(
-                  color: colorScheme.primary,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: theme.scaffoldBackgroundColor,
-                    width: 2.w,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
         SizedBox(width: 12.w),
