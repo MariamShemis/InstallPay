@@ -531,5 +531,307 @@ class AppLocalizationsAr extends AppLocalizations {
   String get receipt_and_ledger_metric_standard => 'معيار القياس للفواتير والدفتر';
 
   @override
+  String get all => 'الكل';
+
+  @override
+  String get search_customers_phone_group => 'ابحث عن عميل، رقم هاتف، أو مجموعة';
+
+  @override
+  String get paymentProgress => 'تقدم السداد';
+
+  @override
+  String get noCustomersFound => 'لم يتم العثور على عملاء';
+
+  @override
+  String get start_adding_customers_to_track_their_installments_and_payments => 'ابدأ بإضافة العملاء لمتابعة أقساطهم ومدفوعاتهم.';
+
+  @override
+  String get addNewCustomer => 'إضافة عميل جديد';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get personalInformation => 'البيانات الشخصية';
+
+  @override
+  String get group => 'المجموعة';
+
+  @override
+  String get selectGroup => 'اختر المجموعة';
+
+  @override
+  String get customerName => 'اسم العميل';
+
+  @override
+  String get enter_customer_name => 'أدخل اسم العميل';
+
+  @override
+  String get enter_customer_phone_number => 'أدخل رقم هاتف العميل';
+
+  @override
+  String get address => 'العنوان';
+
+  @override
+  String get enter_customer_address => 'أدخل عنوان العميل';
+
+  @override
+  String get contractDetails => 'تفاصيل العقد';
+
+  @override
+  String get contractDate => 'تاريخ العقد';
+
+  @override
+  String get contractName => 'اسم العقد';
+
+  @override
+  String get purchasePrice => 'سعر الشراء';
+
+  @override
+  String get installmentAmount => 'قيمة القسط';
+
+  @override
+  String get period => 'المدّة';
+
+  @override
+  String get monthly => 'شهري';
+
+  @override
+  String get weekly => 'أسبوعي';
+
+  @override
+  String get yearly => 'سنوي';
+
+  @override
+  String get firstInstallmentDate => 'تاريخ أول قسط';
+
+  @override
+  String get downPayment => 'المقدم';
+
+  @override
+  String get totalCost => 'إجمالي التكلفة';
+
+  @override
+  String get netDebtAmount => 'صافي مبلغ الدين';
+
+  @override
+  String get netDebt => 'صافي الدين';
+
+  @override
   String get basic => 'أساسي';
+
+  @override
+  String get additional_contract_notes => 'ملاحظات إضافية على العقد';
+
+  @override
+  String get confirmCustomer_Contract => 'تأكيد العميل والعقد';
+
+  @override
+  String get are_you_sure_you_want_to_add_this_customer => 'هل أنت متاكد من إضافة هذا العميل';
+
+  @override
+  String get personalDetails => 'البيانات الشخصية';
+
+  @override
+  String get installment => 'القسط';
+
+  @override
+  String get no => 'لا';
+
+  @override
+  String get yes => 'نعم';
+
+  @override
+  String get search_groups_collectors_zones => 'ابحث عن مجموعة، محصل، أو منطقة';
+
+  @override
+  String get addNewGroup => 'إضافة مجموعة جديدة';
+
+  @override
+  String get groupName => 'اسم المجموعة';
+
+  @override
+  String get enter_group_name => 'أدخل اسم المجموعة';
+
+  @override
+  String get collectorName => 'اسم المحصل';
+
+  @override
+  String get enter_responsible_person_name => 'أدخل اسم الشخص المسؤول';
+
+  @override
+  String get enter_phone_number => 'أدخل رقم الهاتف';
+
+  @override
+  String get enter_address => 'أدخل العنوان';
+
+  @override
+  String get due => 'المستحق';
+
+  @override
+  String get totalValue => 'القيمة الإجمالية';
+
+  @override
+  String get collected => 'المحصل';
+
+  @override
+  String get collectionProgress => 'نسبة التحصيل';
+
+  @override
+  String get noGroupsFound => 'لم يتم العثور على مجموعات';
+
+  @override
+  String get start_managing_your_collections_by_adding_a_new_group => 'ابدأ إدارة التحصيلات بإضافة مجموعة جديدة';
+
+  @override
+  String get sellingPrice => 'سعر البيع';
+
+  @override
+  String get debt => 'الدين';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get customerDetails => 'تفاصيل العميل';
+
+  @override
+  String get notAvailable => 'غير متوفر';
+
+  @override
+  String get contract => 'العقد';
+
+  @override
+  String get debtAmount => 'قيمة الدين';
+
+  @override
+  String get frequency => 'التكرار';
+
+  @override
+  String get firstPayment => 'أول دفعة';
+
+  @override
+  String get nextDueDate => 'موعد القسط القادم';
+
+  @override
+  String get paid => 'المدفوع';
+
+  @override
+  String get payInstallment => 'دفع القسط';
+
+  @override
+  String get overdue => 'متأخر';
+
+  @override
+  String get pending => 'معلق';
+
+  @override
+  String get remaining => 'المتبقي';
+
+  @override
+  String get completed => 'مكتمل';
+
+  @override
+  String paidAmount(String amount, String currency) {
+    return '$amount $currency مدفوع';
+  }
+
+  @override
+  String remainingAmount(String amount, String currency) {
+    return '$amount $currency متبقي';
+  }
+
+  @override
+  String get transactionHistory => 'سجل المعاملات';
+
+  @override
+  String installmentsCount(int count) {
+    return '$count أقساط';
+  }
+
+  @override
+  String get agreedTotalDebt => 'إجمالي الدين المتفق عليه';
+
+  @override
+  String get contractValue => 'قيمة العقد';
+
+  @override
+  String paidPercent(String percent) {
+    return '$percent% مدفوع';
+  }
+
+  @override
+  String installmentsLeft(int count) {
+    return '$count متبقي';
+  }
+
+  @override
+  String get settledInstallmentsAndDownPayment => 'الأقساط والمقدم المسدد';
+
+  @override
+  String get dueNow => 'مستحق الآن';
+
+  @override
+  String get paidUpfrontCommitment => 'المقدم مدفوع';
+
+  @override
+  String get upfrontCommitmentDue => 'المقدم مستحق';
+
+  @override
+  String get unpaid => 'غير مدفوع';
+
+  @override
+  String installmentNumber(int number) {
+    return 'القسط $number';
+  }
+
+  @override
+  String dueDate(String date) {
+    return 'الاستحقاق: $date';
+  }
+
+  @override
+  String paidOn(String date) {
+    return 'تم الدفع في: $date';
+  }
+
+  @override
+  String get selectedForPayment => 'تم اختيار القسط للدفع';
+
+  @override
+  String get alreadyPaid => 'تم الدفع بالفعل';
+
+  @override
+  String get paySelectedInstallment => 'دفع القسط المحدد';
+
+  @override
+  String paymentOptionsTitle(Object title) {
+    return 'خيارات دفع $title';
+  }
+
+  @override
+  String get paymentOptionsSubtitle => 'هل ترغب في دفع مبلغ القسط بالكامل أم تسجيل مبلغ مخصص؟';
+
+  @override
+  String get dueDateLabel => 'تاريخ الاستحقاق';
+
+  @override
+  String get paymentDateLabel => 'تاريخ الدفع';
+
+  @override
+  String payFullInstallmentBtn(Object amount) {
+    return 'دفع القسط بالكامل ($amount)';
+  }
+
+  @override
+  String get customPartialAmountBtn => 'مبلغ مخصص / جزئي';
+
+  @override
+  String get enterCustomAmountLabel => 'أدخل المبلغ المخصص';
+
+  @override
+  String get confirmCustomPaymentBtn => 'تأكيد الدفع المخصص';
+
+  @override
+  String get total => 'الإجمالي';
 }

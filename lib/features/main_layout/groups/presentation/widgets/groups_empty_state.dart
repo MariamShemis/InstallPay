@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_installment_management/core/costants/assets_manager.dart';
+import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class GroupsEmptyState extends StatelessWidget {
   const GroupsEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     return Center(
@@ -25,7 +27,7 @@ class GroupsEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'No Groups Found',
+              appLocalizations.noGroupsFound,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -33,7 +35,8 @@ class GroupsEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Start managing your collections by adding a new group.',
+              appLocalizations
+                  .start_managing_your_collections_by_adding_a_new_group,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 13.sp,

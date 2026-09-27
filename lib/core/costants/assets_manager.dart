@@ -18,6 +18,8 @@ class LottieAssets {
   static const String addToGroupDark = '${base}add_to_group_dark.json';
   static const String addToGCustomerDark = '${base}add_to_customer_dark.json';
   static const String addToGCustomerLight = '${base}add_to_customer_light.json';
+  static const String addToPartnerLight = '${base}add_to_partner_light.json';
+  static const String addToPartnerDark = '${base}add_to_partner_dark.json';
 }
 
 class SvgAssets {

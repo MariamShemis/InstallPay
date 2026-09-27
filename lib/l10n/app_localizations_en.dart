@@ -531,5 +531,307 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receipt_and_ledger_metric_standard => 'Receipt & ledger metric standard';
 
   @override
+  String get all => 'All';
+
+  @override
+  String get search_customers_phone_group => 'Search customers, phone, group';
+
+  @override
+  String get paymentProgress => 'Payment Progress';
+
+  @override
+  String get noCustomersFound => 'No Customers Found';
+
+  @override
+  String get start_adding_customers_to_track_their_installments_and_payments => 'Start adding customers to track their installments and payments.';
+
+  @override
+  String get addNewCustomer => 'Add New Customer';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get group => 'Group';
+
+  @override
+  String get selectGroup => 'Select Group';
+
+  @override
+  String get customerName => 'Customer Name';
+
+  @override
+  String get enter_customer_name => 'Enter customer name';
+
+  @override
+  String get enter_customer_phone_number => 'Enter customer phone number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get enter_customer_address => 'Enter customer address';
+
+  @override
+  String get contractDetails => 'Contract Details';
+
+  @override
+  String get contractDate => 'Contract Date';
+
+  @override
+  String get contractName => 'Contract Name';
+
+  @override
+  String get purchasePrice => 'Purchase Price';
+
+  @override
+  String get installmentAmount => 'Installment Amount';
+
+  @override
+  String get period => 'Period';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String get firstInstallmentDate => 'First Installment Date';
+
+  @override
+  String get downPayment => 'Down Payment';
+
+  @override
+  String get totalCost => 'Total Cost';
+
+  @override
+  String get netDebtAmount => 'Net Debt Amount';
+
+  @override
+  String get netDebt => 'Net Debt';
+
+  @override
   String get basic => 'Basic';
+
+  @override
+  String get additional_contract_notes => 'Additional contract notes';
+
+  @override
+  String get confirmCustomer_Contract => 'Confirm Customer & Contract';
+
+  @override
+  String get are_you_sure_you_want_to_add_this_customer => 'Are you sure you want to add this customer';
+
+  @override
+  String get personalDetails => 'Personal Details';
+
+  @override
+  String get installment => 'Installment';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get search_groups_collectors_zones => 'Search groups, collectors, zones';
+
+  @override
+  String get addNewGroup => 'Add New Group';
+
+  @override
+  String get groupName => 'Group Name';
+
+  @override
+  String get enter_group_name => 'Enter group name';
+
+  @override
+  String get collectorName => 'Collector Name';
+
+  @override
+  String get enter_responsible_person_name => 'Enter responsible person name';
+
+  @override
+  String get enter_phone_number => 'Enter phone number';
+
+  @override
+  String get enter_address => 'Enter address';
+
+  @override
+  String get due => 'Due';
+
+  @override
+  String get totalValue => 'Total Value';
+
+  @override
+  String get collected => 'Collected';
+
+  @override
+  String get collectionProgress => 'Collection Progress';
+
+  @override
+  String get noGroupsFound => 'No Groups Found';
+
+  @override
+  String get start_managing_your_collections_by_adding_a_new_group => 'Start managing your collections by adding a new group';
+
+  @override
+  String get sellingPrice => 'Selling Price';
+
+  @override
+  String get debt => 'Debt';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get customerDetails => 'Customer Details';
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get contract => 'Contract';
+
+  @override
+  String get debtAmount => 'Debt Amount';
+
+  @override
+  String get frequency => 'Frequency';
+
+  @override
+  String get firstPayment => 'First Payment';
+
+  @override
+  String get nextDueDate => 'Next Due Date';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get payInstallment => 'Pay Installment';
+
+  @override
+  String get overdue => 'Overdue';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get remaining => 'Remaining';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String paidAmount(String amount, String currency) {
+    return '$amount $currency paid';
+  }
+
+  @override
+  String remainingAmount(String amount, String currency) {
+    return '$amount $currency remaining';
+  }
+
+  @override
+  String get transactionHistory => 'Transaction History';
+
+  @override
+  String installmentsCount(int count) {
+    return '$count Installments';
+  }
+
+  @override
+  String get agreedTotalDebt => 'Agreed Total Debt';
+
+  @override
+  String get contractValue => 'Contract Value';
+
+  @override
+  String paidPercent(String percent) {
+    return '$percent% Paid';
+  }
+
+  @override
+  String installmentsLeft(int count) {
+    return '$count Left';
+  }
+
+  @override
+  String get settledInstallmentsAndDownPayment => 'Settled Installments & Down Payment';
+
+  @override
+  String get dueNow => 'Due Now';
+
+  @override
+  String get paidUpfrontCommitment => 'Paid Upfront Commitment';
+
+  @override
+  String get upfrontCommitmentDue => 'Upfront Commitment Due';
+
+  @override
+  String get unpaid => 'Unpaid';
+
+  @override
+  String installmentNumber(int number) {
+    return 'Installment $number';
+  }
+
+  @override
+  String dueDate(String date) {
+    return 'Due: $date';
+  }
+
+  @override
+  String paidOn(String date) {
+    return 'Paid on: $date';
+  }
+
+  @override
+  String get selectedForPayment => 'Selected for Payment';
+
+  @override
+  String get alreadyPaid => 'Already Paid';
+
+  @override
+  String get paySelectedInstallment => 'Pay Selected Installment';
+
+  @override
+  String paymentOptionsTitle(Object title) {
+    return '$title Payment Options';
+  }
+
+  @override
+  String get paymentOptionsSubtitle => 'Do you want to pay the full installment amount or record a custom amount?';
+
+  @override
+  String get dueDateLabel => 'Due';
+
+  @override
+  String get paymentDateLabel => 'Payment Date';
+
+  @override
+  String payFullInstallmentBtn(Object amount) {
+    return 'Pay Full Installment ($amount)';
+  }
+
+  @override
+  String get customPartialAmountBtn => 'Custom / Partial Amount';
+
+  @override
+  String get enterCustomAmountLabel => 'Enter Custom Amount';
+
+  @override
+  String get confirmCustomPaymentBtn => 'Confirm Custom Payment';
+
+  @override
+  String get total => 'Total';
 }

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_installment_management/core/costants/assets_manager.dart';
+import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class CustomersEmptyState extends StatelessWidget {
   const CustomersEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
@@ -26,7 +28,7 @@ class CustomersEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'No Customers Found',
+              appLocalizations.noCustomersFound,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -34,7 +36,7 @@ class CustomersEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Start adding customers to track their installments and payments.',
+              appLocalizations.start_adding_customers_to_track_their_installments_and_payments,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontSize: 13.sp,

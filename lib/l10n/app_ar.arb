@@ -176,5 +176,168 @@
   "current_interface_language": "لغة الواجهة الحالية",
   "currencyDisplay": "عرض العملة",
   "receipt_and_ledger_metric_standard": "معيار القياس للفواتير والدفتر",
-  "basic": "أساسي"
+  "all": "الكل",
+  "customers": "العملاء",
+  "search_customers_phone_group": "ابحث عن عميل، رقم هاتف، أو مجموعة",
+  "paymentProgress": "تقدم السداد",
+  "noCustomersFound": "لم يتم العثور على عملاء",
+  "start_adding_customers_to_track_their_installments_and_payments": "ابدأ بإضافة العملاء لمتابعة أقساطهم ومدفوعاتهم.",
+  "addNewCustomer": "إضافة عميل جديد",
+  "save": "حفظ",
+  "personalInformation": "البيانات الشخصية",
+  "group": "المجموعة",
+  "selectGroup": "اختر المجموعة",
+  "customerName": "اسم العميل",
+  "enter_customer_name": "أدخل اسم العميل",
+  "enter_customer_phone_number": "أدخل رقم هاتف العميل",
+  "address": "العنوان",
+  "enter_customer_address": "أدخل عنوان العميل",
+  "contractDetails": "تفاصيل العقد",
+  "contractDate": "تاريخ العقد",
+  "contractName": "اسم العقد",
+  "purchasePrice": "سعر الشراء",
+  "installmentAmount": "مبلغ القسط",
+  "period": "المدّة",
+  "monthly": "شهري",
+  "weekly": "أسبوعي",
+  "yearly": "سنوي",
+  "firstInstallmentDate": "تاريخ أول قسط",
+  "downPayment": "المقدم",
+  "totalCost": "إجمالي التكلفة",
+  "netDebtAmount": "صافي مبلغ الدين",
+  "netDebt": "صافي الدين",
+  "basic": "أساسي",
+  "additional_contract_notes": "ملاحظات إضافية على العقد",
+  "confirmCustomer_Contract": "تأكيد العميل والعقد",
+  "are_you_sure_you_want_to_add_this_customer": "هل أنت متاكد من إضافة هذا العميل",
+  "personalDetails": "البيانات الشخصية",
+  "installment": "القسط",
+  "no": "لا",
+  "yes": "نعم",
+  "search_groups_collectors_zones": "ابحث عن مجموعة، محصل، أو منطقة",
+  "addNewGroup": "إضافة مجموعة جديدة",
+  "groupName": "اسم المجموعة",
+  "enter_group_name": "أدخل اسم المجموعة",
+  "collectorName": "اسم المحصل",
+  "enter_responsible_person_name": "أدخل اسم الشخص المسؤول",
+  "enter_phone_number": "أدخل رقم الهاتف",
+  "enter_address": "أدخل العنوان",
+  "due": "المستحق",
+  "totalValue": "القيمة الإجمالية",
+  "collected": "المحصّل",
+  "remaining": "المتبقي",
+  "collectionProgress": "نسبة التحصيل",
+  "noGroupsFound": "لم يتم العثور على مجموعات",
+  "start_managing_your_collections_by_adding_a_new_group": "ابدأ إدارة التحصيلات بإضافة مجموعة جديدة",
+  "sellingPrice": "سعر البيع",
+  "debt": "الدين",
+  "notes": "ملاحظات",
+  "customerDetails": "تفاصيل العميل",
+  "notAvailable": "غير متوفر",
+  "contract": "العقد",
+  "debtAmount": "قيمة الدين",
+  "installmentAmount": "قيمة القسط",
+  "frequency": "التكرار",
+  "firstPayment": "أول دفعة",
+  "nextDueDate": "موعد القسط القادم",
+  "paid": "المدفوع",
+  "paymentProgress": "تقدم السداد",
+  "payInstallment": "دفع القسط",
+  "overdue": "متأخر",
+  "pending": "معلق",
+  "completed": "مكتمل",
+  "paidAmount": "{amount} {currency} مدفوع",
+  "@paidAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "remainingAmount": "{amount} {currency} متبقي",
+  "@remainingAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "payInstallment": "دفع القسط",
+  "transactionHistory": "سجل المعاملات",
+  "installmentsCount": "{count} أقساط",
+  "@installmentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agreedTotalDebt": "إجمالي الدين المتفق عليه",
+  "contractValue": "قيمة العقد",
+  "collected": "المحصل",
+  "paidPercent": "{percent}% مدفوع",
+  "@paidPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "installmentsLeft": "{count} متبقي",
+  "@installmentsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentProgress": "تقدم السداد",
+  "settledInstallmentsAndDownPayment": "الأقساط والمقدم المسدد",
+  "dueNow": "مستحق الآن",
+  "downPayment": "المقدم",
+  "paidUpfrontCommitment": "المقدم مدفوع",
+  "upfrontCommitmentDue": "المقدم مستحق",
+  "unpaid": "غير مدفوع",
+  "installmentNumber": "القسط {number}",
+  "@installmentNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dueDate": "الاستحقاق: {date}",
+  "@dueDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "paidOn": "تم الدفع في: {date}",
+  "@paidOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "selectedForPayment": "تم اختيار القسط للدفع",
+  "alreadyPaid": "تم الدفع بالفعل",
+  "paySelectedInstallment": "دفع القسط المحدد",
+  "paymentOptionsTitle": "خيارات دفع {title}",
+  "paymentOptionsSubtitle": "هل ترغب في دفع مبلغ القسط بالكامل أم تسجيل مبلغ مخصص؟",
+  "dueDateLabel": "تاريخ الاستحقاق",
+  "paymentDateLabel": "تاريخ الدفع",
+  "payFullInstallmentBtn": "دفع القسط بالكامل ({amount})",
+  "customPartialAmountBtn": "مبلغ مخصص / جزئي",
+  "enterCustomAmountLabel": "أدخل المبلغ المخصص",
+  "confirmCustomPaymentBtn": "تأكيد الدفع المخصص",
+  "total": "الإجمالي"
 }

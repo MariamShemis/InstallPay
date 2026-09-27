@@ -10,4 +10,7 @@ abstract class AppRoutes {
   static const String verifyEmail = "/VerifyEmail";
   static const String appLock = "/AppLock";
   static const String backUp = "/backUp";
+  static const String addNewCustomer = "/addNewCustomer";
+  static const String customerDetails = "/customerDetails";
+  static const String payInstallment = "/payInstallment";
 }

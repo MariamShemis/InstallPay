@@ -1,57 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_installment_management/features/main_layout/groups/data/model/group_model.dart';
+import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class GroupCard extends StatelessWidget {
-  final String groupTitle;
-  final String collectorName;
-  final String collectorPhone;
-  final String clientsCount;
-  final String dueCount;
-  final String totalValue;
-  final String collectedValue;
-  final String remainingValue;
-  final double progress;
+  final GroupModel group;
+  final String currency;
   final VoidCallback? onOpenSheetTap;
 
   const GroupCard({
     super.key,
-    required this.groupTitle,
-    required this.collectorName,
-    required this.collectorPhone,
-    required this.clientsCount,
-    required this.dueCount,
-    required this.totalValue,
-    required this.collectedValue,
-    required this.remainingValue,
-    required this.progress,
+    required this.group,
+    required this.currency,
     this.onOpenSheetTap,
   });
 
   String get _initials {
-    final names = collectorName.trim().split(' ');
-    if (names.isEmpty || names.first.isEmpty) return 'U';
-    if (names.length == 1) return names.first[0].toUpperCase();
+    final names = group.collectorName.trim().split(' ');
+
+    if (names.isEmpty || names.first.isEmpty) {
+      return 'U';
+    }
+
+    if (names.length == 1) {
+      return names.first[0].toUpperCase();
+    }
+
     return '${names.first[0]}${names.last[0]}'.toUpperCase();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appLocalizations = AppLocalizations.of(context)!;
 
-    // الألوان المستخرجة بدقة من تصميم Figma المرفق
-    final cardBg = isDark ? const Color(0xFF151F28) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF243444) : const Color(0xFFE2E8F0);
-    final innerCardBg = isDark ? const Color(0xFF1D2933) : const Color(0xFFF0F3FF);
-    final primaryTextColor = isDark ? Colors.white : const Color(0xFF111C2D);
-    final secondaryTextColor = isDark ? const Color(0xFF94A3B8) : const Color(0xFF43474D);
-    final avatarBg = isDark ? const Color(0xFF17324D) : const Color(0xFFE2E8F0);
-    final avatarTextColor = isDark ? const Color(0xFF34D399) : const Color(0xFF006C4D);
-    final dueTextColor = const Color(0xFFEF4444);
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
-    // ألوان خانة Collected (تخفيف للأخضر)
-    final accentGreenBg = isDark ? const Color(0xFF15966D).withOpacity(0.15) : const Color(0xFF006C4D).withOpacity(0.10);
-    final accentGreenText = isDark ? const Color(0xFF34D399) : const Color(0xFF006C4D);
-    final progressColor = isDark ? const Color(0xFF15966D) : const Color(0xFF006C4D);
+    final cardBg =
+    isDark ? const Color(0xFF151F28) : Colors.white;
+
+    final borderColor =
+    isDark
+        ? const Color(0xFF243444)
+        : const Color(0xFFE2E8F0);
+
+    final innerCardBg =
+    isDark
+        ? const Color(0xFF1D2933)
+        : const Color(0xFFF0F3FF);
+
+    final primaryTextColor =
+    isDark
+        ? Colors.white
+        : const Color(0xFF111C2D);
+
+    final secondaryTextColor =
+    isDark
+        ? const Color(0xFF94A3B8)
+        : const Color(0xFF43474D);
+
+    final avatarBg =
+    isDark
+        ? const Color(0xFF17324D)
+        : const Color(0xFFE2E8F0);
+
+    final avatarTextColor =
+    isDark
+        ? const Color(0xFF34D399)
+        : const Color(0xFF006C4D);
+
+    final accentGreenBg =
+    isDark
+        ? const Color(0xFF15966D).withOpacity(0.15)
+        : const Color(0xFF006C4D).withOpacity(0.10);
+
+    final accentGreenText =
+    isDark
+        ? const Color(0xFF34D399)
+        : const Color(0xFF006C4D);
+
+    final progressColor =
+    isDark
+        ? const Color(0xFF15966D)
+        : const Color(0xFF006C4D);
 
     return InkWell(
       onTap: onOpenSheetTap,
@@ -61,7 +92,10 @@ class GroupCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: cardBg,
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: borderColor, width: 1.w),
+          border: Border.all(
+            color: borderColor,
+            width: 1.w,
+          ),
           boxShadow: [
             BoxShadow(
               color: isDark
@@ -69,16 +103,15 @@ class GroupCard extends StatelessWidget {
                   : const Color(0xFF111C2D).withOpacity(0.06),
               blurRadius: 16.r,
               offset: const Offset(0, 4),
-              spreadRadius: 0,
             ),
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
           children: [
-            // Header Title
             Text(
-              groupTitle,
+              group.groupTitle,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.bold,
@@ -87,14 +120,15 @@ class GroupCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
+
             SizedBox(height: 10.h),
 
-            // Collector Info Bar
             Container(
               padding: REdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: innerCardBg,
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius:
+                BorderRadius.circular(14.r),
               ),
               child: Row(
                 children: [
@@ -110,24 +144,30 @@ class GroupCard extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   SizedBox(width: 12.w),
+
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.start,
                       children: [
                         Text(
-                          collectorName,
+                          group.collectorName,
                           style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                             color: primaryTextColor,
                           ),
                           maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          overflow:
+                          TextOverflow.ellipsis,
                         ),
+
                         SizedBox(height: 2.h),
+
                         Text(
-                          collectorPhone,
+                          group.collectorPhone,
                           style: TextStyle(
                             fontSize: 11.sp,
                             color: secondaryTextColor,
@@ -136,24 +176,29 @@ class GroupCard extends StatelessWidget {
                       ],
                     ),
                   ),
+
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment:
+                    CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '$clientsCount Customers',
+                        '${group.clientsCount} ${appLocalizations.customers}',
                         style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,
                           color: primaryTextColor,
                         ),
                       ),
+
                       SizedBox(height: 2.h),
+
                       Text(
-                        '$dueCount Due',
+                        '${group.dueCount} ${appLocalizations.due}',
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
-                          color: dueTextColor,
+                          color:
+                          const Color(0xFFEF4444),
                         ),
                       ),
                     ],
@@ -161,45 +206,57 @@ class GroupCard extends StatelessWidget {
                 ],
               ),
             ),
+
             SizedBox(height: 12.h),
 
-            // Stats Row
             Row(
               children: [
                 _buildStatBox(
-                  label: 'Total Value',
-                  value: totalValue,
+                  label: appLocalizations.totalValue,
+                  value:
+                  '${group.totalValue.toStringAsFixed(0)} $currency',
                   bg: innerCardBg,
                   textColor: primaryTextColor,
                 ),
+
                 SizedBox(width: 8.w),
+
                 _buildStatBox(
-                  label: 'Collected',
-                  value: collectedValue,
+                  label: appLocalizations.collected,
+                  value:
+                  '${group.collectedValue.toStringAsFixed(0)} $currency',
                   bg: accentGreenBg,
                   textColor: accentGreenText,
                 ),
+
                 SizedBox(width: 8.w),
+
                 _buildStatBox(
-                  label: 'Remaining',
-                  value: remainingValue,
+                  label: appLocalizations.remaining,
+                  value:
+                  '${group.remainingValue.toStringAsFixed(0)} $currency',
                   bg: innerCardBg,
                   textColor: primaryTextColor,
                 ),
               ],
             ),
+
             SizedBox(height: 14.h),
 
-            // Progress Section
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Collection Progress (نسبة الإنجاز)',
-                  style: TextStyle(fontSize: 11.sp, color: secondaryTextColor),
+                  appLocalizations.collectionProgress,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: secondaryTextColor,
+                  ),
                 ),
+
                 Text(
-                  '${(progress * 100).toStringAsFixed(1)}%',
+                  '${(group.progress * 100).toStringAsFixed(1)}%',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
@@ -208,19 +265,24 @@ class GroupCard extends StatelessWidget {
                 ),
               ],
             ),
+
             SizedBox(height: 6.h),
+
             ClipRRect(
-              borderRadius: BorderRadius.circular(4.r),
+              borderRadius:
+              BorderRadius.circular(4.r),
               child: LinearProgressIndicator(
-                value: progress,
+                value: group.progress.clamp(0.0, 1.0),
                 minHeight: 8.h,
                 backgroundColor: isDark
                     ? const Color(0xFF243444)
                     : const Color(0xFFE2E8F0),
-                valueColor: AlwaysStoppedAnimation<Color>(progressColor),
+                valueColor:
+                AlwaysStoppedAnimation<Color>(
+                  progressColor,
+                ),
               ),
             ),
-            SizedBox(height: 14.h),
           ],
         ),
       ),
@@ -235,10 +297,14 @@ class GroupCard extends StatelessWidget {
   }) {
     return Expanded(
       child: Container(
-        padding: REdgeInsets.symmetric(vertical: 10, horizontal: 4),
+        padding: REdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 4,
+        ),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius:
+          BorderRadius.circular(12.r),
         ),
         child: Column(
           children: [
@@ -246,12 +312,16 @@ class GroupCard extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 9.sp,
-                color: textColor.withOpacity(0.75),
+                color:
+                textColor.withOpacity(0.75),
               ),
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              overflow:
+              TextOverflow.ellipsis,
             ),
+
             SizedBox(height: 4.h),
+
             Text(
               value,
               style: TextStyle(

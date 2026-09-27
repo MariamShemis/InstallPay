@@ -177,5 +177,168 @@
   "current_interface_language": "Current interface language",
   "currencyDisplay": "Currency Display",
   "receipt_and_ledger_metric_standard": "Receipt & ledger metric standard",
-  "basic": "Basic"
+  "all": "All",
+  "customers": "Customers",
+  "search_customers_phone_group": "Search customers, phone, group",
+  "paymentProgress": "Payment Progress",
+  "noCustomersFound": "No Customers Found",
+  "start_adding_customers_to_track_their_installments_and_payments": "Start adding customers to track their installments and payments.",
+  "addNewCustomer": "Add New Customer",
+  "save": "Save",
+  "personalInformation": "Personal Information",
+  "group": "Group",
+  "selectGroup": "Select Group",
+  "customerName": "Customer Name",
+  "enter_customer_name": "Enter customer name",
+  "enter_customer_phone_number": "Enter customer phone number",
+  "address": "Address",
+  "enter_customer_address": "Enter customer address",
+  "contractDetails": "Contract Details",
+  "contractDate": "Contract Date",
+  "contractName": "Contract Name",
+  "purchasePrice": "Purchase Price",
+  "installmentAmount": "Installment Amount",
+  "period": "Period",
+  "monthly": "Monthly",
+  "weekly": "Weekly",
+  "yearly": "Yearly",
+  "firstInstallmentDate": "First Installment Date",
+  "downPayment": "Down Payment",
+  "totalCost": "Total Cost",
+  "netDebtAmount": "Net Debt Amount",
+  "netDebt": "Net Debt",
+  "basic": "Basic",
+  "additional_contract_notes": "Additional contract notes",
+  "confirmCustomer_Contract": "Confirm Customer & Contract",
+  "are_you_sure_you_want_to_add_this_customer": "Are you sure you want to add this customer",
+  "personalDetails": "Personal Details",
+  "installment": "Installment",
+  "no": "No",
+  "yes": "Yes",
+  "search_groups_collectors_zones": "Search groups, collectors, zones",
+  "addNewGroup": "Add New Group",
+  "groupName": "Group Name",
+  "enter_group_name": "Enter group name",
+  "collectorName": "Collector Name",
+  "enter_responsible_person_name": "Enter responsible person name",
+  "enter_phone_number": "Enter phone number",
+  "enter_address": "Enter address",
+  "due": "Due",
+  "totalValue": "Total Value",
+  "collected": "Collected",
+  "collectionProgress": "Collection Progress",
+  "noGroupsFound": "No Groups Found",
+  "start_managing_your_collections_by_adding_a_new_group": "Start managing your collections by adding a new group",
+  "sellingPrice": "Selling Price",
+  "debt": "Debt",
+  "notes": "Notes",
+  "customerDetails": "Customer Details",
+  "notAvailable": "N/A",
+  "contract": "Contract",
+  "debtAmount": "Debt Amount",
+  "installmentAmount": "Installment Amount",
+  "frequency": "Frequency",
+  "firstPayment": "First Payment",
+  "nextDueDate": "Next Due Date",
+  "paid": "Paid",
+  "paymentProgress": "Payment Progress",
+  "payInstallment": "Pay Installment",
+  "overdue": "Overdue",
+  "pending": "Pending",
+  "remaining": "Remaining",
+  "completed": "Completed",
+  "paidAmount": "{amount} {currency} paid",
+  "@paidAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "remainingAmount": "{amount} {currency} remaining",
+  "@remainingAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "payInstallment": "Pay Installment",
+  "transactionHistory": "Transaction History",
+  "installmentsCount": "{count} Installments",
+  "@installmentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agreedTotalDebt": "Agreed Total Debt",
+  "contractValue": "Contract Value",
+  "collected": "Collected",
+  "paidPercent": "{percent}% Paid",
+  "@paidPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "installmentsLeft": "{count} Left",
+  "@installmentsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentProgress": "Payment Progress",
+  "settledInstallmentsAndDownPayment": "Settled Installments & Down Payment",
+  "dueNow": "Due Now",
+  "downPayment": "Down Payment",
+  "paidUpfrontCommitment": "Paid Upfront Commitment",
+  "upfrontCommitmentDue": "Upfront Commitment Due",
+  "unpaid": "Unpaid",
+  "installmentNumber": "Installment {number}",
+  "@installmentNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dueDate": "Due: {date}",
+  "@dueDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "paidOn": "Paid on: {date}",
+  "@paidOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "selectedForPayment": "Selected for Payment",
+  "alreadyPaid": "Already Paid",
+  "paySelectedInstallment": "Pay Selected Installment",
+  "paymentOptionsTitle": "{title} Payment Options",
+  "paymentOptionsSubtitle": "Do you want to pay the full installment amount or record a custom amount?",
+  "dueDateLabel": "Due",
+  "paymentDateLabel": "Payment Date",
+  "payFullInstallmentBtn": "Pay Full Installment ({amount})",
+  "customPartialAmountBtn": "Custom / Partial Amount",
+  "enterCustomAmountLabel": "Enter Custom Amount",
+  "confirmCustomPaymentBtn": "Confirm Custom Payment",
+  "total": "Total"
 }

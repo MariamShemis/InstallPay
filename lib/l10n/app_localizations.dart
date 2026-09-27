@@ -1139,11 +1139,575 @@ abstract class AppLocalizations {
   /// **'Receipt & ledger metric standard'**
   String get receipt_and_ledger_metric_standard;
 
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @search_customers_phone_group.
+  ///
+  /// In en, this message translates to:
+  /// **'Search customers, phone, group'**
+  String get search_customers_phone_group;
+
+  /// No description provided for @paymentProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Progress'**
+  String get paymentProgress;
+
+  /// No description provided for @noCustomersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Customers Found'**
+  String get noCustomersFound;
+
+  /// No description provided for @start_adding_customers_to_track_their_installments_and_payments.
+  ///
+  /// In en, this message translates to:
+  /// **'Start adding customers to track their installments and payments.'**
+  String get start_adding_customers_to_track_their_installments_and_payments;
+
+  /// No description provided for @addNewCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Customer'**
+  String get addNewCustomer;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @group.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get group;
+
+  /// No description provided for @selectGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Group'**
+  String get selectGroup;
+
+  /// No description provided for @customerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name'**
+  String get customerName;
+
+  /// No description provided for @enter_customer_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter customer name'**
+  String get enter_customer_name;
+
+  /// No description provided for @enter_customer_phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter customer phone number'**
+  String get enter_customer_phone_number;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @enter_customer_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter customer address'**
+  String get enter_customer_address;
+
+  /// No description provided for @contractDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Details'**
+  String get contractDetails;
+
+  /// No description provided for @contractDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Date'**
+  String get contractDate;
+
+  /// No description provided for @contractName.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Name'**
+  String get contractName;
+
+  /// No description provided for @purchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase Price'**
+  String get purchasePrice;
+
+  /// No description provided for @installmentAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Installment Amount'**
+  String get installmentAmount;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// No description provided for @firstInstallmentDate.
+  ///
+  /// In en, this message translates to:
+  /// **'First Installment Date'**
+  String get firstInstallmentDate;
+
+  /// No description provided for @downPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Down Payment'**
+  String get downPayment;
+
+  /// No description provided for @totalCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Cost'**
+  String get totalCost;
+
+  /// No description provided for @netDebtAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Debt Amount'**
+  String get netDebtAmount;
+
+  /// No description provided for @netDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Debt'**
+  String get netDebt;
+
   /// No description provided for @basic.
   ///
   /// In en, this message translates to:
   /// **'Basic'**
   String get basic;
+
+  /// No description provided for @additional_contract_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional contract notes'**
+  String get additional_contract_notes;
+
+  /// No description provided for @confirmCustomer_Contract.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Customer & Contract'**
+  String get confirmCustomer_Contract;
+
+  /// No description provided for @are_you_sure_you_want_to_add_this_customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to add this customer'**
+  String get are_you_sure_you_want_to_add_this_customer;
+
+  /// No description provided for @personalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Details'**
+  String get personalDetails;
+
+  /// No description provided for @installment.
+  ///
+  /// In en, this message translates to:
+  /// **'Installment'**
+  String get installment;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @search_groups_collectors_zones.
+  ///
+  /// In en, this message translates to:
+  /// **'Search groups, collectors, zones'**
+  String get search_groups_collectors_zones;
+
+  /// No description provided for @addNewGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Group'**
+  String get addNewGroup;
+
+  /// No description provided for @groupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Name'**
+  String get groupName;
+
+  /// No description provided for @enter_group_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter group name'**
+  String get enter_group_name;
+
+  /// No description provided for @collectorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Collector Name'**
+  String get collectorName;
+
+  /// No description provided for @enter_responsible_person_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter responsible person name'**
+  String get enter_responsible_person_name;
+
+  /// No description provided for @enter_phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone number'**
+  String get enter_phone_number;
+
+  /// No description provided for @enter_address.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter address'**
+  String get enter_address;
+
+  /// No description provided for @due.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get due;
+
+  /// No description provided for @totalValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Value'**
+  String get totalValue;
+
+  /// No description provided for @collected.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected'**
+  String get collected;
+
+  /// No description provided for @collectionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection Progress'**
+  String get collectionProgress;
+
+  /// No description provided for @noGroupsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Groups Found'**
+  String get noGroupsFound;
+
+  /// No description provided for @start_managing_your_collections_by_adding_a_new_group.
+  ///
+  /// In en, this message translates to:
+  /// **'Start managing your collections by adding a new group'**
+  String get start_managing_your_collections_by_adding_a_new_group;
+
+  /// No description provided for @sellingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Selling Price'**
+  String get sellingPrice;
+
+  /// No description provided for @debt.
+  ///
+  /// In en, this message translates to:
+  /// **'Debt'**
+  String get debt;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @customerDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Details'**
+  String get customerDetails;
+
+  /// No description provided for @notAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get notAvailable;
+
+  /// No description provided for @contract.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract'**
+  String get contract;
+
+  /// No description provided for @debtAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Debt Amount'**
+  String get debtAmount;
+
+  /// No description provided for @frequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get frequency;
+
+  /// No description provided for @firstPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'First Payment'**
+  String get firstPayment;
+
+  /// No description provided for @nextDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Due Date'**
+  String get nextDueDate;
+
+  /// No description provided for @paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paid;
+
+  /// No description provided for @payInstallment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Installment'**
+  String get payInstallment;
+
+  /// No description provided for @overdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get overdue;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get remaining;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @paidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {currency} paid'**
+  String paidAmount(String amount, String currency);
+
+  /// No description provided for @remainingAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {currency} remaining'**
+  String remainingAmount(String amount, String currency);
+
+  /// No description provided for @transactionHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction History'**
+  String get transactionHistory;
+
+  /// No description provided for @installmentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Installments'**
+  String installmentsCount(int count);
+
+  /// No description provided for @agreedTotalDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Agreed Total Debt'**
+  String get agreedTotalDebt;
+
+  /// No description provided for @contractValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Value'**
+  String get contractValue;
+
+  /// No description provided for @paidPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% Paid'**
+  String paidPercent(String percent);
+
+  /// No description provided for @installmentsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Left'**
+  String installmentsLeft(int count);
+
+  /// No description provided for @settledInstallmentsAndDownPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled Installments & Down Payment'**
+  String get settledInstallmentsAndDownPayment;
+
+  /// No description provided for @dueNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Due Now'**
+  String get dueNow;
+
+  /// No description provided for @paidUpfrontCommitment.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Upfront Commitment'**
+  String get paidUpfrontCommitment;
+
+  /// No description provided for @upfrontCommitmentDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Upfront Commitment Due'**
+  String get upfrontCommitmentDue;
+
+  /// No description provided for @unpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get unpaid;
+
+  /// No description provided for @installmentNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Installment {number}'**
+  String installmentNumber(int number);
+
+  /// No description provided for @dueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due: {date}'**
+  String dueDate(String date);
+
+  /// No description provided for @paidOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid on: {date}'**
+  String paidOn(String date);
+
+  /// No description provided for @selectedForPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected for Payment'**
+  String get selectedForPayment;
+
+  /// No description provided for @alreadyPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Paid'**
+  String get alreadyPaid;
+
+  /// No description provided for @paySelectedInstallment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Selected Installment'**
+  String get paySelectedInstallment;
+
+  /// No description provided for @paymentOptionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} Payment Options'**
+  String paymentOptionsTitle(Object title);
+
+  /// No description provided for @paymentOptionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to pay the full installment amount or record a custom amount?'**
+  String get paymentOptionsSubtitle;
+
+  /// No description provided for @dueDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get dueDateLabel;
+
+  /// No description provided for @paymentDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Date'**
+  String get paymentDateLabel;
+
+  /// No description provided for @payFullInstallmentBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Full Installment ({amount})'**
+  String payFullInstallmentBtn(Object amount);
+
+  /// No description provided for @customPartialAmountBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom / Partial Amount'**
+  String get customPartialAmountBtn;
+
+  /// No description provided for @enterCustomAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Custom Amount'**
+  String get enterCustomAmountLabel;
+
+  /// No description provided for @confirmCustomPaymentBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Custom Payment'**
+  String get confirmCustomPaymentBtn;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
