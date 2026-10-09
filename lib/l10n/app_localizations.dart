@@ -1703,6 +1703,216 @@ abstract class AppLocalizations {
   /// **'Confirm Custom Payment'**
   String get confirmCustomPaymentBtn;
 
+  /// No description provided for @noPartnersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Partners Found'**
+  String get noPartnersFound;
+
+  /// No description provided for @start_managing_your_business_by_adding_a_new_partner.
+  ///
+  /// In en, this message translates to:
+  /// **'Start managing your business by adding a new partner'**
+  String get start_managing_your_business_by_adding_a_new_partner;
+
+  /// No description provided for @search_partners.
+  ///
+  /// In en, this message translates to:
+  /// **'Search partners'**
+  String get search_partners;
+
+  /// No description provided for @addNewPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Partner'**
+  String get addNewPartner;
+
+  /// No description provided for @partnerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner Name'**
+  String get partnerName;
+
+  /// No description provided for @mainCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Capital'**
+  String get mainCapital;
+
+  /// No description provided for @profitMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit Margin'**
+  String get profitMargin;
+
+  /// No description provided for @newCapitalCalculated.
+  ///
+  /// In en, this message translates to:
+  /// **'New Capital (Calculated)'**
+  String get newCapitalCalculated;
+
+  /// No description provided for @newCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'New Capital'**
+  String get newCapital;
+
+  /// No description provided for @addPartnerBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Partner'**
+  String get addPartnerBtn;
+
+  /// No description provided for @profit.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit'**
+  String get profit;
+
+  /// No description provided for @partnerType.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner Type'**
+  String get partnerType;
+
+  /// No description provided for @primaryPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get primaryPartner;
+
+  /// No description provided for @secondaryPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary'**
+  String get secondaryPartner;
+
+  /// No description provided for @moneyManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Money Management'**
+  String get moneyManagement;
+
+  /// No description provided for @incomeExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Income & Expenses'**
+  String get incomeExpenses;
+
+  /// No description provided for @addTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Transaction'**
+  String get addTransaction;
+
+  /// No description provided for @trackerRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Records'**
+  String trackerRecords(String count);
+
+  /// No description provided for @noTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions recorded yet.'**
+  String get noTransactions;
+
+  /// No description provided for @incomeExpensesOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Income & Expenses Overview'**
+  String get incomeExpensesOverview;
+
+  /// No description provided for @incomes.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomes'**
+  String get incomes;
+
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @netBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Balance'**
+  String get netBalance;
+
+  /// No description provided for @addIncomeExpenseEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Income / Expense Entry'**
+  String get addIncomeExpenseEntry;
+
+  /// No description provided for @personName.
+  ///
+  /// In en, this message translates to:
+  /// **'Person Name'**
+  String get personName;
+
+  /// No description provided for @transactionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Reason'**
+  String get transactionReason;
+
+  /// No description provided for @incomeAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Amount'**
+  String get incomeAmount;
+
+  /// No description provided for @expenseAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Amount'**
+  String get expenseAmount;
+
+  /// No description provided for @incomeDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Date'**
+  String get incomeDate;
+
+  /// No description provided for @expenseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Date'**
+  String get expenseDate;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date'**
+  String get selectDate;
+
+  /// No description provided for @enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter name'**
+  String get enterName;
+
+  /// No description provided for @enterPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone number'**
+  String get enterPhoneNumber;
+
+  /// No description provided for @saveTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Transaction'**
+  String get saveTransaction;
+
+  /// No description provided for @transactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get transactionDetails;
+
   /// No description provided for @total.
   ///
   /// In en, this message translates to:

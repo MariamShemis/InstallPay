@@ -29,36 +29,36 @@ class _GroupTabState extends State<GroupTab> {
   ];
 
   final List<GroupModel> _groupsData = const [
-    // GroupModel(
-    //   groupTitle: 'Home Appliances Group B',
-    //   collectorName: 'Sami Al-Otaibi',
-    //   collectorPhone: '+966 50 123 4567',
-    //   clientsCount: 36,
-    //   dueCount: 6,
-    //   totalValue: 124000,
-    //   collectedValue: 91700,
-    //   remainingValue: 32200,
-    // ),
-    // GroupModel(
-    //   groupTitle: 'Electronics Group A',
-    //   collectorName: 'Ahmed Hassan',
-    //   collectorPhone: '+20 100 890 1234',
-    //   clientsCount: 24,
-    //   dueCount: 3,
-    //   totalValue: 85500,
-    //   collectedValue: 68000,
-    //   remainingValue: 17500,
-    // ),
-    // GroupModel(
-    //   groupTitle: 'Furniture Group C',
-    //   collectorName: 'Omar Al-Ghamdi',
-    //   collectorPhone: '+966 55 987 6543',
-    //   clientsCount: 18,
-    //   dueCount: 8,
-    //   totalValue: 50000,
-    //   collectedValue: 20000,
-    //   remainingValue: 30000,
-    // ),
+    GroupModel(
+      groupTitle: 'Home Appliances Group B',
+      collectorName: 'Sami Al-Otaibi',
+      collectorPhone: '+966 50 123 4567',
+      clientsCount: 36,
+      dueCount: 6,
+      totalValue: 124000,
+      collectedValue: 91700,
+      remainingValue: 32200,
+    ),
+    GroupModel(
+      groupTitle: 'Electronics Group A',
+      collectorName: 'Ahmed Hassan',
+      collectorPhone: '+20 100 890 1234',
+      clientsCount: 24,
+      dueCount: 3,
+      totalValue: 85500,
+      collectedValue: 68000,
+      remainingValue: 17500,
+    ),
+    GroupModel(
+      groupTitle: 'Furniture Group C',
+      collectorName: 'Omar Al-Ghamdi',
+      collectorPhone: '+966 55 987 6543',
+      clientsCount: 18,
+      dueCount: 8,
+      totalValue: 50000,
+      collectedValue: 20000,
+      remainingValue: 30000,
+    ),
   ];
 
   @override

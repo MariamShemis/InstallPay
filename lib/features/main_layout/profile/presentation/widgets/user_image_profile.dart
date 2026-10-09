@@ -40,7 +40,9 @@ class UserImageProfile extends StatelessWidget {
             bottom: 1,
             child: CircleAvatar(
               radius: radius,
-              backgroundColor: ColorManager.primaryColor,
+              backgroundColor: isDark
+                  ? ColorManager.darkAccentGreen
+                  : ColorManager.primaryColor,
               child: Icon(
                 Icons.camera_alt,
                 color: ColorManager.white,

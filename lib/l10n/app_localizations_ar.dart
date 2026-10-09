@@ -833,5 +833,112 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmCustomPaymentBtn => 'تأكيد الدفع المخصص';
 
   @override
+  String get noPartnersFound => 'لا يوجد شركاء';
+
+  @override
+  String get start_managing_your_business_by_adding_a_new_partner => 'ابدأ بإدارة أعمالك عن طريق إضافة شريك جديد';
+
+  @override
+  String get search_partners => 'البحث عن شركاء';
+
+  @override
+  String get addNewPartner => 'إضافة شريك جديد';
+
+  @override
+  String get partnerName => 'اسم الشريك';
+
+  @override
+  String get mainCapital => 'رأس المال الأساسي';
+
+  @override
+  String get profitMargin => 'نسبة الربح';
+
+  @override
+  String get newCapitalCalculated => 'رأس المال الجديد (المحسوب)';
+
+  @override
+  String get newCapital => 'رأس المال الجديد';
+
+  @override
+  String get addPartnerBtn => 'إضافة الشريك';
+
+  @override
+  String get profit => 'ربح';
+
+  @override
+  String get partnerType => 'نوع الشريك';
+
+  @override
+  String get primaryPartner => 'أساسي';
+
+  @override
+  String get secondaryPartner => 'فرعي';
+
+  @override
+  String get moneyManagement => 'إدارة الأموال';
+
+  @override
+  String get incomeExpenses => 'الدخل والمصروفات';
+
+  @override
+  String get addTransaction => 'إضافة معاملة';
+
+  @override
+  String trackerRecords(String count) {
+    return '$count سجل';
+  }
+
+  @override
+  String get noTransactions => 'لا توجد معاملات مسجلة حتى الآن';
+
+  @override
+  String get incomeExpensesOverview => 'نظرة عامة على الدخل والمصروفات';
+
+  @override
+  String get incomes => 'الدخل';
+
+  @override
+  String get expenses => 'المصروفات';
+
+  @override
+  String get netBalance => 'صافي الرصيد';
+
+  @override
+  String get addIncomeExpenseEntry => 'إضافة دخل أو مصروف';
+
+  @override
+  String get personName => 'اسم الشخص';
+
+  @override
+  String get transactionReason => 'سبب المعاملة';
+
+  @override
+  String get incomeAmount => 'قيمة الدخل';
+
+  @override
+  String get expenseAmount => 'قيمة المصروف';
+
+  @override
+  String get incomeDate => 'تاريخ الدخل';
+
+  @override
+  String get expenseDate => 'تاريخ المصروف';
+
+  @override
+  String get selectDate => 'اختر التاريخ';
+
+  @override
+  String get enterName => 'أدخل الاسم';
+
+  @override
+  String get enterPhoneNumber => 'أدخل رقم الهاتف';
+
+  @override
+  String get saveTransaction => 'حفظ المعاملة';
+
+  @override
+  String get transactionDetails => 'تفاصيل معاملة';
+
+  @override
   String get total => 'الإجمالي';
 }

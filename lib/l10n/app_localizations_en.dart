@@ -833,5 +833,112 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmCustomPaymentBtn => 'Confirm Custom Payment';
 
   @override
+  String get noPartnersFound => 'No Partners Found';
+
+  @override
+  String get start_managing_your_business_by_adding_a_new_partner => 'Start managing your business by adding a new partner';
+
+  @override
+  String get search_partners => 'Search partners';
+
+  @override
+  String get addNewPartner => 'Add New Partner';
+
+  @override
+  String get partnerName => 'Partner Name';
+
+  @override
+  String get mainCapital => 'Main Capital';
+
+  @override
+  String get profitMargin => 'Profit Margin';
+
+  @override
+  String get newCapitalCalculated => 'New Capital (Calculated)';
+
+  @override
+  String get newCapital => 'New Capital';
+
+  @override
+  String get addPartnerBtn => 'Add Partner';
+
+  @override
+  String get profit => 'Profit';
+
+  @override
+  String get partnerType => 'Partner Type';
+
+  @override
+  String get primaryPartner => 'Primary';
+
+  @override
+  String get secondaryPartner => 'Secondary';
+
+  @override
+  String get moneyManagement => 'Money Management';
+
+  @override
+  String get incomeExpenses => 'Income & Expenses';
+
+  @override
+  String get addTransaction => 'Add Transaction';
+
+  @override
+  String trackerRecords(String count) {
+    return '$count Records';
+  }
+
+  @override
+  String get noTransactions => 'No transactions recorded yet.';
+
+  @override
+  String get incomeExpensesOverview => 'Income & Expenses Overview';
+
+  @override
+  String get incomes => 'Incomes';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get netBalance => 'Net Balance';
+
+  @override
+  String get addIncomeExpenseEntry => 'Add Income / Expense Entry';
+
+  @override
+  String get personName => 'Person Name';
+
+  @override
+  String get transactionReason => 'Transaction Reason';
+
+  @override
+  String get incomeAmount => 'Income Amount';
+
+  @override
+  String get expenseAmount => 'Expense Amount';
+
+  @override
+  String get incomeDate => 'Income Date';
+
+  @override
+  String get expenseDate => 'Expense Date';
+
+  @override
+  String get selectDate => 'Select Date';
+
+  @override
+  String get enterName => 'Enter name';
+
+  @override
+  String get enterPhoneNumber => 'Enter phone number';
+
+  @override
+  String get saveTransaction => 'Save Transaction';
+
+  @override
+  String get transactionDetails => 'Transaction Details';
+
+  @override
   String get total => 'Total';
 }

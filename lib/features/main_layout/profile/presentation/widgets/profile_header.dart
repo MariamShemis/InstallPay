@@ -75,7 +75,9 @@ class ProfileHeader extends StatelessWidget {
                 ?phoneNumber.isNotEmpty
                     ? Icon(
                         Icons.phone,
-                        color: ColorManager.primaryColor,
+                        color: isDark
+                            ? ColorManager.darkAccentGreen
+                            : ColorManager.primaryColor,
                         size: 16.sp,
                       )
                     : null,

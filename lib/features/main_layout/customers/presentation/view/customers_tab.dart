@@ -31,47 +31,47 @@ class _CustomersTabState extends State<CustomersTab> {
   ];
 
   final List<CustomerModel> _customersData = const [
-    // CustomerModel(
-    //   id: 'CUS-8821',
-    //   customerName: 'Mohamed Ali',
-    //   customerPhone: '+20 111 234 5678',
-    //   address: 'Cairo, Egypt',
-    //   groupName: 'Electronics A',
-    //   contractDate: '2026-09-18',
-    //   contractName: 'Electronics Contract',
-    //   purchasePrice: 2000,
-    //   sellingPrice: 2400,
-    //   downPayment: 600,
-    //   debtAmount: 1800,
-    //   installmentAmount: 600,
-    //   installmentType: 'Monthly',
-    //   installmentsCount: 3,
-    //   firstInstallmentDate: '12 Oct 2026',
-    //   paidValue: 1200,
-    //   status: 'Overdue',
-    //   nextDueDate: '12 Oct 2026',
-    //   description: 'Customer details retrieved from card selection.',
-    //   schedule: [
-    //     InstallmentModel(
-    //       installmentNumber: 1,
-    //       dueDate: '12 Oct 2026',
-    //       amount: 600,
-    //       isPaid: true,
-    //     ),
-    //     InstallmentModel(
-    //       installmentNumber: 2,
-    //       dueDate: '12 Nov 2026',
-    //       amount: 600,
-    //       isPaid: true,
-    //     ),
-    //     InstallmentModel(
-    //       installmentNumber: 3,
-    //       dueDate: '12 Dec 2026',
-    //       amount: 600,
-    //       isPaid: false,
-    //     ),
-    //   ],
-    // ),
+    CustomerModel(
+      id: 'CUS-8821',
+      customerName: 'Mohamed Ali',
+      customerPhone: '+20 111 234 5678',
+      address: 'Cairo, Egypt',
+      groupName: 'Electronics A',
+      contractDate: '2026-09-18',
+      contractName: 'Electronics Contract',
+      purchasePrice: 2000,
+      sellingPrice: 2400,
+      downPayment: 600,
+      debtAmount: 1800,
+      installmentAmount: 600,
+      installmentType: 'Monthly',
+      installmentsCount: 3,
+      firstInstallmentDate: '12 Oct 2026',
+      paidValue: 1200,
+      status: 'Overdue',
+      nextDueDate: '12 Oct 2026',
+      description: 'Customer details retrieved from card selection.',
+      schedule: [
+        InstallmentModel(
+          installmentNumber: 1,
+          dueDate: '12 Oct 2026',
+          amount: 600,
+          isPaid: true,
+        ),
+        InstallmentModel(
+          installmentNumber: 2,
+          dueDate: '12 Nov 2026',
+          amount: 600,
+          isPaid: true,
+        ),
+        InstallmentModel(
+          installmentNumber: 3,
+          dueDate: '12 Dec 2026',
+          amount: 600,
+          isPaid: false,
+        ),
+      ],
+    ),
   ];
 
   @override
@@ -110,7 +110,6 @@ class _CustomersTabState extends State<CustomersTab> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 12.h),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -121,7 +120,6 @@ class _CustomersTabState extends State<CustomersTab> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   IconButton(
                     onPressed: () {
                       CalculatorDialog.show(context);

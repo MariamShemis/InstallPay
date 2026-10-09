@@ -336,7 +336,7 @@ class ThemeManager {
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return GoogleFonts.inter(
-            color: ColorManager.darkAccentGreen,
+            color: ColorManager.darkAccentGreen1,
             fontWeight: FontWeight.bold,
             fontSize: 11.sp,
           );
@@ -349,7 +349,7 @@ class ThemeManager {
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return IconThemeData(color: ColorManager.darkAccentGreen, size: 26.r);
+          return IconThemeData(color: ColorManager.darkAccentGreen1, size: 26.r);
         }
         return IconThemeData(color: ColorManager.darkMutedText, size: 24.r);
       }),

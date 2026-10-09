@@ -16,6 +16,7 @@ class CustomersAddTextFormField extends StatelessWidget {
   final void Function(String)? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
+  final bool enabled;
   final bool multiLine;
   final bool isCurrency;
 
@@ -33,6 +34,7 @@ class CustomersAddTextFormField extends StatelessWidget {
     this.onChanged,
     this.onTap,
     this.readOnly = false,
+    this.enabled = true, // <-- القيمة الافتراضية true
     this.multiLine = false,
     this.isCurrency = false,
   });
@@ -68,12 +70,14 @@ class CustomersAddTextFormField extends StatelessWidget {
           style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             fontSize: 13.sp,
+            color: enabled ? null : theme.disabledColor,
           ),
         ),
         SizedBox(height: 6.h),
         TextFormField(
           controller: controller,
           initialValue: initialValue,
+          enabled: enabled,
           keyboardType: multiLine ? TextInputType.multiline : keyboardType,
           inputFormatters: inputFormatters,
           validator: validator,
