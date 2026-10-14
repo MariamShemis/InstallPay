@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_installment_management/core/routes/app_routes.dart';
 import 'package:smart_installment_management/features/add_customer/presentation/view/add_customer_screen.dart';
 import 'package:smart_installment_management/features/auth/presentation/view/forget_password.dart';
@@ -9,6 +10,8 @@ import 'package:smart_installment_management/features/installment_schedule_payme
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/features/main_layout/main_layout.dart';
 import 'package:smart_installment_management/features/splash_screen/splash_screen.dart';
+import 'package:smart_installment_management/features/verify_email/data/cubit/verify_email_cubit.dart';
+import 'package:smart_installment_management/features/verify_email/presentation/view/verify_email_screen.dart';
 
 abstract class RoutesGenerator {
   static Route? router(RouteSettings settings) {
@@ -51,6 +54,16 @@ abstract class RoutesGenerator {
 
           return CupertinoPageRoute(
             builder: (context) => CustomerDetailsScreen(customer: customer),
+          );
+        }
+      case AppRoutes.verifyEmail:
+        {
+          final email = settings.arguments as String;
+          return CupertinoPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => VerifyEmailCubit(),
+              child: VerifyEmailScreen(email: email),
+            ),
           );
         }
     }

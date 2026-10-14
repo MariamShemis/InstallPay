@@ -5,6 +5,7 @@ class ImageAssets {
   static const String forgetPassword = '${base}forget_password1.png';
   static const String emailSend = '${base}email_send1.png';
   static const String verifyEmail = '${base}verify_email.png';
+  static const String verifyEmailDark = '${base}verify_email_dark.png';
   static const String logoApp = '${base}logo_app1.png';
 }
 

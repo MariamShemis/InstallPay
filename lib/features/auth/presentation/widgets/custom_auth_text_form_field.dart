@@ -40,6 +40,7 @@ class _CustomAuthTextFormFieldState extends State<CustomAuthTextFormField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,22 +55,29 @@ class _CustomAuthTextFormFieldState extends State<CustomAuthTextFormField> {
           obscureText: widget.isPassword ? _obscureText : false,
           keyboardType: widget.keyboardType,
           validator: widget.validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             hintText: widget.hintText,
             prefixIcon: widget.prefixIcon,
+            errorStyle: TextStyle(
+              color: colorScheme.error,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            errorMaxLines: 2,
             suffixIcon: widget.isPassword
                 ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    icon: Icon(
-                      _obscureText
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                    ),
-                  )
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+              icon: Icon(
+                _obscureText
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
+              ),
+            )
                 : widget.suffixIcon,
           ),
         ),

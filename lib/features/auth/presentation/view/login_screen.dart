@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_installment_management/core/costants/assets_manager.dart';
 import 'package:smart_installment_management/core/routes/app_routes.dart';
+import 'package:smart_installment_management/core/utils/ui_utils.dart';
 import 'package:smart_installment_management/core/utils/validators/app_validators.dart';
 import 'package:smart_installment_management/core/widgets/logo_app.dart';
+import 'package:smart_installment_management/features/auth/data/cubit/auth_cubit.dart';
+import 'package:smart_installment_management/features/auth/data/cubit/auth_state.dart';
+import 'package:smart_installment_management/features/auth/data/model/login_request.dart';
 import 'package:smart_installment_management/features/auth/presentation/widgets/custom_auth_text_form_field.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
@@ -35,220 +40,259 @@ class _LoginScreenState extends State<LoginScreen> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: REdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  LogoApp(),
-                  SizedBox(height: 24.h),
-                  Card(
-                    child: Padding(
-                      padding: REdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            appLocalizations.welcome_back,
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.sp,
-                            ),
-                          ),
-                          SizedBox(height: 6.h),
-                          Text(
-                            appLocalizations
-                                .sign_in_to_access_your_installment_management_workspace,
-                            style: theme.textTheme.bodyMedium,
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 24.h),
-                          CustomAuthTextFormField(
-                            controller: _emailController,
-                            labelText: appLocalizations.email,
-                            hintText: appLocalizations.enterYourEmail,
-                            prefixIcon: const Icon(Icons.email_outlined),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) =>
-                                AppValidators.validateEmail(value, context),
-                          ),
-                          SizedBox(height: 20.h),
-                          CustomAuthTextFormField(
-                            controller: _passwordController,
-                            labelText: appLocalizations.password,
-                            hintText: '••••••••',
-                            prefixIcon: const Icon(Icons.lock_outline),
-                            isPassword: true,
-                            validator: (value) =>
-                                AppValidators.validatePassword(value, context),
-                          ),
-                          SizedBox(height: 16.h),
-                          Row(
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is LoginLoadingState) {
+          UiUtils.showLoading(context, isDismissible: false);
+        }
+        if (state is LoginSuccessState) {
+          UiUtils.hideLoading(context);
+          UiUtils.showToast(
+            "${appLocalizations.welcome} ${state.user.name}, ${appLocalizations.login_successfully}.",
+          );
+          Navigator.pushReplacementNamed(context, AppRoutes.mainLayout);
+        }
+        if (state is LoginErrorState) {
+          UiUtils.hideLoading(context);
+          UiUtils.showError(context, state.message);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: REdgeInsets.symmetric(
+                  horizontal: 20.w,
+                  vertical: 14.h,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      LogoApp(),
+                      SizedBox(height: 24.h),
+                      Card(
+                        child: Padding(
+                          padding: REdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 24.h,
-                                width: 24.w,
-                                child: Checkbox(
-                                  value: _rememberMe,
-                                  activeColor: colorScheme.primary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.r),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _rememberMe = value ?? false;
-                                    });
-                                  },
+                              Text(
+                                appLocalizations.welcome_back,
+                                style: theme.textTheme.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.sp,
                                 ),
                               ),
-                              SizedBox(width: 8.w),
+                              SizedBox(height: 6.h),
                               Text(
-                                appLocalizations.rememberMe,
+                                appLocalizations
+                                    .sign_in_to_access_your_installment_management_workspace,
+                                style: theme.textTheme.bodyMedium,
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(height: 24.h),
+                              CustomAuthTextFormField(
+                                controller: _emailController,
+                                labelText: appLocalizations.email,
+                                hintText: appLocalizations.enterYourEmail,
+                                prefixIcon: const Icon(Icons.email_outlined),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) =>
+                                    AppValidators.validateEmail(value, context),
+                              ),
+                              SizedBox(height: 20.h),
+                              CustomAuthTextFormField(
+                                controller: _passwordController,
+                                labelText: appLocalizations.password,
+                                hintText: '••••••••',
+                                prefixIcon: const Icon(Icons.lock_outline),
+                                isPassword: true,
+                                validator: (value) =>
+                                    AppValidators.validatePassword(
+                                      value,
+                                      context,
+                                    ),
+                              ),
+                              SizedBox(height: 16.h),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 24.h,
+                                    width: 24.w,
+                                    child: Checkbox(
+                                      value: _rememberMe,
+                                      activeColor: colorScheme.primary,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          4.r,
+                                        ),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _rememberMe = value ?? false;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Text(
+                                    appLocalizations.rememberMe,
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRoutes.forgetPassword,
+                                      );
+                                    },
+                                    child: Text(
+                                      appLocalizations.forget_password_,
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            color: colorScheme.primary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 24.h),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          AuthCubit.get(context).login(
+                                            LoginRequest(
+                                              email: _emailController.text
+                                                  .trim(),
+                                              password:
+                                                  _passwordController.text,
+                                            ),
+                                            context,
+                                          );
+                                        }
+                                      },
+                                      child: Text(appLocalizations.login),
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  SizedBox(
+                                    width: 56.w,
+                                    height: 56.h,
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16.r,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.zero,
+                                      ),
+                                      child: Icon(
+                                        Icons.fingerprint,
+                                        size: 28.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 24.h),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Divider(color: theme.dividerColor),
+                                  ),
+                                  Padding(
+                                    padding: REdgeInsets.symmetric(
+                                      horizontal: 12.w,
+                                    ),
+                                    child: Text(
+                                      appLocalizations.orContinueWith
+                                          .toUpperCase(),
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: 0.8,
+                                          ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Divider(color: theme.dividerColor),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+                              OutlinedButton(
+                                onPressed: () {
+                                  // Perform Google Sign In Action
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      SvgAssets.googleIcon,
+                                      height: 20.h,
+                                    ),
+                                    SizedBox(width: 12.w),
+                                    Text(
+                                      appLocalizations.login_with_Google,
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(fontSize: 15.sp),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 18.h),
+                      Center(
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "${appLocalizations.dontHaveAnAccount}  ",
                                 style: theme.textTheme.bodyMedium,
                               ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.forgetPassword,
-                                  );
-                                },
-                                child: Text(
-                                  appLocalizations.forget_password_,
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 24.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    // if (_formKey.currentState!.validate()) {
-                                    //   // Perform Sign In Action
-                                    // }
-                                    Navigator.pushReplacementNamed(
+                              WidgetSpan(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
                                       context,
-                                      AppRoutes.mainLayout,
+                                      AppRoutes.register,
                                     );
                                   },
-                                  child: Text(appLocalizations.login),
-                                ),
-                              ),
-                              SizedBox(width: 12.w),
-                              SizedBox(
-                                width: 56.w,
-                                height: 56.h,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.r),
+                                  child: Text(
+                                    appLocalizations.register,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    padding: EdgeInsets.zero,
                                   ),
-                                  child: Icon(Icons.fingerprint, size: 28.sp),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 24.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Divider(color: theme.dividerColor),
-                              ),
-                              Padding(
-                                padding: REdgeInsets.symmetric(
-                                  horizontal: 12.w,
-                                ),
-                                child: Text(
-                                  appLocalizations.orContinueWith.toUpperCase(),
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.8,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(color: theme.dividerColor),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          OutlinedButton(
-                            onPressed: () {
-                              // Perform Google Sign In Action
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  SvgAssets.googleIcon,
-                                  height: 20.h,
-                                ),
-                                SizedBox(width: 12.w),
-                                Text(
-                                  appLocalizations.login_with_Google,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontSize: 15.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(height: 18.h),
-                  Center(
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "${appLocalizations.dontHaveAnAccount}  ",
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          WidgetSpan(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.register,
-                                );
-                              },
-                              child: Text(
-                                appLocalizations.register,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:smart_installment_management/core/costants/assets_manager.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
+import 'package:smart_installment_management/core/utils/ui_utils.dart';
 import 'package:smart_installment_management/core/utils/validators/app_validators.dart';
+import 'package:smart_installment_management/features/auth/data/cubit/auth_cubit.dart';
+import 'package:smart_installment_management/features/auth/data/cubit/auth_state.dart';
 import 'package:smart_installment_management/features/auth/presentation/widgets/custom_auth_text_form_field.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
@@ -31,79 +34,107 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          appLocalizations.forgetPassword,
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: REdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
-          child: _emailSent
-              ? _buildSuccessView(context, appLocalizations, theme, colorScheme)
-              : Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Image.asset(
-                  ImageAssets.forgetPassword,
-                  height: 350.h,
-                  fit: BoxFit.fill,
-                ),
-                SizedBox(height: 2.h),
-                Card(
-                  child: Padding(
-                    padding: REdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          appLocalizations.forget_password_,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is ResetPasswordLoadingState) {
+          UiUtils.showLoading(context, isDismissible: false);
+        }
+        if (state is ResetPasswordSuccessState) {
+          UiUtils.hideLoading(context);
+          setState(() {
+            _emailSent = true;
+          });
+        }
+        if (state is ResetPasswordErrorState) {
+          UiUtils.hideLoading(context);
+          UiUtils.showError(context, state.message);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              onPressed: () => Navigator.pop(context),
+            ),
+            title: Text(appLocalizations.forgetPassword),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: REdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+              child: _emailSent
+                  ? _buildSuccessView(
+                      context,
+                      appLocalizations,
+                      theme,
+                      colorScheme,
+                    )
+                  : Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Image.asset(
+                            ImageAssets.forgetPassword,
+                            height: 350.h,
+                            fit: BoxFit.fill,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          appLocalizations
-                              .pleaseEnterYourEmailToReceiveAConfirmationCodeToSetANewPassword,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontSize: 12.sp,
+                          SizedBox(height: 2.h),
+                          Card(
+                            child: Padding(
+                              padding: REdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    appLocalizations.forget_password_,
+                                    style: theme.textTheme.headlineMedium
+                                        ?.copyWith(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    appLocalizations
+                                        .pleaseEnterYourEmailToReceiveAConfirmationCodeToSetANewPassword,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontSize: 12.sp,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  CustomAuthTextFormField(
+                                    controller: _emailController,
+                                    labelText: appLocalizations.email,
+                                    hintText: appLocalizations.enterYourEmail,
+                                    keyboardType: TextInputType.emailAddress,
+                                    prefixIcon: const Icon(
+                                      Icons.email_outlined,
+                                    ),
+                                    validator: (value) =>
+                                        AppValidators.validateEmail(
+                                          value,
+                                          context,
+                                        ),
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  ElevatedButton(
+                                    onPressed: _resetPassword,
+                                    child: Text(appLocalizations.sendResetLink),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 24.h),
-                        CustomAuthTextFormField(
-                          controller: _emailController,
-                          labelText: appLocalizations.email,
-                          hintText: appLocalizations.enterYourEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          prefixIcon: const Icon(Icons.email_outlined),
-                          validator: (value) =>
-                              AppValidators.validateEmail(value, context),
-                        ),
-                        SizedBox(height: 24.h),
-                        ElevatedButton(
-                          onPressed: _resetPassword,
-                          child: Text(appLocalizations.sendResetLink),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -112,17 +143,15 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       return;
     }
 
-    setState(() {
-      _emailSent = true;
-    });
+    AuthCubit.get(context).resetPassword(_emailController.text.trim(), context);
   }
 
   Widget _buildSuccessView(
-      BuildContext context,
-      AppLocalizations appLocalizations,
-      ThemeData theme,
-      ColorScheme colorScheme,
-      ) {
+    BuildContext context,
+    AppLocalizations appLocalizations,
+    ThemeData theme,
+    ColorScheme colorScheme,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
