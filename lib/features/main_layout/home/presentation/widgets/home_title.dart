@@ -42,22 +42,21 @@ class HomeTitle extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Stack(
-          children: [
-            Container(
-              padding: REdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isDark
-                      ? ColorManager.white.withOpacity(0.5)
-                      : colorScheme.primary,
-                  width: 1.5.w,
-                ),
-              ),
-              child: image,
+        // الـ Border والـ Layout الخارجي للصورة أصبح داخل HomeTitle بالكامل
+        Container(
+          width: 46.r,
+          height: 46.r,
+          padding: REdgeInsets.all(2),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: isDark
+                  ? ColorManager.white.withOpacity(0.5)
+                  : colorScheme.primary,
+              width: 1.5.w,
             ),
-          ],
+          ),
+          child: ClipOval(child: image),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -74,7 +73,7 @@ class HomeTitle extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: "${appLocalizations.welcome}, ",
+                      text: '${appLocalizations.welcome}, ',
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 13.sp,
@@ -84,7 +83,7 @@ class HomeTitle extends StatelessWidget {
                       text: name,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const TextSpan(text: " ✨"),
+                    const TextSpan(text: ' ✨'),
                   ],
                 ),
               ),

@@ -21,7 +21,6 @@ class ConfirmContractDialog extends StatelessWidget {
   final String totalCost;
   final String debtAmount;
   final String description;
-
   final VoidCallback onConfirm;
 
   const ConfirmContractDialog({
@@ -45,14 +44,8 @@ class ConfirmContractDialog extends StatelessWidget {
   });
 
   String _getFormattedInstallmentText() {
-    String unit = 'Months';
-    if (installmentType == 'Weekly') unit = 'Weeks';
-    if (installmentType == 'Yearly') unit = 'Years';
-
-    if (installmentsCount > 0) {
-      return '$installmentAmount ($installmentType - $installmentsCount $unit)';
-    }
-    return '$installmentAmount ($installmentType)';
+    return '$installmentAmount ($installmentType - '
+        '$installmentsCount installments)';
   }
 
   @override
@@ -62,10 +55,16 @@ class ConfirmContractDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final primaryColor = isDark ? ColorManager.darkAccentGreen : ColorManager.primaryColor;
+    final primaryColor = isDark
+        ? ColorManager.darkAccentGreen
+        : ColorManager.primaryColor;
     final cardBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC);
-    final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
-    final borderDivider = isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0);
+    final textSecondary = isDark
+        ? const Color(0xFF94A3B8)
+        : const Color(0xFF64748B);
+    final borderDivider = isDark
+        ? const Color(0xFF334155)
+        : const Color(0xFFE2E8F0);
 
     return Dialog(
       backgroundColor: isDark ? ColorManager.darkSurface : ColorManager.white,
@@ -109,7 +108,8 @@ class ConfirmContractDialog extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: '${appLocalizations.are_you_sure_you_want_to_add_this_customer} ',
+                    text:
+                        '${appLocalizations.are_you_sure_you_want_to_add_this_customer} ',
                   ),
                   TextSpan(
                     text: customerName,
@@ -255,7 +255,9 @@ class ConfirmContractDialog extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
-                      color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                      color: isDark
+                          ? const Color(0xFF94A3B8)
+                          : const Color(0xFF64748B),
                     ),
                   ),
                 ),
@@ -295,16 +297,18 @@ class ConfirmContractDialog extends StatelessWidget {
   }
 
   Widget _buildSummaryItem(
-      BuildContext context,
-      String label,
-      String value,
-      Color labelColor, {
-        bool isHighlight = false,
-        bool badge = false,
-      }) {
+    BuildContext context,
+    String label,
+    String value,
+    Color labelColor, {
+    bool isHighlight = false,
+    bool badge = false,
+  }) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final primaryColor = isDark ? ColorManager.darkAccentGreen : ColorManager.primaryColor;
+    final primaryColor = isDark
+        ? ColorManager.darkAccentGreen
+        : ColorManager.primaryColor;
 
     return Padding(
       padding: REdgeInsets.symmetric(vertical: 6),
@@ -322,33 +326,35 @@ class ConfirmContractDialog extends StatelessWidget {
           SizedBox(width: 8.w),
           badge
               ? Container(
-            padding: REdgeInsets.symmetric(horizontal: 10, vertical: 3),
-            decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                color: primaryColor,
-              ),
-            ),
-          )
+                  padding: REdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: primaryColor.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
+                )
               : Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 12.5.sp,
-                fontWeight: isHighlight ? FontWeight.bold : FontWeight.w600,
-                color: isHighlight
-                    ? primaryColor
-                    : (isDark ? ColorManager.white : ColorManager.black),
-              ),
-            ),
-          ),
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: 12.5.sp,
+                      fontWeight: isHighlight
+                          ? FontWeight.bold
+                          : FontWeight.w600,
+                      color: isHighlight
+                          ? primaryColor
+                          : (isDark ? ColorManager.white : ColorManager.black),
+                    ),
+                  ),
+                ),
         ],
       ),
     );

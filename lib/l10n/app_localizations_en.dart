@@ -941,4 +941,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get total => 'Total';
+
+  @override
+  String get verifyYourEmailAddress => 'Verify your email address';
+
+  @override
+  String get verifyEmailDescription => 'Congratulations! Your account is almost ready. Open the verification email and tap the link to activate your account and continue.';
+
+  @override
+  String get verificationEmailSent => 'Verification email sent. Please check your inbox.';
+
+  @override
+  String get emailVerifiedSuccessfully => 'Your email has been verified successfully.';
+
+  @override
+  String get emailNotVerifiedYet => 'Your email is not verified yet. Open the link in your email first.';
+
+  @override
+  String get iHaveVerifiedMyEmail => 'I have verified my email';
+
+  @override
+  String get resendVerificationEmail => 'Resend verification email';
+
+  @override
+  String get checkSpamFolder => 'Did not receive the email? Check your spam folder, then try sending it again.';
+
+  @override
+  String get checking => 'Checking...';
+
+  @override
+  String get loading => 'Loading';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get profileUpdatedSuccessfully => 'Profile updated successfully';
+
+  @override
+  String get nameRequired => 'Please enter your name';
+
+  @override
+  String get phoneNumberRequired => 'Please enter your phone number';
+
+  @override
+  String get accountProtection => 'Account Protection';
+
+  @override
+  String get secureYourAccount => 'Keep Your Account Secure';
+
+  @override
+  String get dangerZone => 'Sensitive Actions';
+
+  @override
+  String get accountSecurityDescription => 'Keep your account secure with a strong password and a verified email address. Security actions will be enabled after their services are configured.';
+
+  @override
+  String get deleteAccountWarning => 'Are you sure you want to delete your account? This action is permanent and cannot be undone.';
+
+  @override
+  String get featureComingSoon => 'This feature will be enabled after connecting the required security services.';
+
+  @override
+  String get retry => 'Retry';
 }

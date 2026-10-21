@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smart_installment_management/core/costants/assets_manager.dart';
 import 'package:smart_installment_management/core/routes/app_routes.dart';
+import 'package:smart_installment_management/core/services/biometric_auth_service.dart';
+import 'package:smart_installment_management/core/services/secure_storage_service.dart';
 import 'package:smart_installment_management/core/utils/ui_utils.dart';
 import 'package:smart_installment_management/core/utils/validators/app_validators.dart';
 import 'package:smart_installment_management/core/widgets/logo_app.dart';
@@ -42,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is LoginLoadingState) {
+        if (state is LoginLoadingState || state is GoogleLoginLoadingState) {
           UiUtils.showLoading(context, isDismissible: false);
         }
         if (state is LoginSuccessState) {
@@ -55,6 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (state is LoginErrorState) {
           UiUtils.hideLoading(context);
           UiUtils.showError(context, state.message);
+        }
+        if (state is GoogleLoginCancelledState) {
+          UiUtils.hideLoading(context);
         }
       },
       builder: (context, state) {
@@ -187,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: 56.w,
                                     height: 56.h,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: _loginWithBiometrics,
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
@@ -232,7 +237,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(height: 20.h),
                               OutlinedButton(
                                 onPressed: () {
-                                  // Perform Google Sign In Action
+                                  AuthCubit.get(
+                                    context,
+                                  ).loginWithGoogle(context);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -295,4 +302,97 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
+
+  Future<void> _loginWithBiometrics() async {
+    try {
+      final enabled =
+      await SecureStorageService.isBiometricLoginEnabled();
+
+      if (!mounted) return;
+
+      if (!enabled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Enable fingerprint login from Account Security first.',
+            ),
+          ),
+        );
+        return;
+      }
+
+      final hasCredentials =
+      await SecureStorageService.hasSavedEmailLogin();
+
+      if (!mounted) return;
+
+      if (!hasCredentials) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'No saved login details. Sign in with your email and password, then enable biometric login.',
+            ),
+          ),
+        );
+        return;
+      }
+
+      final authenticated =
+      await BiometricAuthService.authenticate(
+        reason: 'Authenticate to sign in',
+      );
+
+      if (!mounted) return;
+
+      if (!authenticated) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Biometric verification was not completed.'),
+          ),
+        );
+        return;
+      }
+
+      final email = await SecureStorageService.getEmail();
+      final password = await SecureStorageService.getPassword();
+      final savedUserId = await SecureStorageService.getUserId();
+
+      if (!mounted) return;
+
+      if (email == null ||
+          email.isEmpty ||
+          password == null ||
+          password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Saved login details are missing. Please sign in manually.',
+            ),
+          ),
+        );
+        return;
+      }
+
+      // Firebase login is performed by AuthCubit.
+      // The existing BlocConsumer handles loading, success and errors.
+      AuthCubit.get(context).login(
+        LoginRequest(
+          email: email,
+          password: password,
+        ),
+        context,
+      );
+    } catch (_) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Unable to sign in with biometrics. Please try regular login.',
+          ),
+        ),
+      );
+    }
+  }
+
 }

@@ -10,6 +10,7 @@ import 'package:smart_installment_management/core/routes/routes_generator.dart';
 import 'package:smart_installment_management/core/theme/cubit/theme_cubit.dart';
 import 'package:smart_installment_management/core/theme/cubit/theme_state.dart';
 import 'package:smart_installment_management/core/theme/theme_manager.dart';
+import 'package:smart_installment_management/core/widgets/app_lock_gate.dart';
 
 import 'l10n/app_localizations.dart';
 
@@ -30,8 +31,11 @@ class SmartInstalmentManagement extends StatelessWidget {
                 return MaterialApp(
                   title: 'Smart Installment Management',
                   debugShowCheckedModeBanner: false,
+                  // builder: (context, child) {
+                  //   return AppLockGate(child: child ?? const SizedBox.shrink());
+                  // },
                   onGenerateRoute: RoutesGenerator.router,
-                  initialRoute: AppRoutes.splashScreen,
+                  initialRoute: AppRoutes.appStartupAuthScreen,
                   theme: ThemeManager.light,
                   darkTheme: ThemeManager.dark,
                   themeMode: themeState.themeMode,

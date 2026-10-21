@@ -126,7 +126,6 @@ class CustomerContractSection extends StatelessWidget {
   Widget _moneySummary(BuildContext context) {
     AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final currency = context.currencySymbol;
-
     return Row(
       children: [
         Expanded(
@@ -142,7 +141,7 @@ class CustomerContractSection extends StatelessWidget {
         SizedBox(width: 8.w),
         Expanded(
           child: _moneyItem(
-            appLocalizations.paid,
+            appLocalizations.collected,
             customer.totalPaid,
             currency,
             Icons.check_circle_outline_rounded,

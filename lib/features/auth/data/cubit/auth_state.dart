@@ -51,3 +51,9 @@ class LogoutErrorState extends AuthState {
 
   LogoutErrorState(this.message);
 }
+
+class GoogleLoginLoadingState extends AuthState {}
+
+class GoogleLoginCancelledState extends AuthState {}
+
+

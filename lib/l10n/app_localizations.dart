@@ -1918,6 +1918,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total'**
   String get total;
+
+  /// No description provided for @verifyYourEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email address'**
+  String get verifyYourEmailAddress;
+
+  /// No description provided for @verifyEmailDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! Your account is almost ready. Open the verification email and tap the link to activate your account and continue.'**
+  String get verifyEmailDescription;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent. Please check your inbox.'**
+  String get verificationEmailSent;
+
+  /// No description provided for @emailVerifiedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email has been verified successfully.'**
+  String get emailVerifiedSuccessfully;
+
+  /// No description provided for @emailNotVerifiedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is not verified yet. Open the link in your email first.'**
+  String get emailNotVerifiedYet;
+
+  /// No description provided for @iHaveVerifiedMyEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'I have verified my email'**
+  String get iHaveVerifiedMyEmail;
+
+  /// No description provided for @resendVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend verification email'**
+  String get resendVerificationEmail;
+
+  /// No description provided for @checkSpamFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Did not receive the email? Check your spam folder, then try sending it again.'**
+  String get checkSpamFolder;
+
+  /// No description provided for @checking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get checking;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get loading;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @profileUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully'**
+  String get profileUpdatedSuccessfully;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get nameRequired;
+
+  /// No description provided for @phoneNumberRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get phoneNumberRequired;
+
+  /// No description provided for @accountProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Protection'**
+  String get accountProtection;
+
+  /// No description provided for @secureYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Your Account Secure'**
+  String get secureYourAccount;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensitive Actions'**
+  String get dangerZone;
+
+  /// No description provided for @accountSecurityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your account secure with a strong password and a verified email address. Security actions will be enabled after their services are configured.'**
+  String get accountSecurityDescription;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This action is permanent and cannot be undone.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @featureComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature will be enabled after connecting the required security services.'**
+  String get featureComingSoon;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -15,10 +15,12 @@ class ContractInformationCard extends StatelessWidget {
   final TextEditingController advancePaymentController;
   final TextEditingController totalCostController;
   final TextEditingController debtAmountController;
+
   final String installmentType;
   final ValueChanged<String?> onInstallmentTypeChanged;
   final VoidCallback onSelectContractDate;
   final VoidCallback onSelectFirstInstallmentDate;
+  final int installmentsCount;
 
   const ContractInformationCard({
     super.key,
@@ -35,41 +37,35 @@ class ContractInformationCard extends StatelessWidget {
     required this.onInstallmentTypeChanged,
     required this.onSelectContractDate,
     required this.onSelectFirstInstallmentDate,
+    required this.installmentsCount,
   });
 
-  int _calculateInstallmentsCount() {
-    final debt = double.tryParse(debtAmountController.text) ?? 0.0;
-    final installmentAmt = double.tryParse(installmentAmountController.text) ?? 0.0;
+  String _buildSummaryText(AppLocalizations l10n) {
+    if (installmentsCount <= 0) return '';
 
-    if (debt <= 0 || installmentAmt <= 0) return 0;
-    return (debt / installmentAmt).ceil();
-  }
+    String unitText;
+    String durationDetail = '';
 
-  String _getDropdownLabel(String type, AppLocalizations appLocalizations) {
-    final count = _calculateInstallmentsCount();
-    String baseLabel = '';
-
-    switch (type) {
-      case 'Monthly':
-        baseLabel = appLocalizations.monthly;
-        break;
-      case 'Weekly':
-        baseLabel = appLocalizations.weekly;
-        break;
-      case 'Yearly':
-        baseLabel = appLocalizations.yearly;
-        break;
+    if (installmentType == 'Weekly') {
+      unitText = l10n.weekly;
+      final months = (installmentsCount / 4.33).toStringAsFixed(1);
+      durationDetail = ' (~$months ${l10n.monthly})';
+    } else if (installmentType == 'Yearly') {
+      unitText = l10n.yearly;
+    } else {
+      unitText = l10n.monthly;
+      if (installmentsCount >= 12) {
+        final years = (installmentsCount / 12).toStringAsFixed(1);
+        durationDetail = ' (~$years ${l10n.yearly})';
+      }
     }
 
-    if (count > 0) {
-      return '$baseLabel ($count)';
-    }
-    return baseLabel;
+    return '$installmentsCount ${l10n.installment} • $installmentsCount $unitText$durationDetail';
   }
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
@@ -83,7 +79,9 @@ class ContractInformationCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.assignment_outlined,
-                  color: isDark ? ColorManager.darkAccentGreen : ColorManager.primaryColor,
+                  color: isDark
+                      ? ColorManager.darkAccentGreen
+                      : ColorManager.primaryColor,
                   size: 22.r,
                 ),
                 SizedBox(width: 8.w),
@@ -96,6 +94,7 @@ class ContractInformationCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16.h),
+
             CustomersAddTextFormField(
               labelText: appLocalizations.contractDate,
               hintText: 'YYYY-MM-DD',
@@ -105,6 +104,7 @@ class ContractInformationCard extends StatelessWidget {
               prefixIcon: const Icon(Icons.calendar_today_outlined),
             ),
             SizedBox(height: 14.h),
+
             CustomersAddTextFormField(
               labelText: appLocalizations.contractName,
               hintText: 'e.g., Household Appliances',
@@ -113,6 +113,7 @@ class ContractInformationCard extends StatelessWidget {
               prefixIcon: const Icon(Icons.description_outlined),
             ),
             SizedBox(height: 14.h),
+
             Row(
               children: [
                 Expanded(
@@ -139,6 +140,7 @@ class ContractInformationCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 14.h),
+
             Row(
               children: [
                 Expanded(
@@ -166,15 +168,45 @@ class ContractInformationCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 14.h),
+            // CheckboxListTile(
+            //   contentPadding: EdgeInsets.zero,
+            //   controlAffinity: ListTileControlAffinity.leading,
+            //   value: isDownPaymentPaid,
+            //   onChanged: (value) {
+            //     onDownPaymentPaidChanged(value ?? false);
+            //   },
+            //   title: Text(
+            //     'Down payment received',
+            //     style: theme.textTheme.bodyMedium?.copyWith(
+            //       fontWeight: FontWeight.w600,
+            //     ),
+            //   ),
+            //   subtitle: Text(
+            //     'Enable this only if you actually received the down payment.',
+            //     style: theme.textTheme.bodySmall?.copyWith(
+            //       color: isDark
+            //           ? const Color(0xFF94A3B8)
+            //           : const Color(0xFF64748B),
+            //     ),
+            //   ),
+            //   activeColor: isDark
+            //       ? ColorManager.darkAccentGreen
+            //       : ColorManager.primaryColor,
+            // ),
+            // SizedBox(height: 14.h),
+
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 2,
                   child: CustomersAddTextFormField(
                     labelText: appLocalizations.installmentAmount,
-                    hintText: '00.0',
+                    hintText: '500',
                     controller: installmentAmountController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     isCurrency: true,
                     prefixIcon: const Icon(Icons.payments_outlined),
                   ),
@@ -186,11 +218,20 @@ class ContractInformationCard extends StatelessWidget {
                     labelText: appLocalizations.period,
                     value: installmentType,
                     items: ['Monthly', 'Weekly', 'Yearly'].map((type) {
+                      String periodLabel;
+
+                      if (type == 'Monthly') {
+                        periodLabel = appLocalizations.monthly;
+                      } else if (type == 'Weekly') {
+                        periodLabel = appLocalizations.weekly;
+                      } else {
+                        periodLabel = appLocalizations.yearly;
+                      }
                       return DropdownMenuItem<String>(
                         value: type,
                         child: Text(
-                          _getDropdownLabel(type, appLocalizations),
-                          style: TextStyle(fontSize: 14.sp),
+                          periodLabel,
+                          style: TextStyle(fontSize: 13.sp),
                           overflow: TextOverflow.ellipsis,
                         ),
                       );
@@ -200,7 +241,24 @@ class ContractInformationCard extends StatelessWidget {
                 ),
               ],
             ),
+
+            if (installmentsCount > 0) ...[
+              SizedBox(height: 8.h),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: Text(
+                  _buildSummaryText(appLocalizations),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: isDark
+                        ? ColorManager.darkAccentGreen
+                        : ColorManager.primaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
             SizedBox(height: 14.h),
+
             CustomersAddTextFormField(
               labelText: appLocalizations.firstInstallmentDate,
               hintText: 'YYYY-MM-DD',
@@ -210,6 +268,7 @@ class ContractInformationCard extends StatelessWidget {
               prefixIcon: const Icon(Icons.event_outlined),
             ),
             SizedBox(height: 14.h),
+
             CustomersAddTextFormField(
               labelText: appLocalizations.notes,
               hintText: '${appLocalizations.additional_contract_notes}...',

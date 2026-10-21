@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_installment_management/core/firebase/firebase_auth_services.dart';
+import 'package:smart_installment_management/core/firebase/google_sign_in_services.dart';
 import 'package:smart_installment_management/features/auth/data/cubit/auth_state.dart';
 import 'package:smart_installment_management/features/auth/data/model/login_request.dart';
 import 'package:smart_installment_management/features/auth/data/model/register_request.dart';
@@ -98,6 +99,31 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (_) {
       emit(
         LogoutErrorState(
+          AppLocalizations.of(context)!.something_went_wrong_Please_try_again,
+        ),
+      );
+    }
+  }
+
+  Future<void> loginWithGoogle(BuildContext context) async {
+    emit(GoogleLoginLoadingState());
+
+    try {
+      currentUser = await GoogleSignInServices.signIn();
+
+      if (currentUser == null) {
+        emit(GoogleLoginCancelledState());
+        return;
+      }
+
+      emit(LoginSuccessState(currentUser!));
+    } on FirebaseAuthException catch (e) {
+      emit(LoginErrorState(_firebaseErrorMessage(e, context)));
+    } catch (e) {
+      debugPrint('Google Sign-In Error: $e');
+
+      emit(
+        LoginErrorState(
           AppLocalizations.of(context)!.something_went_wrong_Please_try_again,
         ),
       );

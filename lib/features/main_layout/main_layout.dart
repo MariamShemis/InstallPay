@@ -18,12 +18,12 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeTab(),
-    PartnersTab(),
-    GroupTab(),
-    CustomersTab(),
-    TrackerTab(),
+  final List<Widget> _screens = [
+    const HomeTab(),
+    const PartnersTab(),
+    const GroupTab(),
+    const CustomersTab(),
+    const TrackerTab(),
     ProfileTab(),
   ];
 

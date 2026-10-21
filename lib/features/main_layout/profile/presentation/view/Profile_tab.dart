@@ -4,6 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
 import 'package:smart_installment_management/core/routes/app_routes.dart';
 import 'package:smart_installment_management/core/theme/cubit/theme_cubit.dart';
+import 'package:smart_installment_management/core/utils/ui_utils.dart';
+import 'package:smart_installment_management/features/auth/data/model/user_model.dart';
+import 'package:smart_installment_management/features/main_layout/profile/data/cubit/profile_cubit.dart';
+import 'package:smart_installment_management/features/main_layout/profile/data/cubit/profile_state.dart';
 import 'package:smart_installment_management/features/main_layout/profile/presentation/widgets/currency_toggle.dart';
 import 'package:smart_installment_management/features/main_layout/profile/presentation/widgets/language_toggle.dart';
 import 'package:smart_installment_management/features/main_layout/profile/presentation/widgets/logout_button.dart';
@@ -12,8 +16,19 @@ import 'package:smart_installment_management/features/main_layout/profile/presen
 import 'package:smart_installment_management/features/main_layout/profile/presentation/widgets/profile_menu_item.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
+
+  @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileCubit>().listenProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,112 +36,176 @@ class ProfileTab extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: REdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ProfileHeader(
-                name: 'Ahmed Mansour',
-                job: 'Field Operations Supervisor',
-                phoneNumber: '+966 50 889 9112',
-                image: CircleAvatar(
-                  radius: 38.r,
-                  backgroundColor: ColorManager.navyDark,
-                  child: Icon(
-                    Icons.person,
-                    size: 35.sp,
-                    color: ColorManager.white,
-                  ),
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileLogoutLoadingState) {
+          UiUtils.showLoading(context);
+        } else if (state is ProfileLogoutSuccessState) {
+          UiUtils.hideLoading(context);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutes.login,
+                (route) => false,
+          );
+        } else if (state is ProfileLogoutErrorState) {
+          UiUtils.hideLoading(context);
+          UiUtils.showError(context, state.message);
+        }
+      },
+      builder: (context, state) {
+        if (state is ProfileLoadingState || state is ProfileInitialState) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: ColorManager.primaryColor,
+            ),
+          );
+        }
+
+        if (state is ProfileErrorState) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(state.message),
+                SizedBox(height: 12.h),
+                ElevatedButton(
+                  onPressed: () {
+                    ProfileCubit.get(context).listenProfile();
+                  },
+                  child: Text(appLocalizations.retry ?? 'Retry'),
                 ),
-              ),
-              SizedBox(height: 24.h),
-              _buildSectionTitle(
-                appLocalizations.appearance_PREFERENCES,
-                isDark,
-              ),
-              SizedBox(height: 8.h),
-              _buildCardContainer(
-                isDark: isDark,
-                child: Column(
-                  children: [
-                    PreferenceItem(
-                      icon: Icons.palette_outlined,
-                      title: appLocalizations.themeMode,
-                      subtitle: appLocalizations.toggle_dark_and_light_theme,
-                      isDark: isDark,
-                      actionWidget: _buildThemeSwitch(context),
-                    ),
-                    _buildDivider(isDark),
-                    PreferenceItem(
-                      icon: Icons.language,
-                      title: appLocalizations.appLanguage,
-                      subtitle: appLocalizations.current_interface_language,
-                      isDark: isDark,
-                      actionWidget: LanguageToggle(isDark: isDark),
-                    ),
-                    _buildDivider(isDark),
-                    PreferenceItem(
-                      icon: Icons.payments_outlined,
-                      title: appLocalizations.currencyDisplay,
-                      subtitle:
-                          appLocalizations.receipt_and_ledger_metric_standard,
-                      isDark: isDark,
-                      actionWidget: CurrencyToggle(isDark: isDark),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24.h),
-              _buildSectionTitle(
-                appLocalizations.general_settings.toUpperCase(),
-                isDark,
-              ),
-              SizedBox(height: 8.h),
-              _buildCardContainer(
-                isSetting: true,
-                isDark: isDark,
-                child: Column(
-                  children: [
-                    ProfileMenuTile(
-                      icon: Icons.person_outline_outlined,
-                      title: appLocalizations.editProfile,
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.editProfile),
-                    ),
-                    ProfileMenuTile(
-                      icon: Icons.cloud_done_rounded,
-                      title: appLocalizations.backup_Restore,
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.backUp),
-                    ),
-                    ProfileMenuTile(
-                      icon: Icons.security_rounded,
-                      title: appLocalizations.account_Security,
-                      showDivider: false,
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        AppRoutes.accountSecurity,
+              ],
+            ),
+          );
+        }
+
+        UserModel? user;
+        if (state is ProfileLoadedState) {
+          user = state.user;
+        }
+        final imageUrl = user?.image;
+        final hasProfileImage =
+            imageUrl != null && imageUrl.trim().isNotEmpty;
+
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: REdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProfileHeader(
+                    name: user?.name ?? '',
+                    job: user?.jobTitle?.isNotEmpty == true
+                        ? user!.jobTitle!
+                        : user?.email ?? '',
+                    phoneNumber: user?.phoneNumber ?? '',
+                    image: CircleAvatar(
+                      radius: 38.r,
+                      backgroundColor: ColorManager.navyDark,
+                      backgroundImage: hasProfileImage
+                          ? NetworkImage(imageUrl!)
+                          : null,
+                      child: hasProfileImage
+                          ? null
+                          : Icon(
+                        Icons.person,
+                        size: 35.sp,
+                        color: ColorManager.white,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 24.h),
+                  _buildSectionTitle(
+                    appLocalizations.appearance_PREFERENCES,
+                    isDark,
+                  ),
+                  SizedBox(height: 8.h),
+                  _buildCardContainer(
+                    isDark: isDark,
+                    child: Column(
+                      children: [
+                        PreferenceItem(
+                          icon: Icons.palette_outlined,
+                          title: appLocalizations.themeMode,
+                          subtitle:
+                          appLocalizations.toggle_dark_and_light_theme,
+                          isDark: isDark,
+                          actionWidget: _buildThemeSwitch(context),
+                        ),
+                        _buildDivider(isDark),
+                        PreferenceItem(
+                          icon: Icons.language,
+                          title: appLocalizations.appLanguage,
+                          subtitle:
+                          appLocalizations.current_interface_language,
+                          isDark: isDark,
+                          actionWidget: LanguageToggle(isDark: isDark),
+                        ),
+                        _buildDivider(isDark),
+                        PreferenceItem(
+                          icon: Icons.payments_outlined,
+                          title: appLocalizations.currencyDisplay,
+                          subtitle: appLocalizations
+                              .receipt_and_ledger_metric_standard,
+                          isDark: isDark,
+                          actionWidget: CurrencyToggle(isDark: isDark),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  _buildSectionTitle(
+                    appLocalizations.general_settings.toUpperCase(),
+                    isDark,
+                  ),
+                  SizedBox(height: 8.h),
+                  _buildCardContainer(
+                    isSetting: true,
+                    isDark: isDark,
+                    child: Column(
+                      children: [
+                        ProfileMenuTile(
+                          icon: Icons.person_outline_outlined,
+                          title: appLocalizations.editProfile,
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            AppRoutes.editProfile,
+                          ),
+                        ),
+                        ProfileMenuTile(
+                          icon: Icons.cloud_done_rounded,
+                          title: appLocalizations.backup_Restore,
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.backUp),
+                        ),
+                        ProfileMenuTile(
+                          icon: Icons.security_rounded,
+                          title: appLocalizations.account_Security,
+                          showDivider: false,
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            AppRoutes.accountSecurity,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  LogoutButton(
+                    isDark: isDark,
+                    label: appLocalizations.log_out,
+                    onPressed: () {
+                      context.read<ProfileCubit>().logout();
+                    },
+                  ),
+                  SizedBox(height: 24.h),
+                ],
               ),
-              SizedBox(height: 24.h),
-              LogoutButton(
-                isDark: isDark,
-                label: appLocalizations.log_out,
-                onPressed: () {
-                  // handle logout action
-                },
-              ),
-              SizedBox(height: 24.h),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -160,12 +239,12 @@ class ProfileTab extends StatelessWidget {
         boxShadow: isDark
             ? null
             : [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.02),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: child,
     );

@@ -66,7 +66,7 @@ class InstallmentScheduleList extends StatelessWidget {
           paidAtDate: isPaid && installment.paidAtDate.isNotEmpty
               ? installment.paidAtDate
               : installment.dueDate,
-          amount: installment.amount.toStringAsFixed(0),
+          amount: installment.remainingAmount.toStringAsFixed(0),
           isPaid: isPaid,
           isFuture: isFuture,
           isSelected: selectedIndex == currentIndex,
@@ -81,10 +81,10 @@ class InstallmentScheduleList extends StatelessWidget {
       children: items
           .map(
             (item) => Padding(
-          padding: EdgeInsets.only(bottom: 10.h),
-          child: item,
-        ),
-      )
+              padding: EdgeInsets.only(bottom: 10.h),
+              child: item,
+            ),
+          )
           .toList(),
     );
   }
@@ -157,10 +157,7 @@ class InstallmentScheduleList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                  padding: REdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 3,
-                  ),
+                  padding: REdgeInsets.symmetric(horizontal: 7, vertical: 3),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(6.r),
@@ -252,10 +249,7 @@ class InstallmentScheduleList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(9.r),
               ),
               child: Text(
-                installmentTitle.replaceAll(
-                  RegExp(r'[^0-9]'),
-                  '',
-                ),
+                installmentTitle.replaceAll(RegExp(r'[^0-9]'), ''),
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
@@ -272,10 +266,7 @@ class InstallmentScheduleList extends StatelessWidget {
                     l10n.dueDate(dueDate),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 9.5.sp,
-                      color: _secondaryColor,
-                    ),
+                    style: TextStyle(fontSize: 9.5.sp, color: _secondaryColor),
                   ),
                   SizedBox(height: 3.h),
                   Text(
@@ -311,10 +302,7 @@ class InstallmentScheduleList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                  padding: REdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 3,
-                  ),
+                  padding: REdgeInsets.symmetric(horizontal: 7, vertical: 3),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(6.r),
@@ -431,12 +419,12 @@ class InstallmentScheduleList extends StatelessWidget {
       border: Border.all(color: borderColor, width: borderWidth),
       boxShadow: isSelected && !isDark && !isFuture
           ? [
-        BoxShadow(
-          color: primaryColor.withOpacity(0.12),
-          blurRadius: 8,
-          offset: const Offset(0, 2),
-        ),
-      ]
+              BoxShadow(
+                color: primaryColor.withOpacity(0.12),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ]
           : [],
     );
   }

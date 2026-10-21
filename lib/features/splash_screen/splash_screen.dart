@@ -1,7 +1,6 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/assets_manager.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
@@ -18,19 +17,16 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-
   late Animation<double> _fadeAnimation;
-
   late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    //FlutterNativeSplash.remove();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
     _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
@@ -45,11 +41,16 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _startSplash() async {
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 5));
 
     if (!mounted) return;
+    final user = FirebaseAuth.instance.currentUser;
 
-    Navigator.pushReplacementNamed(context, AppRoutes.login);
+    if (user != null) {
+      Navigator.pushReplacementNamed(context, AppRoutes.mainLayout);
+    } else {
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
+    }
   }
 
   @override
@@ -66,6 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
     final backgroundImage = isDark
         ? ImageAssets.splashBgDark
         : ImageAssets.splashBgLight;
+
     return Scaffold(
       backgroundColor: isDark ? ColorManager.bgDark : ColorManager.bgLight,
       body: Container(
@@ -81,10 +83,8 @@ class _SplashScreenState extends State<SplashScreen>
           child: Center(
             child: FadeTransition(
               opacity: _fadeAnimation,
-
               child: ScaleTransition(
                 scale: _scaleAnimation,
-
                 child: Padding(
                   padding: REdgeInsets.symmetric(horizontal: 24),
                   child: Column(
@@ -110,7 +110,6 @@ class _SplashScreenState extends State<SplashScreen>
                           fontFamily: 'Arial',
                         ),
                       ),
-
                       SizedBox(height: 12.h),
                       Text(
                         appLocalizations.smartFinancialSolutions_FieldCollection,

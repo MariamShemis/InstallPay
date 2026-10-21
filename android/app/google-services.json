@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "188092871546",
+    "project_id": "installpay-b8b90",
+    "storage_bucket": "installpay-b8b90.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188092871546:android:50f05806ff2266ed731cc3",
+        "android_client_info": {
+          "package_name": "com.example.smart_installment_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188092871546-o4dmtjnlvtcoavsilgmdqhkuuh7qkgv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smart_installment_management",
+            "certificate_hash": "c1f81be260f4193c75b788ac046591fc29527c4b"
+          }
+        },
+        {
+          "client_id": "188092871546-1tj39k2naef6ci4bq0bk2jv1c7gnqqh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPgFJK1W9Y8KWNRDxPUjpRO15EA5V6XQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188092871546-1tj39k2naef6ci4bq0bk2jv1c7gnqqh9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "188092871546-50ec8s4rebhq6d2g448a8ckfhp8cvuqh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartInstallmentManagement"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

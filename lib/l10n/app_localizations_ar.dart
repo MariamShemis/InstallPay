@@ -941,4 +941,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get total => 'الإجمالي';
+
+  @override
+  String get verifyYourEmailAddress => 'تأكيد عنوان البريد الإلكتروني';
+
+  @override
+  String get verifyEmailDescription => 'تهانينا! حسابك أصبح جاهزًا تقريبًا. افتحي رسالة التحقق واضغطي على الرابط لتفعيل حسابك والمتابعة.';
+
+  @override
+  String get verificationEmailSent => 'تم إرسال رسالة التحقق. من فضلك تحققي من بريدك الإلكتروني.';
+
+  @override
+  String get emailVerifiedSuccessfully => 'تم التحقق من بريدك الإلكتروني بنجاح.';
+
+  @override
+  String get emailNotVerifiedYet => 'لم يتم التحقق من بريدك الإلكتروني بعد. افتحي الرابط الموجود في الرسالة أولًا.';
+
+  @override
+  String get iHaveVerifiedMyEmail => 'لقد تحققت من بريدي الإلكتروني';
+
+  @override
+  String get resendVerificationEmail => 'إعادة إرسال رسالة التحقق';
+
+  @override
+  String get checkSpamFolder => 'لم تصلك الرسالة؟ تحققي من مجلد الرسائل غير المرغوب فيها، ثم حاولي الإرسال مرة أخرى.';
+
+  @override
+  String get checking => 'جارٍ التحقق...';
+
+  @override
+  String get loading => 'تحميل';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get profileUpdatedSuccessfully => 'Profile updated successfully';
+
+  @override
+  String get nameRequired => 'Please enter your name';
+
+  @override
+  String get phoneNumberRequired => 'Please enter your phone number';
+
+  @override
+  String get accountProtection => 'حماية الحساب';
+
+  @override
+  String get secureYourAccount => 'حافظي على أمان حسابك';
+
+  @override
+  String get dangerZone => 'منطقة الإجراءات الحساسة';
+
+  @override
+  String get accountSecurityDescription => 'حافظي على أمان حسابك باستخدام كلمة مرور قوية، وتحققي من بريدك الإلكتروني. لن يتم تنفيذ الإجراءات الأمنية قبل إعدادها وربطها بالخدمات المناسبة.';
+
+  @override
+  String get deleteAccountWarning => 'هل أنت متأكد أنك تريد حذف حسابك؟ هذا الإجراء نهائي ولا يمكن التراجع عنه.';
+
+  @override
+  String get featureComingSoon => 'سيتم تفعيل هذه الخاصية بعد ربطها بالخدمات الأمنية.';
+
+  @override
+  String get retry => 'Retry';
 }

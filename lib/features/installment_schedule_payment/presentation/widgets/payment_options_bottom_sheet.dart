@@ -63,16 +63,33 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
   @override
   void initState() {
     super.initState();
+
     _selectedPaymentDate = DateTime.now();
-    _customAmountController = TextEditingController(
-      text: widget.amount.toStringAsFixed(0),
-    );
+    _customAmountController = TextEditingController(text: '0');
   }
 
   @override
   void dispose() {
     _customAmountController.dispose();
     super.dispose();
+  }
+
+  void _confirmPayment({required bool useCustomAmount}) {
+    final amount = useCustomAmount
+        ? double.tryParse(_customAmountController.text.trim())
+        : widget.amount;
+
+    if (amount == null || !amount.isFinite || amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Enter a valid amount greater than zero.'),
+        ),
+      );
+      return;
+    }
+    widget.onConfirmPayment(_selectedPaymentDate, amount);
+
+    Navigator.pop(context);
   }
 
   Future<void> _selectPaymentDate() async {
@@ -289,17 +306,18 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                 height: 48.h,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    widget.onConfirmPayment(
-                      _selectedPaymentDate,
-                      widget.amount,
-                    );
-                    Navigator.pop(context);
+                    setState(() {
+                      _showCustomAmountInput = !_showCustomAmountInput;
+                    });
                   },
-                  icon: Icon(Icons.check_rounded, size: 18.r),
+                  icon: Icon(
+                    _showCustomAmountInput
+                        ? Icons.keyboard_arrow_up_rounded
+                        : Icons.add_rounded,
+                    size: 18.r,
+                  ),
                   label: Text(
-                    l10n.payFullInstallmentBtn(
-                      '${widget.amount.toStringAsFixed(0)} ${widget.currency}',
-                    ),
+                    l10n.customPartialAmountBtn,
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
@@ -321,17 +339,17 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                 height: 48.h,
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    setState(() {
-                      _showCustomAmountInput = !_showCustomAmountInput;
-                    });
+                    _confirmPayment(useCustomAmount: false);
                   },
                   icon: Icon(
-                    _showCustomAmountInput ? Icons.remove : Icons.add,
+                    Icons.check_rounded,
                     size: 18.r,
-                    color: primaryTextColor,
+                    color: widget.primaryColor,
                   ),
                   label: Text(
-                    l10n.customPartialAmountBtn,
+                    l10n.payFullInstallmentBtn(
+                      '${widget.amount.toStringAsFixed(0)} ${widget.currency}',
+                    ),
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
@@ -339,7 +357,8 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                     ),
                   ),
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: borderColor, width: 1.2.w),
+                    foregroundColor: primaryTextColor,
+                    side: BorderSide(color: widget.primaryColor, width: 1.2.w),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
@@ -350,7 +369,14 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                 SizedBox(height: 14.h),
                 TextField(
                   controller: _customAmountController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  onTap: () {
+                    if (_customAmountController.text == '0') {
+                      _customAmountController.clear();
+                    }
+                  },
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
@@ -376,13 +402,7 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                   height: 46.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      final customVal =
-                          double.tryParse(
-                            _customAmountController.text.trim(),
-                          ) ??
-                          widget.amount;
-                      widget.onConfirmPayment(_selectedPaymentDate, customVal);
-                      Navigator.pop(context);
+                      _confirmPayment(useCustomAmount: true);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: widget.primaryColor,
@@ -402,7 +422,7 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                   ),
                 ),
               ],
-              SizedBox(height: 25.h,),
+              SizedBox(height: 25.h),
             ],
           ),
         ),

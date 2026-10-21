@@ -183,14 +183,14 @@ class CustomerCard extends StatelessWidget {
               ),
               SizedBox(width: 8.w),
               _buildStatBox(
-                label: 'Paid',
+                label: appLocalizations.collected,
                 value: '${customer.totalPaid.toStringAsFixed(0)} $currency',
                 bg: accentGreenBg,
                 textColor: accentGreenText,
               ),
               SizedBox(width: 8.w),
               _buildStatBox(
-                label: appLocalizations.remaining,
+                label: appLocalizations.debt,
                 value:
                 '${customer.remainingValue.toStringAsFixed(0)} $currency',
                 bg: innerCardBg,
