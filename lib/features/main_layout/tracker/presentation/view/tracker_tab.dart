@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
 import 'package:smart_installment_management/features/main_layout/tracker/presentation/widgets/expenses_widget/tracker_income_expenses_widget.dart';
-import 'package:smart_installment_management/features/main_layout/tracker/presentation/widgets/tracker_money_management_widget.dart';
+import 'package:smart_installment_management/features/main_layout/tracker/presentation/widgets/money_management/tracker_money_management_widget.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class TrackerTab extends StatefulWidget {

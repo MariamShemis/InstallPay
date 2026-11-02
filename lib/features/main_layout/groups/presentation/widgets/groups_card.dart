@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_installment_management/core/costants/color_manager.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/model/group_model.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
@@ -29,10 +30,13 @@ class GroupCard extends StatelessWidget {
     return '${names.first[0]}${names.last[0]}'.toUpperCase();
   }
 
+  String _money(double value) {
+    return value.toStringAsFixed(0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final cardBg = isDark ? const Color(0xFF151F28) : Colors.white;
@@ -69,6 +73,38 @@ class GroupCard extends StatelessWidget {
         ? const Color(0xFF15966D)
         : const Color(0xFF006C4D);
 
+    final groupStatus = group.status(context).trim().toLowerCase();
+
+    String statusLabel;
+
+    switch (groupStatus) {
+      case 'paid':
+        statusLabel = l10n.paid;
+        break;
+      case 'overdue':
+        statusLabel = l10n.overdue;
+        break;
+      case 'due':
+        statusLabel = l10n.due;
+        break;
+      default:
+        statusLabel = l10n.unpaid;
+    }
+
+    final statusColor = groupStatus == 'paid'
+        ? (isDark ? ColorManager.darkAccentGreen1 : ColorManager.green)
+        : groupStatus == 'overdue'
+        ? ColorManager.red
+        : groupStatus == 'due'
+        ? ColorManager.warningOrange
+        : ColorManager.red;
+
+    final statusBackground = statusColor.withOpacity(0.12);
+
+    final monthPercentage = group.monthTarget <= 0
+        ? 0.0
+        : (group.monthCollection / group.monthTarget * 100);
+
     return InkWell(
       onTap: onOpenSheetTap,
       borderRadius: BorderRadius.circular(20.r),
@@ -89,19 +125,42 @@ class GroupCard extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              group.groupTitle,
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
-                color: primaryTextColor,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    group.groupTitle,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      color: primaryTextColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Container(
+                  padding: REdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: statusBackground,
+                    border: Border.all(color: statusColor.withOpacity(0.7)),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Text(
+                    statusLabel,
+                    style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w600,
+                      color: statusColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
-
             SizedBox(height: 10.h),
 
             Container(
@@ -133,7 +192,6 @@ class GroupCard extends StatelessWidget {
                         : null,
                   ),
                   SizedBox(width: 12.w),
-
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,9 +206,7 @@ class GroupCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-
                         SizedBox(height: 2.h),
-
                         Text(
                           group.collectorPhone,
                           style: TextStyle(
@@ -161,23 +217,20 @@ class GroupCard extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '${group.clientsCount} ${appLocalizations.customers}',
+                        '${group.clientsCount} ${l10n.customers}',
                         style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,
                           color: primaryTextColor,
                         ),
                       ),
-
                       SizedBox(height: 2.h),
-
                       Text(
-                        '${group.dueCount} ${appLocalizations.due}',
+                        '${group.dueCount} ${l10n.due}',
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
@@ -189,48 +242,109 @@ class GroupCard extends StatelessWidget {
                 ],
               ),
             ),
-
             SizedBox(height: 12.h),
-
             Row(
               children: [
                 _buildStatBox(
-                  label: appLocalizations.totalValue,
-                  value: '${group.totalValue.toStringAsFixed(0)} $currency',
+                  label: l10n.totalValue,
+                  value: '${_money(group.totalValue)} $currency',
                   bg: innerCardBg,
                   textColor: primaryTextColor,
                 ),
-
                 SizedBox(width: 8.w),
-
                 _buildStatBox(
-                  label: appLocalizations.collected,
-                  value: '${group.collectedValue.toStringAsFixed(0)} $currency',
+                  label: l10n.collected,
+                  value: '${_money(group.collectedValue)} $currency',
                   bg: accentGreenBg,
                   textColor: accentGreenText,
                 ),
-
                 SizedBox(width: 8.w),
-
                 _buildStatBox(
-                  label: appLocalizations.remaining,
-                  value: '${group.remainingValue.toStringAsFixed(0)} $currency',
+                  label: l10n.remaining,
+                  value: '${_money(group.remainingValue)} $currency',
                   bg: innerCardBg,
                   textColor: primaryTextColor,
                 ),
               ],
             ),
-
+            SizedBox(height: 12.h),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildStatBox(
+                    label: l10n.monthTarget,
+                    value: '${_money(group.monthTarget)} $currency',
+                    bg: innerCardBg,
+                    textColor: primaryTextColor,
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Container(
+                      padding: REdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: accentGreenBg,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            l10n.monthCollection,
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                              color: accentGreenText.withOpacity(0.85),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 7.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  '${_money(group.monthCollection)} $currency  -',
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: accentGreenText,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 7.h),
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  '${monthPercentage.toStringAsFixed(1)}%',
+                                  style: TextStyle(
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: accentGreenText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 14.h),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  appLocalizations.collectionProgress,
+                  l10n.collectionProgress,
                   style: TextStyle(fontSize: 11.sp, color: secondaryTextColor),
                 ),
-
                 Text(
                   '${(group.progress * 100).toStringAsFixed(1)}%',
                   style: TextStyle(
@@ -241,9 +355,7 @@ class GroupCard extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(height: 6.h),
-
             ClipRRect(
               borderRadius: BorderRadius.circular(4.r),
               child: LinearProgressIndicator(
@@ -266,6 +378,7 @@ class GroupCard extends StatelessWidget {
     required String value,
     required Color bg,
     required Color textColor,
+    bool isMonthTarget = false,
   }) {
     return Expanded(
       child: Container(
@@ -275,6 +388,7 @@ class GroupCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               label,
@@ -285,15 +399,16 @@ class GroupCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-
-            SizedBox(height: 4.h),
-
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.bold,
-                color: textColor,
+            SizedBox(height: isMonthTarget ? 7.h : 4.h),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
               ),
             ),
           ],

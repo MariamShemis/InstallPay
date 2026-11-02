@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_installment_management/core/firebase/taqseet_firestore_services.dart';
+import 'package:smart_installment_management/core/utils/helper/payment_status_helper.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/cubit/customers_state.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/model/group_model.dart';
@@ -18,9 +20,10 @@ class CustomersCubit extends Cubit<CustomersState> {
 
   final List<String> _filters = const [
     'All',
+    'Paid',
+    'Unpaid',
+    'Due',
     'Overdue',
-    'Due Today',
-    'Completed',
   ];
 
   Future<void> loadCustomers() async {
@@ -34,16 +37,19 @@ class CustomersCubit extends Cubit<CustomersState> {
           TaqseetFirestoreServices.recordsStream(type: 'customer').listen(
             (snapshot) {
               final List<CustomerModel> customers = [];
-
               for (final document in snapshot.docs) {
                 final customer = CustomerModel.fromMap(
                   document.data(),
                   documentId: document.id,
                 );
-
-                customers.add(_updateCustomerStatus(customer));
+                final updatedCustomer = PaymentStatusHelper.updateCustomer(
+                  customer,
+                );
+                customers.add(updatedCustomer);
+                if (_statusNeedsUpdate(customer, updatedCustomer)) {
+                  _saveUpdatedCustomerStatus(updatedCustomer);
+                }
               }
-
               _emitFilteredCustomers(customers);
             },
             onError: (error) {
@@ -59,15 +65,12 @@ class CustomersCubit extends Cubit<CustomersState> {
           TaqseetFirestoreServices.recordsStream(type: 'group').listen(
             (snapshot) {
               final groups = <GroupModel>[];
-
               for (final document in snapshot.docs) {
                 groups.add(
                   GroupModel.fromMap(document.data(), id: document.id),
                 );
               }
-
               if (isClosed) return;
-
               emit(state.copyWith(groups: groups));
               _emitFilteredCustomers(state.allCustomers);
             },
@@ -106,14 +109,10 @@ class CustomersCubit extends Cubit<CustomersState> {
   void _emitFilteredCustomers(List<CustomerModel> allCustomers) {
     final query = state.searchQuery.trim().toLowerCase();
     final selectedFilter = _filters[state.selectedFilterIndex];
-
     final List<CustomerModel> filteredCustomers = [];
-
     for (final customer in allCustomers) {
       final selectedGroupId = state.selectedGroupId;
-
       bool matchesGroup = true;
-
       if (selectedGroupId == '__other__') {
         matchesGroup =
             customer.groupId.isEmpty ||
@@ -127,7 +126,6 @@ class CustomersCubit extends Cubit<CustomersState> {
             break;
           }
         }
-
         if (selectedGroup != null) {
           matchesGroup =
               customer.groupId == selectedGroup.id ||
@@ -135,40 +133,34 @@ class CustomersCubit extends Cubit<CustomersState> {
                   customer.groupName == selectedGroup.groupTitle);
         }
       }
-
       if (!matchesGroup) continue;
       final matchesSearch =
           customer.customerName.toLowerCase().contains(query) ||
           customer.customerPhone.toLowerCase().contains(query) ||
           customer.address.toLowerCase().contains(query) ||
           customer.groupName.toLowerCase().contains(query);
-
       if (!matchesSearch) continue;
-
       bool matchesFilter = false;
-
       switch (selectedFilter) {
+        case 'Paid':
+          matchesFilter = customer.status.toLowerCase() == 'paid';
+          break;
+        case 'Unpaid':
+          matchesFilter = customer.status.toLowerCase() == 'unpaid';
+          break;
+        case 'Due':
+          matchesFilter = customer.status.toLowerCase() == 'due';
+          break;
         case 'Overdue':
-          matchesFilter = customer.status == 'Overdue';
+          matchesFilter = customer.status.toLowerCase() == 'overdue';
           break;
-
-        case 'Due Today':
-          matchesFilter = customer.status == 'Due Today';
-          break;
-
-        case 'Completed':
-          matchesFilter = customer.status == 'Completed';
-          break;
-
         default:
           matchesFilter = true;
       }
-
       if (matchesFilter) {
         filteredCustomers.add(customer);
       }
     }
-
     emit(
       state.copyWith(
         allCustomers: allCustomers,
@@ -180,72 +172,19 @@ class CustomersCubit extends Cubit<CustomersState> {
   }
 
   CustomerModel _updateCustomerStatus(CustomerModel customer) {
-    final today = DateTime.now();
-    final todayDate = DateTime(today.year, today.month, today.day);
-
-    final unpaidInstallments = customer.schedule
-        .where((installment) => !installment.isPaid)
-        .toList();
-
-    unpaidInstallments.sort(
-      (first, second) =>
-          first.installmentNumber.compareTo(second.installmentNumber),
-    );
-
-    if (customer.remainingValue <= 0) {
-      return customer.copyWith(status: 'Completed', nextDueDate: '');
-    }
-
-    String nextDueDate = customer.nextDueDate;
-
-    if (unpaidInstallments.isNotEmpty) {
-      nextDueDate = unpaidInstallments.first.dueDate;
-    }
-
-    if (nextDueDate.isEmpty) {
-      return customer.copyWith(status: 'Up to Date', nextDueDate: '');
-    }
-
-    final dueDate = _parseDate(nextDueDate);
-
-    if (dueDate == null) {
-      return customer.copyWith(status: 'Up to Date', nextDueDate: nextDueDate);
-    }
-
-    final normalizedDueDate = DateTime(
-      dueDate.year,
-      dueDate.month,
-      dueDate.day,
-    );
-
-    String status;
-
-    if (normalizedDueDate.isBefore(todayDate)) {
-      status = 'Overdue';
-    } else if (normalizedDueDate == todayDate) {
-      status = 'Due Today';
-    } else {
-      status = 'Up to Date';
-    }
-
-    return customer.copyWith(status: status, nextDueDate: nextDueDate);
+    return PaymentStatusHelper.updateCustomer(customer);
   }
 
   DateTime? _parseDate(String value) {
     final text = value.trim();
-
     final parsedDate = DateTime.tryParse(text);
     if (parsedDate != null) return parsedDate;
-
     // Supports dates such as 12 Oct 2026.
     final parts = text.split(' ');
     if (parts.length != 3) return null;
-
     final day = int.tryParse(parts[0]);
     final year = int.tryParse(parts[2]);
-
     if (day == null || year == null) return null;
-
     const months = {
       'jan': 1,
       'feb': 2,
@@ -266,16 +205,55 @@ class CustomersCubit extends Cubit<CustomersState> {
           0,
           parts[1].length >= 3 ? 3 : parts[1].length,
         )];
-
     if (month == null) return null;
-
     final date = DateTime(year, month, day);
-
     if (date.year != year || date.month != month || date.day != day) {
       return null;
     }
 
     return date;
+  }
+
+  bool _statusNeedsUpdate(
+    CustomerModel oldCustomer,
+    CustomerModel updatedCustomer,
+  ) {
+    if (oldCustomer.status.trim().toLowerCase() !=
+        updatedCustomer.status.trim().toLowerCase()) {
+      return true;
+    }
+    if (oldCustomer.nextDueDate != updatedCustomer.nextDueDate) {
+      return true;
+    }
+    if (oldCustomer.schedule.length != updatedCustomer.schedule.length) {
+      return true;
+    }
+    for (int i = 0; i < oldCustomer.schedule.length; i++) {
+      final oldInstallment = oldCustomer.schedule[i];
+      final updatedInstallment = updatedCustomer.schedule[i];
+      if (oldInstallment.status.trim().toLowerCase() !=
+          updatedInstallment.status.trim().toLowerCase()) {
+        return true;
+      }
+      if (oldInstallment.isPaid != updatedInstallment.isPaid) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  Future<void> _saveUpdatedCustomerStatus(CustomerModel customer) async {
+    if (customer.id.isEmpty) return;
+    try {
+      await TaqseetFirestoreServices.saveRecord(
+        type: 'customer',
+        documentId: customer.id,
+        data: customer.toMap(),
+      );
+    } catch (e) {
+      debugPrint('General Register Error: $e');
+    }
   }
 
   @override

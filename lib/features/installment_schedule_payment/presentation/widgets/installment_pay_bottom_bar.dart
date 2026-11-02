@@ -35,7 +35,8 @@ class InstallmentPayBottomBar extends StatelessWidget {
     double itemAmount = 0;
 
     if (hasDownPayment && selectedIndex == 0) {
-      isSelectedItemPaid = customer.isDownPaymentPaid;
+      isSelectedItemPaid =
+          customer.isDownPaymentPaid || customer.downPaymentPaidAmount > 0;
       itemTitle = l10n.downPayment;
       originalDueDate = customer.contractDate.isNotEmpty
           ? customer.contractDate
@@ -46,7 +47,10 @@ class InstallmentPayBottomBar extends StatelessWidget {
 
       if (scheduleIndex >= 0 && scheduleIndex < customer.schedule.length) {
         final installment = customer.schedule[scheduleIndex];
-        isSelectedItemPaid = installment.isPaid;
+        isSelectedItemPaid =
+            installment.isPaid ||
+            installment.paidAmount > 0 ||
+            installment.remainingAmount <= 0;
         itemTitle = l10n.installmentNumber(installment.installmentNumber);
         originalDueDate = installment.dueDate;
         itemAmount = installment.amount;

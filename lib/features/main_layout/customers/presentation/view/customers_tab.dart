@@ -9,6 +9,7 @@ import 'package:smart_installment_management/features/main_layout/customers/data
 import 'package:smart_installment_management/features/main_layout/customers/data/cubit/customers_state.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/features/main_layout/customers/presentation/widgets/calculator_dialog.dart';
+import 'package:smart_installment_management/features/main_layout/customers/presentation/widgets/custom_filter_search.dart';
 import 'package:smart_installment_management/features/main_layout/customers/presentation/widgets/customer_card.dart';
 import 'package:smart_installment_management/features/main_layout/customers/presentation/widgets/customers_empty_state.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
@@ -24,12 +25,10 @@ class _CustomersTabState extends State<CustomersTab> {
   late final CustomersCubit _customersCubit;
   late final TextEditingController _searchController;
 
-  final List<String> _filters = const [
-    'All',
-    'Overdue',
-    'Due Today',
-    'Completed',
-  ];
+  List<String> getFilter(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    return [l10n.all, l10n.paid, l10n.unpaid, l10n.due, l10n.overdue];
+  }
 
   @override
   void initState() {
@@ -63,15 +62,15 @@ class _CustomersTabState extends State<CustomersTab> {
     BuildContext context,
     CustomersState state,
   ) async {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
     final cubit = context.read<CustomersCubit>();
 
     String selectedGroupId = state.selectedGroupId;
     int selectedStatusIndex = state.selectedFilterIndex;
 
     final groups = state.groups;
-    final filters = const ['All', 'Overdue', 'Due Now', 'Unpaid', 'Completed'];
 
-    if (selectedStatusIndex >= filters.length) {
+    if (selectedStatusIndex >= getFilter(context).length) {
       selectedStatusIndex = 0;
     }
 
@@ -85,135 +84,63 @@ class _CustomersTabState extends State<CustomersTab> {
           builder: (context, setSheetState) {
             final theme = Theme.of(context);
 
-            return SafeArea(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 24.h),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Filter Customers',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+            return CustomFilterSearch(
+              isCustomer: true,
+              valueDropDownGroups:
+                  [
+                    '__all__',
+                    '__other__',
+                    ...groups.map((group) => group.id),
+                  ].contains(selectedGroupId)
+                  ? selectedGroupId
+                  : '__all__',
+              itemsGroups: [
+                DropdownMenuItem(value: '__all__', child: Text(l10n.allGroups)),
+                DropdownMenuItem(value: '__other__', child: Text(l10n.other)),
+                ...groups.map(
+                  (group) => DropdownMenuItem<String>(
+                    value: group.id,
+                    child: Text(
+                      group.groupTitle,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 20.h),
-
-                    Text(
-                      'Group',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-
-                    DropdownButtonFormField<String>(
-                      value:
-                          [
-                            '__all__',
-                            '__other__',
-                            ...groups.map((group) => group.id),
-                          ].contains(selectedGroupId)
-                          ? selectedGroupId
-                          : '__all__',
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.groups_outlined),
-                      ),
-                      items: [
-                        const DropdownMenuItem(
-                          value: '__all__',
-                          child: Text('All Groups'),
-                        ),
-                        const DropdownMenuItem(
-                          value: '__other__',
-                          child: Text('Other'),
-                        ),
-                        ...groups.map(
-                          (group) => DropdownMenuItem<String>(
-                            value: group.id,
-                            child: Text(
-                              group.groupTitle,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        if (value == null) return;
-
-                        setSheetState(() {
-                          selectedGroupId = value;
-                        });
-                      },
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    Text(
-                      'Payment Status',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-
-                    DropdownButtonFormField<int>(
-                      value: selectedStatusIndex,
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.payments_outlined),
-                      ),
-                      items: [
-                        for (int i = 0; i < filters.length; i++)
-                          DropdownMenuItem<int>(
-                            value: i,
-                            child: Text(filters[i]),
-                          ),
-                      ],
-                      onChanged: (value) {
-                        if (value == null) return;
-
-                        setSheetState(() {
-                          selectedStatusIndex = value;
-                        });
-                      },
-                    ),
-
-                    SizedBox(height: 24.h),
-
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {
-                              setSheetState(() {
-                                selectedGroupId = '__all__';
-                                selectedStatusIndex = 0;
-                              });
-                            },
-                            child: const Text('Reset'),
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              cubit.changeGroupFilter(selectedGroupId);
-                              cubit.changeFilter(selectedStatusIndex);
-                              Navigator.pop(sheetContext);
-                            },
-                            child: const Text('Apply Filters'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
+              onChangedGroups: (value) {
+                if (value == null) return;
+
+                setSheetState(() {
+                  selectedGroupId = value;
+                });
+              },
+              valueDropDownStatus: selectedStatusIndex,
+              itemsStatus: [
+                for (int i = 0; i < getFilter(context).length; i++)
+                  DropdownMenuItem<int>(
+                    value: i,
+                    child: Text(getFilter(context)[i]),
+                  ),
+              ],
+              onChangedStatus: (value) {
+                if (value == null) return;
+
+                setSheetState(() {
+                  selectedStatusIndex = value;
+                });
+              },
+              onPressedReset: () {
+                setSheetState(() {
+                  selectedGroupId = '__all__';
+                  selectedStatusIndex = 0;
+                });
+              },
+              onPressedApply: () {
+                cubit.changeGroupFilter(selectedGroupId);
+                cubit.changeFilter(selectedStatusIndex);
+                Navigator.pop(sheetContext);
+              },
+              theme: theme,
             );
           },
         );
@@ -300,7 +227,7 @@ class _CustomersTabState extends State<CustomersTab> {
                                         .loadCustomers();
                                   },
                                   icon: const Icon(Icons.refresh),
-                                  label: const Text('Retry'),
+                                  label: Text(appLocalizations.retry),
                                 ),
                               ],
                             ),
@@ -310,56 +237,7 @@ class _CustomersTabState extends State<CustomersTab> {
                     else if (state.allCustomers.isEmpty)
                       const Expanded(child: CustomersEmptyState())
                     else ...[
-                      SizedBox(height: 10.h),
-                      // CustomSearchTextField(
-                      //   controller: _searchController,
-                      //   hintText:
-                      //       '${appLocalizations.search_customers_phone_group}...',
-                      //   onChanged: (value) {
-                      //     context.read<CustomersCubit>().searchCustomers(value);
-                      //   },
-                      // ),
-                      // SizedBox(height: 12.h),
-                      // FilterChipsList(
-                      //   filters: [
-                      //     'All',
-                      //     'Other',
-                      //     ...state.groups.map((group) => group.groupTitle),
-                      //   ],
-                      //   selectedIndex: _getSelectedGroupIndex(state),
-                      //   onSelected: (index) {
-                      //     if (index == 0) {
-                      //       context.read<CustomersCubit>().changeGroupFilter(
-                      //         '__all__',
-                      //       );
-                      //     } else if (index == 1) {
-                      //       context.read<CustomersCubit>().changeGroupFilter(
-                      //         '__other__',
-                      //       );
-                      //     } else {
-                      //       final groupIndex = index - 2;
-                      //
-                      //       if (groupIndex >= 0 &&
-                      //           groupIndex < state.groups.length) {
-                      //         context.read<CustomersCubit>().changeGroupFilter(
-                      //           state.groups[groupIndex].id,
-                      //         );
-                      //       }
-                      //     }
-                      //   },
-                      // ),
-                      //
-                      // SizedBox(height: 12.h),
-                      // SizedBox(height: 12.h),
-                      // FilterChipsList(
-                      //   filters: _filters,
-                      //   selectedIndex: state.selectedFilterIndex,
-                      //   onSelected: (index) {
-                      //     context.read<CustomersCubit>().changeFilter(index);
-                      //   },
-                      // ),
-                      SizedBox(height: 10.h),
-
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           Expanded(
@@ -408,7 +286,7 @@ class _CustomersTabState extends State<CustomersTab> {
                                 child: Padding(
                                   padding: REdgeInsets.all(20),
                                   child: Text(
-                                    'No customers match your search or filter.',
+                                    appLocalizations.no_customers_match_your_search_or_filter,
                                     textAlign: TextAlign.center,
                                     style: theme.textTheme.bodyMedium,
                                   ),

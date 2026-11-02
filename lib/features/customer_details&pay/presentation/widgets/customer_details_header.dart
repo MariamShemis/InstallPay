@@ -18,18 +18,21 @@ class CustomerDetailsHeader extends StatelessWidget {
 
   String get _initials {
     final names = customer.customerName.trim().split(RegExp(r'\s+'));
+
     if (names.isEmpty || names.first.isEmpty) {
       return 'C';
     }
+
     if (names.length == 1) {
       return names.first[0].toUpperCase();
     }
+
     return '${names.first[0]}${names.last[0]}'.toUpperCase();
   }
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Container(
@@ -68,16 +71,17 @@ class CustomerDetailsHeader extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 6.h),
-                    Row(
+                    Wrap(
+                      spacing: 6.w,
+                      runSpacing: 6.h,
                       children: [
                         _badge(
                           customer.groupName,
                           primaryColor.withOpacity(0.12),
                           primaryColor,
                         ),
-                        SizedBox(width: 6.w),
                         _badge(
-                          _statusLabel(context),
+                          _statusLabel(appLocalizations),
                           _statusColor(),
                           _statusTextColor(),
                         ),
@@ -89,34 +93,87 @@ class CustomerDetailsHeader extends StatelessWidget {
             ],
           ),
           SizedBox(height: 14.h),
-          Divider(height: 1, color: _borderColor()),
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: _infoTile(
-                  context,
-                  title: appLocalizations.phoneNumber,
-                  value: customer.customerPhone,
-                  icon: Icons.phone_outlined,
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: _infoTile(
-                  context,
-                  title: appLocalizations.address,
-                  value: customer.address.isNotEmpty
-                      ? customer.address
-                      : appLocalizations.notAvailable,
-                  icon: Icons.location_on_outlined,
-                ),
-              ),
-            ],
+          customer.address.isNotEmpty && customer.customerPhone.isNotEmpty
+              ? Divider(height: 1, color: _borderColor())
+              : SizedBox(),
+          SizedBox(
+            height:
+                customer.address.isNotEmpty && customer.customerPhone.isNotEmpty
+                ? 12.h
+                : 0.h,
           ),
+          if (customer.address.isNotEmpty && customer.customerPhone.isNotEmpty)
+            Row(
+              children: [
+                Expanded(
+                  child: _infoTile(
+                    context,
+                    title: appLocalizations.phoneNumber,
+                    value: customer.customerPhone,
+                    icon: Icons.phone_outlined,
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: _infoTile(
+                    context,
+                    title: appLocalizations.address,
+                    value: customer.address.isNotEmpty
+                        ? customer.address
+                        : appLocalizations.notAvailable,
+                    icon: Icons.location_on_outlined,
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );
+  }
+
+  String _statusLabel(AppLocalizations appLocalizations) {
+    switch (customer.status.trim().toLowerCase()) {
+      case 'paid':
+        return appLocalizations.completed;
+      case 'overdue':
+        return appLocalizations.overdue;
+      case 'due':
+        return appLocalizations.pending;
+      case 'unpaid':
+        return 'Unpaid';
+      default:
+        return customer.status;
+    }
+  }
+
+  Color _statusColor() {
+    switch (customer.status.trim().toLowerCase()) {
+      case 'paid':
+        return Colors.green.withOpacity(0.12);
+      case 'overdue':
+        return ColorManager.red.withOpacity(0.12);
+      case 'due':
+        return ColorManager.warningOrange.withOpacity(0.12);
+      case 'unpaid':
+        return ColorManager.redDark.withOpacity(0.12);
+      default:
+        return primaryColor.withOpacity(0.12);
+    }
+  }
+
+  Color _statusTextColor() {
+    switch (customer.status.trim().toLowerCase()) {
+      case 'paid':
+        return isDark ? ColorManager.darkAccentGreen1 : ColorManager.green;
+      case 'overdue':
+        return ColorManager.red;
+      case 'due':
+        return ColorManager.warningOrange;
+      case 'unpaid':
+        return ColorManager.redDark;
+      default:
+        return primaryColor;
+    }
   }
 
   Widget _infoTile(
@@ -166,61 +223,24 @@ class CustomerDetailsHeader extends StatelessWidget {
   }
 
   Widget _badge(String text, Color backgroundColor, Color textColor) {
-    return Flexible(
-      child: Container(
-        padding: REdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Text(
-          text,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 12.5.sp,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
+    return Container(
+      constraints: BoxConstraints(maxWidth: 150.w),
+      padding: REdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 12.5.sp,
+          fontWeight: FontWeight.bold,
+          color: textColor,
         ),
       ),
     );
-  }
-
-  String _statusLabel(BuildContext context) {
-    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    switch (customer.status.toLowerCase()) {
-      case 'overdue':
-        return appLocalizations.overdue;
-      case 'pending':
-        return appLocalizations.pending;
-      case 'completed':
-        return appLocalizations.completed;
-      default:
-        return customer.status;
-    }
-  }
-
-  Color _statusColor() {
-    switch (customer.status.toLowerCase()) {
-      case 'overdue':
-        return ColorManager.red.withOpacity(0.12);
-      case 'pending':
-        return ColorManager.warningOrange.withOpacity(0.12);
-      default:
-        return primaryColor.withOpacity(0.12);
-    }
-  }
-
-  Color _statusTextColor() {
-    switch (customer.status.toLowerCase()) {
-      case 'overdue':
-        return ColorManager.red;
-      case 'pending':
-        return ColorManager.warningOrange;
-      default:
-        return primaryColor;
-    }
   }
 
   Color _secondaryColor() {

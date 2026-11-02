@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
+import 'package:smart_installment_management/core/routes/app_routes.dart';
 import 'package:smart_installment_management/core/utils/extensions/extensions.dart';
 import 'package:smart_installment_management/core/widgets/custom_search_text_field.dart';
+import 'package:smart_installment_management/features/main_layout/customers/presentation/widgets/custom_filter_search.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/cubit/group_cubit.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/cubit/group_state.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/model/group_model.dart';
 import 'package:smart_installment_management/features/main_layout/groups/presentation/widgets/add_group_bottom_sheet.dart';
-import 'package:smart_installment_management/features/main_layout/groups/presentation/widgets/filter_chips_list.dart';
 import 'package:smart_installment_management/features/main_layout/groups/presentation/widgets/groups_card.dart';
 import 'package:smart_installment_management/features/main_layout/groups/presentation/widgets/groups_empty_state.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
@@ -24,18 +25,11 @@ class _GroupTabState extends State<GroupTab> {
   late final TextEditingController _searchController;
   late final GroupsCubit _groupsCubit;
 
-  int _selectedFilterIndex = 0;
-
-  final List<String> _filters = const [
-    'All Groups',
-    'High Priority',
-    'Near Due',
-  ];
+  String _selectedFilterKey = 'all';
 
   @override
   void initState() {
     super.initState();
-
     _searchController = TextEditingController();
     _groupsCubit = GroupsCubit()..loadGroups();
   }
@@ -47,13 +41,23 @@ class _GroupTabState extends State<GroupTab> {
     super.dispose();
   }
 
+  Map<String, String> _getFilterOptions(AppLocalizations l10n) {
+    return {
+      'all': l10n.all,
+      'paid': l10n.paid,
+      'unpaid': l10n.unpaid,
+      'due': l10n.due,
+      'overdue': l10n.overdue,
+    };
+  }
+
   List<GroupModel> _getFilteredGroups(List<GroupModel> groups) {
     final searchText = _searchController.text.trim().toLowerCase();
-
     final List<GroupModel> filteredGroups = [];
 
     for (final group in groups) {
       final matchesSearch =
+          searchText.isEmpty ||
           group.groupTitle.toLowerCase().contains(searchText) ||
           group.collectorName.toLowerCase().contains(searchText) ||
           group.collectorPhone.toLowerCase().contains(searchText) ||
@@ -61,18 +65,76 @@ class _GroupTabState extends State<GroupTab> {
 
       if (!matchesSearch) continue;
 
-      if (_selectedFilterIndex == 1 && group.dueCount < 5) {
-        continue;
+      bool matchesStatus = true;
+
+      if (_selectedFilterKey != 'all') {
+        if (_selectedFilterKey == 'paid') {
+          matchesStatus =
+              group.clientsCount > 0 &&
+              group.completedCount == group.clientsCount;
+        } else if (_selectedFilterKey == 'overdue') {
+          matchesStatus = group.overdueCount > 0;
+        } else if (_selectedFilterKey == 'due') {
+          matchesStatus = group.dueTodayCount > 0;
+        } else if (_selectedFilterKey == 'unpaid') {
+          matchesStatus = group.dueCount > 0;
+        }
       }
 
-      if (_selectedFilterIndex == 2 && group.dueCount == 0) {
-        continue;
+      if (matchesStatus) {
+        filteredGroups.add(group);
       }
-
-      filteredGroups.add(group);
     }
 
     return filteredGroups;
+  }
+
+  Future<void> _showGroupsFilter() async {
+    final l10n = AppLocalizations.of(context)!;
+    final filterOptions = _getFilterOptions(l10n);
+    String tempSelectedKey = _selectedFilterKey;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      builder: (sheetContext) {
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            final theme = Theme.of(context);
+
+            return CustomFilterSearch(
+              valueDropDownGroups: tempSelectedKey,
+              itemsGroups: filterOptions.entries.map((entry) {
+                return DropdownMenuItem<String>(
+                  value: entry.key,
+                  child: Text(entry.value),
+                );
+              }).toList(),
+              onChangedGroups: (value) {
+                if (value == null) return;
+                setSheetState(() {
+                  tempSelectedKey = value;
+                });
+              },
+              onPressedReset: () {
+                setSheetState(() {
+                  tempSelectedKey = 'all';
+                });
+              },
+              onPressedApply: () {
+                setState(() {
+                  _selectedFilterKey = tempSelectedKey;
+                });
+                Navigator.pop(sheetContext);
+              },
+              theme: theme,
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -102,7 +164,6 @@ class _GroupTabState extends State<GroupTab> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 12.h),
-
               Text(
                 appLocalizations.groups,
                 style: theme.textTheme.headlineMedium?.copyWith(
@@ -110,20 +171,16 @@ class _GroupTabState extends State<GroupTab> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               SizedBox(height: 10.h),
-
               Expanded(
                 child: BlocBuilder<GroupsCubit, GroupsState>(
                   builder: (context, state) {
                     final allGroups = _groupsCubit.groups;
 
-                    // Loading
                     if (state is GroupsLoading && allGroups.isEmpty) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
-                    // Error
                     if (state is GroupsError && allGroups.isEmpty) {
                       return Center(
                         child: Padding(
@@ -141,7 +198,7 @@ class _GroupTabState extends State<GroupTab> {
                               SizedBox(height: 12.h),
                               ElevatedButton(
                                 onPressed: _groupsCubit.loadGroups,
-                                child: const Text('Retry'),
+                                child: Text(appLocalizations.retry),
                               ),
                             ],
                           ),
@@ -149,7 +206,6 @@ class _GroupTabState extends State<GroupTab> {
                       );
                     }
 
-                    // No groups found
                     if (state is GroupsLoaded && allGroups.isEmpty) {
                       return const GroupsEmptyState();
                     }
@@ -158,34 +214,51 @@ class _GroupTabState extends State<GroupTab> {
 
                     return Column(
                       children: [
-                        CustomSearchTextField(
-                          controller: _searchController,
-                          hintText:
-                              '${appLocalizations.search_groups_collectors_zones}...',
-                          onChanged: (_) {
-                            setState(() {});
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomSearchTextField(
+                                controller: _searchController,
+                                hintText:
+                                    '${appLocalizations.search_groups_collectors_zones}...',
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: theme.brightness == Brightness.dark
+                                    ? ColorManager.darkSurfaceVariant
+                                    : ColorManager.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(
+                                  color: theme.brightness == Brightness.dark
+                                      ? ColorManager.darkAccentGreen1
+                                      : ColorManager.primaryColor,
+                                ),
+                              ),
+                              child: IconButton(
+                                onPressed: _showGroupsFilter,
+                                tooltip: appLocalizations.filterGroups,
+                                icon: Icon(
+                                  Icons.tune_rounded,
+                                  color: theme.brightness == Brightness.dark
+                                      ? ColorManager.darkAccentGreen1
+                                      : ColorManager.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-
-                        SizedBox(height: 12.h),
-
-                        FilterChipsList(
-                          filters: _filters,
-                          selectedIndex: _selectedFilterIndex,
-                          onSelected: (index) {
-                            setState(() {
-                              _selectedFilterIndex = index;
-                            });
-                          },
-                        ),
-
                         SizedBox(height: 16.h),
-
                         Expanded(
                           child: filteredGroups.isEmpty
                               ? Center(
                                   child: Text(
-                                    'No groups found',
+                                    appLocalizations
+                                        .no_customers_match_your_search_or_filter,
                                     style: theme.textTheme.bodyMedium,
                                   ),
                                 )
@@ -193,15 +266,18 @@ class _GroupTabState extends State<GroupTab> {
                                   padding: REdgeInsets.only(bottom: 20),
                                   itemCount: filteredGroups.length,
                                   separatorBuilder: (_, __) =>
-                                      SizedBox(height: 12.h),
+                                      SizedBox(height: 14.h),
                                   itemBuilder: (context, index) {
                                     final group = filteredGroups[index];
-
                                     return GroupCard(
                                       group: group,
                                       currency: currency,
                                       onOpenSheetTap: () {
-                                        // We'll connect group details here later.
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.groupDetails,
+                                          arguments: group,
+                                        );
                                       },
                                     );
                                   },

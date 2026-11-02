@@ -12,6 +12,7 @@ abstract class AppRoutes {
   static const String backUp = "/backUp";
   static const String addNewCustomer = "/addNewCustomer";
   static const String customerDetails = "/customerDetails";
+  static const String groupDetails = "/groupDetails";
   static const String payInstallment = "/payInstallment";
   static const String appStartupAuthScreen = '/appStartupAuthScreen';
 }

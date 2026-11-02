@@ -14,7 +14,9 @@ import 'package:smart_installment_management/features/main_layout/customers/data
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class AddCustomerScreen extends StatefulWidget {
-  const AddCustomerScreen({super.key});
+  final CustomerModel? customer;
+
+  const AddCustomerScreen({super.key, this.customer});
 
   @override
   State<AddCustomerScreen> createState() => _AddCustomerScreenState();
@@ -46,8 +48,30 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   void initState() {
     super.initState();
 
-    _contractDateController.text =
-    DateTime.now().toString().split(' ')[0];
+    final customer = widget.customer;
+
+    if (customer != null) {
+      _selectedGroupId = customer.groupId;
+      _selectedGroupName = customer.groupName;
+
+      _nameController.text = customer.customerName;
+      _phoneController.text = customer.customerPhone;
+      _addressController.text = customer.address;
+
+      _contractDateController.text = customer.contractDate;
+      _contractNameController.text = customer.contractName;
+      _purchasePriceController.text = customer.purchasePrice.toString();
+      _installmentAmountController.text = customer.installmentAmount.toString();
+      _firstInstallmentDateController.text = customer.firstInstallmentDate;
+      _descriptionController.text = customer.description;
+      _advancePaymentController.text = customer.downPayment.toString();
+      _totalCostController.text = customer.sellingPrice.toString();
+      _debtAmountController.text = customer.debtAmount.toString();
+
+      _installmentType = customer.installmentType;
+    } else {
+      _contractDateController.text = DateTime.now().toString().split(' ')[0];
+    }
 
     _totalCostController.addListener(_calculateDebt);
     _advancePaymentController.addListener(_calculateDebt);
@@ -70,6 +94,13 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
         double.tryParse(_installmentAmountController.text.trim()) ?? 0;
 
     return CustomerModel(
+      id: widget.customer?.id ?? '',
+      imageUrl: widget.customer?.imageUrl ?? '',
+      paidValue: widget.customer?.paidValue ?? 0,
+      isDownPaymentPaid: widget.customer?.isDownPaymentPaid ?? false,
+      downPaymentPaidAtDate: widget.customer?.downPaymentPaidAtDate ?? '',
+      downPaymentPaidAmount: widget.customer?.downPaymentPaidAmount ?? 0,
+      schedule: widget.customer?.schedule ?? [],
       customerName: _nameController.text.trim(),
       customerPhone: _phoneController.text.trim(),
       address: _addressController.text.trim(),
@@ -86,13 +117,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       installmentType: _installmentType,
       installmentsCount: installmentsCount,
       firstInstallmentDate: _firstInstallmentDateController.text,
-      paidValue: 0,
       status: 'Up to Date',
       nextDueDate: _firstInstallmentDateController.text,
       description: _descriptionController.text.trim(),
-
-      downPaymentPaidAtDate:_contractDateController.text
-          ,
     );
   }
 
@@ -120,8 +147,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   }
 
   int _calculateInstallmentsCount() {
-    final sellingPrice =
-        double.tryParse(_totalCostController.text.trim()) ?? 0;
+    final sellingPrice = double.tryParse(_totalCostController.text.trim()) ?? 0;
 
     final downPayment =
         double.tryParse(_advancePaymentController.text.trim()) ?? 0;
@@ -129,10 +155,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     final installmentAmount =
         double.tryParse(_installmentAmountController.text.trim()) ?? 0;
 
-    final debt = _addCustomerCubit.calculateDebt(
-      sellingPrice,
-      downPayment,
-    );
+    final debt = _addCustomerCubit.calculateDebt(sellingPrice, downPayment);
 
     return _addCustomerCubit.calculateInstallmentsCount(
       debt: debt,
@@ -175,12 +198,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       return;
     }
 
-    if (debt > 0 &&
-        _firstInstallmentDateController.text.trim().isEmpty) {
-      UiUtils.showError(
-        context,
-        'Please select the first installment date.',
-      );
+    if (debt > 0 && _firstInstallmentDateController.text.trim().isEmpty) {
+      UiUtils.showError(context, 'Please select the first installment date.');
       return;
     }
     showDialog(
@@ -271,7 +290,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
-        title: Text(appLocalizations.addNewCustomer),
+        title: Text(
+          widget.customer == null
+              ? appLocalizations.addNewCustomer
+              : 'Edit Customer',
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -12,10 +12,13 @@ import 'package:smart_installment_management/features/backup_restore/presentatio
 import 'package:smart_installment_management/features/customer_details&pay/presentation/view/customer_details_screen.dart';
 import 'package:smart_installment_management/features/edit_profile/data/cubit/edit_profile_cubit.dart';
 import 'package:smart_installment_management/features/edit_profile/presentation/view/edit_profile_screen.dart';
+import 'package:smart_installment_management/features/group_details/data/cubit/group_details_cubit.dart';
+import 'package:smart_installment_management/features/group_details/presentation/view/group_details_page.dart';
 import 'package:smart_installment_management/features/installment_schedule_payment/data/cubit/installment_payment_cubit.dart';
 import 'package:smart_installment_management/features/installment_schedule_payment/presentation/view/installment_schedule_pay_screen.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/cubit/group_cubit.dart';
+import 'package:smart_installment_management/features/main_layout/groups/data/model/group_model.dart';
 import 'package:smart_installment_management/features/main_layout/home/data/cubit/home_cubit.dart';
 import 'package:smart_installment_management/features/main_layout/main_layout.dart';
 import 'package:smart_installment_management/features/main_layout/profile/data/cubit/profile_cubit.dart';
@@ -57,7 +60,13 @@ abstract class RoutesGenerator {
         }
       case AppRoutes.addNewCustomer:
         {
-          return CupertinoPageRoute(builder: (context) => AddCustomerScreen());
+          final args = settings.arguments;
+
+          return CupertinoPageRoute(
+            builder: (context) => AddCustomerScreen(
+              customer: args is CustomerModel ? args : null,
+            ),
+          );
         }
       case AppRoutes.accountSecurity:
         {
@@ -129,6 +138,15 @@ abstract class RoutesGenerator {
         {
           return CupertinoPageRoute(builder: (_) => BackupRestoreScreen());
         }
+      case AppRoutes.groupDetails:
+        final group = settings.arguments as GroupModel;
+
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => GroupDetailsCubit(),
+            child: GroupDetailsPage(group: group),
+          ),
+        );
     }
     return null;
   }

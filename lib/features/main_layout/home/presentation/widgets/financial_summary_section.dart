@@ -8,7 +8,14 @@ import 'package:smart_installment_management/core/utils/extensions/extensions.da
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class FinancialSummarySection extends StatelessWidget {
-  const FinancialSummarySection({super.key});
+  final double cashPartner;
+  final double outMoney;
+
+  const FinancialSummarySection({
+    super.key,
+    required this.cashPartner,
+    required this.outMoney,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class FinancialSummarySection extends StatelessWidget {
               child: _buildMetricCard(
                 context,
                 title: appLocalizations.cash,
-                value: "45,000 $currencySymbol",
+                value: "${cashPartner.toStringAsFixed(2)} $currencySymbol",
                 subtitle: "+8.4% ${appLocalizations.moM}",
                 subtitleColor: isDark
                     ? ColorManager.darkAccentGreen1
@@ -61,7 +68,7 @@ class FinancialSummarySection extends StatelessWidget {
               child: _buildMetricCard(
                 context,
                 title: appLocalizations.outMoney,
-                value: "105,000 $currencySymbol",
+                value: "${outMoney.toStringAsFixed(2)} $currencySymbol",
                 subtitle: "26 ${appLocalizations.accounts_due}",
                 subtitleColor: isDark
                     ? ColorManager.darkMutedText
@@ -77,6 +84,7 @@ class FinancialSummarySection extends StatelessWidget {
             ),
           ],
         ),
+
         SizedBox(height: 12.h),
         Row(
           children: [

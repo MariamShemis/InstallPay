@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
+import 'package:smart_installment_management/core/utils/helper/payment_status_helper.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
@@ -11,6 +12,7 @@ class InstallmentScheduleList extends StatelessWidget {
   final bool isDark;
   final String currency;
   final ValueChanged<int> onItemSelected;
+  final Future<void> Function(int index, double currentAmount) onEditPayment;
 
   const InstallmentScheduleList({
     super.key,
@@ -20,6 +22,7 @@ class InstallmentScheduleList extends StatelessWidget {
     required this.isDark,
     required this.currency,
     required this.onItemSelected,
+    required this.onEditPayment,
   });
 
   @override
@@ -40,10 +43,24 @@ class InstallmentScheduleList extends StatelessWidget {
               ? customer.contractDate
               : l10n.notAvailable,
           paidAtDate: customer.downPaymentPaidAtDate,
-          amount: customer.downPayment.toStringAsFixed(0),
+          //amount: customer.downPayment.toStringAsFixed(0),
+          amount:
+              (customer.downPaymentPaidAmount > 0
+                      ? customer.downPaymentPaidAmount
+                      : customer.downPayment)
+                  .toStringAsFixed(0),
+          onEdit: customer.isDownPaymentPaid
+              ? () => onEditPayment(
+                  currentIndex,
+                  customer.downPaymentPaidAmount > 0
+                      ? customer.downPaymentPaidAmount
+                      : customer.downPayment,
+                )
+              : null,
           isPaid: customer.isDownPaymentPaid,
           isSelected: selectedIndex == currentIndex,
           onTap: () => onItemSelected(currentIndex),
+          originalAmount: customer.downPayment,
         ),
       );
 
@@ -53,24 +70,57 @@ class InstallmentScheduleList extends StatelessWidget {
     for (int i = 0; i < customer.schedule.length; i++) {
       final installment = customer.schedule[i];
       final currentIndex = itemIndex;
-      final isPaid = installment.isPaid;
-      final isFuture = _isFutureDate(installment.dueDate);
+
+      final bool isPaid =
+          installment.isPaid ||
+          installment.paidAmount > 0 ||
+          installment.remainingAmount <= 0;
+
+      // final String displayedAmount =
+      // installment.amount.toStringAsFixed(0);
+      final String displayedAmount = installment.amount.toStringAsFixed(0);
+
+      final String status = isPaid
+          ? PaymentStatusHelper.paid
+          : PaymentStatusHelper.installmentStatus(installment);
+
+      final parsedDueDate = PaymentStatusHelper.parseDate(installment.dueDate);
+
+      final today = DateTime.now();
+      final todayOnly = DateTime(today.year, today.month, today.day);
+
+      final bool isFuture =
+          !isPaid &&
+          status == PaymentStatusHelper.unpaid &&
+          parsedDueDate != null &&
+          parsedDueDate.isAfter(todayOnly);
+
+      final bool isOverdue = !isPaid && status == PaymentStatusHelper.overdue;
+
+      final bool isDueToday = !isPaid && status == PaymentStatusHelper.due;
 
       items.add(
         _buildInstallmentTile(
+          originalAmount: installment.amount,
           l10n: l10n,
           installmentTitle: l10n.installmentNumber(
             installment.installmentNumber,
           ),
+          onEdit: isPaid
+              ? () => onEditPayment(currentIndex, installment.paidAmount)
+              : null,
           dueDate: installment.dueDate,
-          paidAtDate: isPaid && installment.paidAtDate.isNotEmpty
+          paidAmount: installment.paidAmount,
+          paidAtDate: installment.paidAtDate.isNotEmpty
               ? installment.paidAtDate
-              : installment.dueDate,
-          amount: installment.remainingAmount.toStringAsFixed(0),
+              : null,
+          amount: displayedAmount,
           isPaid: isPaid,
           isFuture: isFuture,
           isSelected: selectedIndex == currentIndex,
           onTap: () => onItemSelected(currentIndex),
+          isOverdue: isOverdue,
+          isDueToday: isDueToday,
         ),
       );
 
@@ -97,14 +147,42 @@ class InstallmentScheduleList extends StatelessWidget {
     required bool isPaid,
     required bool isSelected,
     required VoidCallback onTap,
+    required VoidCallback? onEdit,
+    required double originalAmount,
   }) {
-    final isOverdue = !isPaid && _isOverdue(date);
+    final String paymentStatus = isPaid
+        ? PaymentStatusHelper.paid
+        : PaymentStatusHelper.statusForDate(date);
+    final double actualPaidAmount = customer.downPaymentPaidAmount > 0
+        ? customer.downPaymentPaidAmount
+        : customer.downPayment;
 
-    final statusColor = isPaid
-        ? (isDark ? ColorManager.darkAccentGreen1 : ColorManager.green)
-        : isOverdue
-        ? ColorManager.red
-        : ColorManager.warningOrange;
+    final bool hasDifferentPaidAmount =
+        isPaid && (actualPaidAmount - originalAmount).abs() > 0.001;
+
+    final String statusText;
+
+    if (paymentStatus == PaymentStatusHelper.paid) {
+      statusText = l10n.paid;
+    } else if (paymentStatus == PaymentStatusHelper.overdue) {
+      statusText = l10n.overdue;
+    } else if (paymentStatus == PaymentStatusHelper.due) {
+      statusText = l10n.dueNow;
+    } else {
+      statusText = l10n.unpaid;
+    }
+
+    final Color statusColor;
+
+    if (paymentStatus == PaymentStatusHelper.paid) {
+      statusColor = isDark ? ColorManager.darkAccentGreen1 : ColorManager.green;
+    } else if (paymentStatus == PaymentStatusHelper.overdue) {
+      statusColor = ColorManager.red;
+    } else if (paymentStatus == PaymentStatusHelper.due) {
+      statusColor = ColorManager.warningOrange;
+    } else {
+      statusColor = _futureColor;
+    }
 
     return InkWell(
       onTap: onTap,
@@ -116,6 +194,7 @@ class InstallmentScheduleList extends StatelessWidget {
           isSelected: isSelected,
           isPaid: isPaid,
           isFuture: false,
+          hasDifferentPaidAmount: hasDifferentPaidAmount,
         ),
         child: Row(
           children: [
@@ -163,7 +242,7 @@ class InstallmentScheduleList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
-                    isPaid ? l10n.paid : l10n.unpaid,
+                    statusText,
                     style: TextStyle(
                       fontSize: 8.5.sp,
                       fontWeight: FontWeight.bold,
@@ -196,6 +275,31 @@ class InstallmentScheduleList extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (onEdit != null) ...[
+                  SizedBox(height: 2.h),
+                  TextButton.icon(
+                    onPressed: onEdit,
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 2.h,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      foregroundColor: isDark
+                          ? ColorManager.darkAccentGreen
+                          : ColorManager.primaryColor,
+                    ),
+                    icon: Icon(Icons.edit_rounded, size: 12.sp),
+                    label: Text(
+                      'Edit',
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ],
@@ -211,20 +315,27 @@ class InstallmentScheduleList extends StatelessWidget {
     required String? paidAtDate,
     required String amount,
     required bool isPaid,
+    required bool isOverdue,
+    required bool isDueToday,
     required bool isFuture,
+    required double paidAmount,
     required bool isSelected,
     required VoidCallback onTap,
+    required VoidCallback? onEdit,
+    required double originalAmount,
   }) {
     final isFutureUnpaid = !isPaid && isFuture;
-    final isOverdue = !isPaid && _isOverdue(dueDate);
 
     final statusColor = isPaid
         ? (isDark ? ColorManager.darkAccentGreen1 : ColorManager.green)
         : isOverdue
         ? ColorManager.red
-        : isFutureUnpaid
-        ? _futureColor
-        : ColorManager.warningOrange;
+        : isDueToday
+        ? ColorManager.warningOrange
+        : _futureColor;
+
+    final bool hasDifferentPaidAmount =
+        paidAmount > 0 && (paidAmount - originalAmount).abs() > 0.001;
 
     return InkWell(
       onTap: onTap,
@@ -236,6 +347,7 @@ class InstallmentScheduleList extends StatelessWidget {
           isSelected: isSelected,
           isPaid: isPaid,
           isFuture: isFutureUnpaid,
+          hasDifferentPaidAmount: hasDifferentPaidAmount,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -279,6 +391,21 @@ class InstallmentScheduleList extends StatelessWidget {
                       color: isDark ? Colors.white : const Color(0xFF1E293B),
                     ),
                   ),
+                  // if (paidAmount > 0) ...[
+                  //   SizedBox(height: 3.h),
+                  //   Text(
+                  //     '${l10n.paid}: ${paidAmount.toStringAsFixed(0)} $currency',
+                  //     maxLines: 1,
+                  //     overflow: TextOverflow.ellipsis,
+                  //     style: TextStyle(
+                  //       fontSize: 9.sp,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: isDark
+                  //           ? ColorManager.darkAccentGreen1
+                  //           : ColorManager.green,
+                  //     ),
+                  //   ),
+                  // ],
                   if (isPaid &&
                       paidAtDate != null &&
                       paidAtDate.isNotEmpty) ...[
@@ -310,9 +437,11 @@ class InstallmentScheduleList extends StatelessWidget {
                   child: Text(
                     isPaid
                         ? l10n.paid
-                        : isFutureUnpaid
-                        ? l10n.unpaid
-                        : l10n.dueNow,
+                        : isOverdue
+                        ? l10n.overdue
+                        : isDueToday
+                        ? l10n.dueNow
+                        : l10n.unpaid,
                     style: TextStyle(
                       fontSize: 8.5.sp,
                       fontWeight: FontWeight.bold,
@@ -327,7 +456,7 @@ class InstallmentScheduleList extends StatelessWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Text(
-                      amount,
+                      paidAmount != 0 ? "${paidAmount} " : amount,
                       style: TextStyle(
                         fontSize: 13.5.sp,
                         fontWeight: FontWeight.bold,
@@ -345,6 +474,31 @@ class InstallmentScheduleList extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (onEdit != null) ...[
+                  SizedBox(height: 2.h),
+                  TextButton.icon(
+                    onPressed: onEdit,
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 2.h,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      foregroundColor: isDark
+                          ? ColorManager.darkAccentGreen
+                          : ColorManager.primaryColor,
+                    ),
+                    icon: Icon(Icons.edit_rounded, size: 12.sp),
+                    label: Text(
+                      'Edit',
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ],
@@ -399,6 +553,7 @@ class InstallmentScheduleList extends StatelessWidget {
     required bool isSelected,
     required bool isPaid,
     required bool isFuture,
+    required bool hasDifferentPaidAmount,
   }) {
     Color cardBg;
 
@@ -407,12 +562,23 @@ class InstallmentScheduleList extends StatelessWidget {
     } else {
       cardBg = isDark ? const Color(0xFF1E293B) : Colors.white;
     }
+
     Color borderColor = _borderColor;
     double borderWidth = 1.w;
-    if (isSelected && !isPaid) {
+
+    final bool needsRedBorder = !isPaid && !isFuture && !isSelected;
+
+    if (hasDifferentPaidAmount) {
+      borderColor = ColorManager.warningOrange;
+      borderWidth = 2.5.w;
+    } else if (needsRedBorder) {
+      borderColor = ColorManager.red;
+      borderWidth = 2.5.w;
+    } else if (isSelected && !isPaid) {
       borderColor = primaryColor;
       borderWidth = 2.w;
     }
+
     return BoxDecoration(
       color: cardBg,
       borderRadius: BorderRadius.circular(12.r),

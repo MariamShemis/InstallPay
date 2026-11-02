@@ -1003,5 +1003,240 @@ class AppLocalizationsEn extends AppLocalizations {
   String get featureComingSoon => 'This feature will be enabled after connecting the required security services.';
 
   @override
+  String get deleteCustomerTitle => 'Delete Customer';
+
+  @override
+  String deleteCustomerConfirmation(String customerName) {
+    return 'Are you sure you want to delete $customerName? This action cannot be undone.';
+  }
+
+  @override
+  String get deleteCustomerFailed => 'Failed to delete customer. Please try again.';
+
+  @override
+  String get deleteCustomerSuccess => 'Customer deleted successfully';
+
+  @override
+  String get filterCustomers => 'Filter Customers';
+
+  @override
+  String get filterGroups => 'Filter Groups';
+
+  @override
+  String get groupStatus => 'Group Status';
+
+  @override
+  String get applyFilters => 'Apply Filters';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get paymentStatus => 'Payment Status';
+
+  @override
+  String get allGroups => 'All Groups';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get no_customers_match_your_search_or_filter => 'No customers match your search or filter.';
+
+  @override
+  String get admin => 'Admin';
+
+  @override
+  String get deletePartner => 'Delete Partner';
+
+  @override
+  String confirmDeletePartner(String name) {
+    return 'Are you sure you want to delete $name?';
+  }
+
+  @override
+  String get editPartner => 'Edit Partner';
+
+  @override
+  String get updatePartner => 'Update Partner';
+
+  @override
+  String get partnerAddedSuccessfully => 'Partner added successfully';
+
+  @override
+  String get partnerUpdatedSuccessfully => 'Partner updated successfully';
+
+  @override
+  String get partnerDeletedSuccessfully => 'Partner deleted successfully';
+
+  @override
+  String get operationFailed => 'Operation failed. Please try again.';
+
+  @override
+  String get no_partners_match_your_search_or_filter => 'No partners match your search or filter.';
+
+  @override
+  String get onlyOneAdminAllowed => 'Only one Admin is allowed.';
+
+  @override
+  String get secondaryProfitLimitExceeded => 'The total Secondary profit percentage cannot exceed 100%.';
+
+  @override
+  String get invalidProfitMargin => 'Profit percentage must be between 0 and 100.';
+
+  @override
+  String get invalidMainCapital => 'Please enter a valid capital amount.';
+
+  @override
+  String get partnerNotFound => 'Partner not found.';
+
+  @override
   String get retry => 'Retry';
+
+  @override
+  String get choosePartnerPhoto => 'Choose partner photo';
+
+  @override
+  String get secondaryProfitTotal => 'Secondary profit total';
+
+  @override
+  String get groupDetails => 'Group Details';
+
+  @override
+  String get groupCustomers => 'Group Customers';
+
+  @override
+  String get collectorPhone => 'Collector Phone';
+
+  @override
+  String get totalContractValue => 'Total Contract Value';
+
+  @override
+  String get totalCollected => 'Total Collected';
+
+  @override
+  String get totalRemaining => 'Total Remaining';
+
+  @override
+  String get completedCustomers => 'Completed Customers';
+
+  @override
+  String get overdueCustomers => 'Overdue Customers';
+
+  @override
+  String get editGroup => 'Edit Group';
+
+  @override
+  String get deleteGroup => 'Delete Group';
+
+  @override
+  String get deleteGroupConfirmation => 'Are you sure you want to delete this group? Its customers will be kept and moved to Other.';
+
+  @override
+  String get groupUpdatedSuccessfully => 'Group updated successfully';
+
+  @override
+  String get groupDeletedSuccessfully => 'Group deleted successfully';
+
+  @override
+  String get noCustomersInGroup => 'There are no customers in this group yet.';
+
+  @override
+  String get errorLoadingGroup => 'Could not load group details. Please try again.';
+
+  @override
+  String get requiredField => 'This field is required';
+
+  @override
+  String get optionalProfilePhoto => 'Add optional profile photo';
+
+  @override
+  String get removePhoto => 'Remove photo';
+
+  @override
+  String get trackerCapitalSection => 'Capital & Partners';
+
+  @override
+  String get trackerMainCapital => 'Main Capital';
+
+  @override
+  String get trackerNewCapital => 'New Capital';
+
+  @override
+  String get trackerExpectedProfit => 'Expected Profit';
+
+  @override
+  String get trackerPartnersCount => 'Number of Partners';
+
+  @override
+  String get trackerCustomersSection => 'Customers & Contracts';
+
+  @override
+  String get trackerCustomersCount => 'Number of Customers';
+
+  @override
+  String get trackerTotalSales => 'Total Contract Value';
+
+  @override
+  String get trackerTotalCollected => 'Total Collected';
+
+  @override
+  String get trackerRemainingAmount => 'Remaining from Customers';
+
+  @override
+  String get trackerAutoUpdateNote => 'Values update automatically when partner or customer data changes.';
+
+  @override
+  String get trackerLoadError => 'Unable to load the financial data. Please try again.';
+
+  @override
+  String get trackerCapitalSubtitle => 'Capital and expected growth from partners';
+
+  @override
+  String get trackerProfitEquation => 'Expected Profit = New Capital - Main Capital';
+
+  @override
+  String get trackerCalculationOutput => 'CALCULATION OUTPUT';
+
+  @override
+  String get trackerCapitalGrowthRate => 'Capital Growth Rate';
+
+  @override
+  String get trackerPartnerSummary => 'Partner Capital Summary';
+
+  @override
+  String get trackerCombinedPartnerCapital => 'Combined capital for all registered partners';
+
+  @override
+  String get trackerPartnerTotalEquation => 'Total = Admin + Primary + Secondary Partners';
+
+  @override
+  String get trackerTotalPartners => 'Total Partners';
+
+  @override
+  String get trackerCombinedMainCapital => 'Combined Main Capital';
+
+  @override
+  String get trackerCombinedNewCapital => 'Combined New Capital';
+
+  @override
+  String get trackerPartnerCapitalNote => 'Capital totals include Admin, Primary, and Secondary partners.';
+
+  @override
+  String get trackerCustomerSummarySubtitle => 'Sales, collections and outstanding installments';
+
+  @override
+  String get trackerRemainingEquation => 'Remaining = Total Sales - Amount Collected';
+
+  @override
+  String get trackerCollectionStatus => 'COLLECTION STATUS';
+
+  @override
+  String get trackerCollectionRate => 'Collection Rate';
+
+  @override
+  String get trackerOutstandingBalance => 'Outstanding Customer Balance';
+
+  @override
+  String get edit => 'Edit';
 }

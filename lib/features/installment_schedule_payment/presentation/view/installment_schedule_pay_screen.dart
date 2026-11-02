@@ -44,6 +44,90 @@ class _InstallmentSchedulePayScreenState
     super.dispose();
   }
 
+  bool _isSelectedItemPaid(CustomerModel customer) {
+    final bool hasDownPayment = customer.downPayment > 0;
+
+    // Down payment
+    if (hasDownPayment && _selectedIndex == 0) {
+      return customer.isDownPaymentPaid ||
+          customer.downPaymentPaidAmount > 0;
+    }
+
+    // Regular installment
+    final int scheduleIndex =
+    hasDownPayment ? _selectedIndex - 1 : _selectedIndex;
+
+    if (scheduleIndex < 0 ||
+        scheduleIndex >= customer.schedule.length) {
+      return true;
+    }
+
+    final installment = customer.schedule[scheduleIndex];
+
+    return installment.isPaid ||
+        installment.paidAmount > 0 ||
+        installment.remainingAmount <= 0;
+  }
+
+  Future<void> _showEditPaymentDialog(int index, double currentAmount) async {
+    final controller = TextEditingController(
+      text: currentAmount.toStringAsFixed(2),
+    );
+
+    try {
+      final newAmount = await showDialog<double>(
+        context: context,
+        useRootNavigator: true,
+        barrierDismissible: false,
+        builder: (dialogContext) {
+          return AlertDialog(
+            title: const Text('Edit paid amount'),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'Paid amount',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext, rootNavigator: true).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  final amount = double.tryParse(controller.text.trim());
+
+                  if (amount == null || !amount.isFinite || amount <= 0) {
+                    return;
+                  }
+
+                  Navigator.of(dialogContext, rootNavigator: true).pop(amount);
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (!mounted || newAmount == null) return;
+
+      await _paymentCubit.editPaymentAmount(
+        selectedIndex: index,
+        newAmount: newAmount,
+      );
+    } finally {
+      controller.dispose();
+    }
+  }
+
   void _autoSelectFirstUnpaid() {
     final customer = _paymentCubit.customer;
 
@@ -130,23 +214,26 @@ class _InstallmentSchedulePayScreenState
       value: _paymentCubit,
       child: BlocConsumer<InstallmentPaymentCubit, InstallmentPaymentState>(
         listener: (context, state) {
+          if (state is InstallmentPaymentLoading) {
+            UiUtils.showLoading(context);
+            return;
+          }
           if (state is InstallmentPaymentSuccess) {
             UiUtils.hideLoading(context);
 
-            setState(() {
-              _autoSelectFirstUnpaid();
-            });
+            if (!mounted) return;
+
+            // Keep the same selected installment.
+            // The payment bar will disappear if any amount was paid.
+            setState(() {});
 
             UiUtils.showToast('Payment recorded successfully!');
+            return;
           }
-
           if (state is InstallmentPaymentError) {
             UiUtils.hideLoading(context);
+            if (!mounted) return;
             UiUtils.showError(context, state.message);
-          }
-
-          if (state is InstallmentPaymentLoading) {
-            UiUtils.showLoading(context);
           }
         },
         builder: (context, state) {
@@ -173,20 +260,24 @@ class _InstallmentSchedulePayScreenState
                 ),
               ),
             ),
-            bottomNavigationBar: InstallmentPayBottomBar(
-              customer: currentCustomer,
-              selectedIndex: _selectedIndex,
-              primaryColor: primaryColor,
-              isDark: isDark,
-              currency: currency,
-              onPaymentConfirmed: (paymentDate, paidAmount) {
-                _paymentCubit.confirmPayment(
-                  selectedIndex: _selectedIndex,
-                  paymentDate: paymentDate,
-                  paidAmount: paidAmount,
-                );
-              },
-            ),
+
+            bottomNavigationBar:
+            // _isSelectedItemPaid(currentCustomer)
+            //     ? null
+                InstallmentPayBottomBar(
+                    customer: currentCustomer,
+                    selectedIndex: _selectedIndex,
+                    primaryColor: primaryColor,
+                    isDark: isDark,
+                    currency: currency,
+                    onPaymentConfirmed: (paymentDate, paidAmount) {
+                      _paymentCubit.confirmPayment(
+                        selectedIndex: _selectedIndex,
+                        paymentDate: paymentDate,
+                        paidAmount: paidAmount,
+                      );
+                    },
+                  ),
             body: SafeArea(
               child: SingleChildScrollView(
                 padding: REdgeInsets.fromLTRB(14, 8, 14, 20),
@@ -241,6 +332,7 @@ class _InstallmentSchedulePayScreenState
                     ),
                     SizedBox(height: 10.h),
                     InstallmentScheduleList(
+                      onEditPayment: _showEditPaymentDialog,
                       customer: currentCustomer,
                       selectedIndex: _selectedIndex,
                       primaryColor: primaryColor,

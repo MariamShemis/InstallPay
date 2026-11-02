@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
 import 'package:smart_installment_management/core/utils/extensions/extensions.dart';
+import 'package:smart_installment_management/core/utils/ui_utils.dart';
 import 'package:smart_installment_management/core/widgets/custom_search_text_field.dart';
 import 'package:smart_installment_management/features/main_layout/groups/presentation/widgets/filter_chips_list.dart';
+import 'package:smart_installment_management/features/main_layout/partners/data/cubit/partner_cubit.dart';
+import 'package:smart_installment_management/features/main_layout/partners/data/cubit/partner_state.dart';
 import 'package:smart_installment_management/features/main_layout/partners/data/model/partner_model.dart';
 import 'package:smart_installment_management/features/main_layout/partners/presentation/widgets/add_partner_bottom_sheet.dart';
 import 'package:smart_installment_management/features/main_layout/partners/presentation/widgets/partner_card.dart';
@@ -23,36 +27,6 @@ class _PartnersTabState extends State<PartnersTab> {
   int _selectedFilterIndex = 0;
   String _searchQuery = '';
 
-  final List<PartnerModel> _partnersData = [
-    const PartnerModel(
-      id: '1',
-      name: 'System Admin Owner',
-      address: 'Headquarters - Executive Office',
-      phone: '+20 100 000 0000',
-      mainCapital: 200000,
-      profitMargin: 100,
-      type: PartnerType.admin,
-    ),
-    const PartnerModel(
-      id: '2',
-      name: 'Michael Abdelaziz',
-      address: 'Cairo, Nasrs City - El Tayaran St.',
-      phone: '+20 101 234 5678',
-      mainCapital: 150000,
-      profitMargin: 20,
-      type: PartnerType.primary,
-    ),
-    const PartnerModel(
-      id: '3',
-      name: 'El-Amal Trading Co. (Sameh El-Ali)',
-      address: 'Alexandria, Smouha - Traders Tower',
-      phone: '+20 129 876 5432',
-      mainCapital: 80000,
-      profitMargin: 15,
-      type: PartnerType.secondary,
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -65,115 +39,203 @@ class _PartnersTabState extends State<PartnersTab> {
     super.dispose();
   }
 
-  List<PartnerModel> get _filteredPartners {
-    return _partnersData.where((partner) {
+  List<PartnerModel> _filterPartners(List<PartnerModel> partners) {
+    final query = _searchQuery.trim().toLowerCase();
+
+    return partners.where((partner) {
       final matchesFilter = switch (_selectedFilterIndex) {
         1 => partner.isAdmin,
         2 => partner.isPrimary,
-        3 => partner.type == PartnerType.secondary,
+        3 => partner.isSecondary,
         _ => true,
       };
 
-      final query = _searchQuery.toLowerCase().trim();
-      final matchesSearch = query.isEmpty ||
+      final matchesSearch =
+          query.isEmpty ||
           partner.name.toLowerCase().contains(query) ||
-          partner.phone.contains(query) ||
+          partner.phone.toLowerCase().contains(query) ||
           partner.address.toLowerCase().contains(query);
 
       return matchesFilter && matchesSearch;
     }).toList();
   }
 
+  void _showAddPartnerSheet(BuildContext context) {
+    final cubit = context.read<PartnerCubit>();
+
+    AddPartnerBottomSheet.show(
+      context,
+      adminProfitMargin: cubit.adminProfitMargin,
+      secondaryProfitTotal: cubit.secondaryProfitTotal,
+      onPartnerAdded: cubit.addPartner,
+    );
+  }
+
+  void _showEditPartnerSheet(BuildContext context, PartnerModel partner) {
+    final cubit = context.read<PartnerCubit>();
+
+    AddPartnerBottomSheet.show(
+      context,
+      partnerToEdit: partner,
+      adminProfitMargin: cubit.adminProfitMargin,
+      secondaryProfitTotal: cubit.secondaryProfitTotal,
+      onPartnerAdded: cubit.updatePartner,
+    );
+  }
+
+  Future<void> _confirmDeletePartner(
+    BuildContext context,
+    PartnerModel partner,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final dialogL10n = AppLocalizations.of(dialogContext)!;
+
+        return AlertDialog(
+          title: Text(dialogL10n.deletePartner),
+          content: Text(dialogL10n.confirmDeletePartner(partner.name)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(dialogL10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(
+                dialogL10n.delete,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true || !context.mounted) return;
+
+    final cubit = context.read<PartnerCubit>();
+
+    UiUtils.showLoading(context);
+
+    var success = false;
+
+    try {
+      success = await cubit.deletePartner(partner.id);
+    } catch (error, stackTrace) {
+      debugPrint('Delete partner error: $error');
+      debugPrintStack(stackTrace: stackTrace);
+    } finally {
+      UiUtils.hideLoading(context);
+    }
+
+    if (!context.mounted) return;
+
+    if (success) {
+      UiUtils.showToast(l10n.partnerDeletedSuccessfully);
+    } else {
+      UiUtils.showError(context, l10n.operationFailed);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final currency = context.currencySymbol;
 
     final filters = [
-      appLocalizations.all,
-      'Admin',
-      appLocalizations.primaryPartner,
-      appLocalizations.secondaryPartner,
+      l10n.all,
+      l10n.admin,
+      l10n.primaryPartner,
+      l10n.secondaryPartner,
     ];
-
-    final filteredList = _filteredPartners;
-    final isTotalEmpty = _partnersData.isEmpty;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          AddPartnerBottomSheet.show(
-            context,
-            onPartnerAdded: (partner) {
-              setState(() {
-                _partnersData.add(partner);
-              });
-            },
-          );
-        },
+        onPressed: () => _showAddPartnerSheet(context),
+        backgroundColor: ColorManager.primaryColor,
         child: Icon(Icons.add, color: ColorManager.white, size: 28.r),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: REdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 12.h),
-              Text(
-                appLocalizations.partners,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: BlocBuilder<PartnerCubit, PartnerState>(
+        builder: (context, state) {
+          if (state.isLoading && state.partners.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final filteredPartners = _filterPartners(state.partners);
+
+          return SafeArea(
+            child: Padding(
+              padding: REdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.h),
+                  Text(
+                    l10n.partners,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 14.h),
+                  CustomSearchTextField(
+                    controller: _searchController,
+                    hintText: '${l10n.search_partners}...',
+                    onChanged: (value) {
+                      setState(() => _searchQuery = value);
+                    },
+                  ),
+                  SizedBox(height: 12.h),
+                  FilterChipsList(
+                    filters: filters,
+                    selectedIndex: _selectedFilterIndex,
+                    onSelected: (index) {
+                      setState(() => _selectedFilterIndex = index);
+                    },
+                  ),
+                  SizedBox(height: 16.h),
+                  Expanded(
+                    child: state.partners.isEmpty
+                        ? const PartnersEmptyState()
+                        : filteredPartners.isEmpty
+                        ? Center(
+                            child: Text(
+                              l10n.noPartnersFound,
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          )
+                        : ListView.separated(
+                            padding: REdgeInsets.only(bottom: 24),
+                            itemCount: filteredPartners.length,
+                            separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                            itemBuilder: (context, index) {
+                              final partner = filteredPartners[index];
+
+                              return PartnerCard(
+                                partner: partner,
+                                currency: context.currencySymbol,
+                                secondaryProfitTotal: context
+                                    .read<PartnerCubit>()
+                                    .secondaryProfitTotal,
+                                onEdit: () {
+                                  _showEditPartnerSheet(context, partner);
+                                },
+                                onDelete: () {
+                                  _confirmDeletePartner(context, partner);
+                                },
+                              );
+                            },
+                          ),
+                  ),
+                ],
               ),
-
-              if (!isTotalEmpty) ...[
-                SizedBox(height: 10.h),
-                CustomSearchTextField(
-                  controller: _searchController,
-                  hintText: '${appLocalizations.search_partners}...',
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 12.h),
-                FilterChipsList(
-                  filters: filters,
-                  selectedIndex: _selectedFilterIndex,
-                  onSelected: (index) {
-                    setState(() {
-                      _selectedFilterIndex = index;
-                    });
-                  },
-                ),
-              ],
-
-              SizedBox(height: 16.h),
-
-              Expanded(
-                child: isTotalEmpty || filteredList.isEmpty
-                    ? const PartnersEmptyState()
-                    : ListView.separated(
-                  padding: REdgeInsets.only(bottom: 20),
-                  itemCount: filteredList.length,
-                  separatorBuilder: (context, index) =>
-                      SizedBox(height: 12.h),
-                  itemBuilder: (context, index) {
-                    final partner = filteredList[index];
-                    return PartnerCard(
-                      partner: partner,
-                      currency: currency,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

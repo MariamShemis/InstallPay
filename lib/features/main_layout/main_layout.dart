@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/features/main_layout/customers/presentation/view/customers_tab.dart';
 import 'package:smart_installment_management/features/main_layout/groups/presentation/view/group_tab.dart';
 import 'package:smart_installment_management/features/main_layout/home/presentation/view/home_tab.dart';
+import 'package:smart_installment_management/features/main_layout/partners/data/cubit/partner_cubit.dart';
 import 'package:smart_installment_management/features/main_layout/partners/presentation/view/partners_tab.dart';
 import 'package:smart_installment_management/features/main_layout/profile/presentation/view/Profile_tab.dart';
+import 'package:smart_installment_management/features/main_layout/tracker/data/cubit/tracker_money_management_cubit.dart';
 import 'package:smart_installment_management/features/main_layout/tracker/presentation/view/tracker_tab.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
@@ -20,10 +23,18 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> _screens = [
     const HomeTab(),
-    const PartnersTab(),
+    BlocProvider(
+      create: (context) =>
+      PartnerCubit()
+        ..loadPartners(),
+      child: PartnersTab(),
+    ),
     const GroupTab(),
     const CustomersTab(),
-    const TrackerTab(),
+    BlocProvider(
+      create: (context) => TrackerMoneyManagementCubit()..loadData(),
+      child: TrackerTab(),
+    ),
     ProfileTab(),
   ];
 

@@ -2039,11 +2039,473 @@ abstract class AppLocalizations {
   /// **'This feature will be enabled after connecting the required security services.'**
   String get featureComingSoon;
 
+  /// No description provided for @deleteCustomerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Customer'**
+  String get deleteCustomerTitle;
+
+  /// No description provided for @deleteCustomerConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {customerName}? This action cannot be undone.'**
+  String deleteCustomerConfirmation(String customerName);
+
+  /// No description provided for @deleteCustomerFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete customer. Please try again.'**
+  String get deleteCustomerFailed;
+
+  /// No description provided for @deleteCustomerSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer deleted successfully'**
+  String get deleteCustomerSuccess;
+
+  /// No description provided for @filterCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Customers'**
+  String get filterCustomers;
+
+  /// No description provided for @filterGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Groups'**
+  String get filterGroups;
+
+  /// No description provided for @groupStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Status'**
+  String get groupStatus;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @paymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Status'**
+  String get paymentStatus;
+
+  /// No description provided for @allGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'All Groups'**
+  String get allGroups;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// No description provided for @no_customers_match_your_search_or_filter.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers match your search or filter.'**
+  String get no_customers_match_your_search_or_filter;
+
+  /// No description provided for @admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get admin;
+
+  /// No description provided for @deletePartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Partner'**
+  String get deletePartner;
+
+  /// No description provided for @confirmDeletePartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {name}?'**
+  String confirmDeletePartner(String name);
+
+  /// No description provided for @editPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Partner'**
+  String get editPartner;
+
+  /// No description provided for @updatePartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Partner'**
+  String get updatePartner;
+
+  /// No description provided for @partnerAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner added successfully'**
+  String get partnerAddedSuccessfully;
+
+  /// No description provided for @partnerUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner updated successfully'**
+  String get partnerUpdatedSuccessfully;
+
+  /// No description provided for @partnerDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner deleted successfully'**
+  String get partnerDeletedSuccessfully;
+
+  /// No description provided for @operationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation failed. Please try again.'**
+  String get operationFailed;
+
+  /// No description provided for @no_partners_match_your_search_or_filter.
+  ///
+  /// In en, this message translates to:
+  /// **'No partners match your search or filter.'**
+  String get no_partners_match_your_search_or_filter;
+
+  /// No description provided for @onlyOneAdminAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only one Admin is allowed.'**
+  String get onlyOneAdminAllowed;
+
+  /// No description provided for @secondaryProfitLimitExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'The total Secondary profit percentage cannot exceed 100%.'**
+  String get secondaryProfitLimitExceeded;
+
+  /// No description provided for @invalidProfitMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit percentage must be between 0 and 100.'**
+  String get invalidProfitMargin;
+
+  /// No description provided for @invalidMainCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid capital amount.'**
+  String get invalidMainCapital;
+
+  /// No description provided for @partnerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner not found.'**
+  String get partnerNotFound;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// No description provided for @choosePartnerPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose partner photo'**
+  String get choosePartnerPhoto;
+
+  /// No description provided for @secondaryProfitTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary profit total'**
+  String get secondaryProfitTotal;
+
+  /// No description provided for @groupDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Details'**
+  String get groupDetails;
+
+  /// No description provided for @groupCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Customers'**
+  String get groupCustomers;
+
+  /// No description provided for @collectorPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Collector Phone'**
+  String get collectorPhone;
+
+  /// No description provided for @totalContractValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Contract Value'**
+  String get totalContractValue;
+
+  /// No description provided for @totalCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Collected'**
+  String get totalCollected;
+
+  /// No description provided for @totalRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Remaining'**
+  String get totalRemaining;
+
+  /// No description provided for @completedCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Customers'**
+  String get completedCustomers;
+
+  /// No description provided for @overdueCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue Customers'**
+  String get overdueCustomers;
+
+  /// No description provided for @editGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Group'**
+  String get editGroup;
+
+  /// No description provided for @deleteGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Group'**
+  String get deleteGroup;
+
+  /// No description provided for @deleteGroupConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this group? Its customers will be kept and moved to Other.'**
+  String get deleteGroupConfirmation;
+
+  /// No description provided for @groupUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Group updated successfully'**
+  String get groupUpdatedSuccessfully;
+
+  /// No description provided for @groupDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Group deleted successfully'**
+  String get groupDeletedSuccessfully;
+
+  /// No description provided for @noCustomersInGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no customers in this group yet.'**
+  String get noCustomersInGroup;
+
+  /// No description provided for @errorLoadingGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load group details. Please try again.'**
+  String get errorLoadingGroup;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get requiredField;
+
+  /// No description provided for @optionalProfilePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add optional profile photo'**
+  String get optionalProfilePhoto;
+
+  /// No description provided for @removePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get removePhoto;
+
+  /// No description provided for @trackerCapitalSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital & Partners'**
+  String get trackerCapitalSection;
+
+  /// No description provided for @trackerMainCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Capital'**
+  String get trackerMainCapital;
+
+  /// No description provided for @trackerNewCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'New Capital'**
+  String get trackerNewCapital;
+
+  /// No description provided for @trackerExpectedProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Profit'**
+  String get trackerExpectedProfit;
+
+  /// No description provided for @trackerPartnersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Partners'**
+  String get trackerPartnersCount;
+
+  /// No description provided for @trackerCustomersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers & Contracts'**
+  String get trackerCustomersSection;
+
+  /// No description provided for @trackerCustomersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Customers'**
+  String get trackerCustomersCount;
+
+  /// No description provided for @trackerTotalSales.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Contract Value'**
+  String get trackerTotalSales;
+
+  /// No description provided for @trackerTotalCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Collected'**
+  String get trackerTotalCollected;
+
+  /// No description provided for @trackerRemainingAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining from Customers'**
+  String get trackerRemainingAmount;
+
+  /// No description provided for @trackerAutoUpdateNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Values update automatically when partner or customer data changes.'**
+  String get trackerAutoUpdateNote;
+
+  /// No description provided for @trackerLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load the financial data. Please try again.'**
+  String get trackerLoadError;
+
+  /// No description provided for @trackerCapitalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital and expected growth from partners'**
+  String get trackerCapitalSubtitle;
+
+  /// No description provided for @trackerProfitEquation.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Profit = New Capital - Main Capital'**
+  String get trackerProfitEquation;
+
+  /// No description provided for @trackerCalculationOutput.
+  ///
+  /// In en, this message translates to:
+  /// **'CALCULATION OUTPUT'**
+  String get trackerCalculationOutput;
+
+  /// No description provided for @trackerCapitalGrowthRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital Growth Rate'**
+  String get trackerCapitalGrowthRate;
+
+  /// No description provided for @trackerPartnerSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner Capital Summary'**
+  String get trackerPartnerSummary;
+
+  /// No description provided for @trackerCombinedPartnerCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Combined capital for all registered partners'**
+  String get trackerCombinedPartnerCapital;
+
+  /// No description provided for @trackerPartnerTotalEquation.
+  ///
+  /// In en, this message translates to:
+  /// **'Total = Admin + Primary + Secondary Partners'**
+  String get trackerPartnerTotalEquation;
+
+  /// No description provided for @trackerTotalPartners.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Partners'**
+  String get trackerTotalPartners;
+
+  /// No description provided for @trackerCombinedMainCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Combined Main Capital'**
+  String get trackerCombinedMainCapital;
+
+  /// No description provided for @trackerCombinedNewCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Combined New Capital'**
+  String get trackerCombinedNewCapital;
+
+  /// No description provided for @trackerPartnerCapitalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital totals include Admin, Primary, and Secondary partners.'**
+  String get trackerPartnerCapitalNote;
+
+  /// No description provided for @trackerCustomerSummarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales, collections and outstanding installments'**
+  String get trackerCustomerSummarySubtitle;
+
+  /// No description provided for @trackerRemainingEquation.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining = Total Sales - Amount Collected'**
+  String get trackerRemainingEquation;
+
+  /// No description provided for @trackerCollectionStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'COLLECTION STATUS'**
+  String get trackerCollectionStatus;
+
+  /// No description provided for @trackerCollectionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection Rate'**
+  String get trackerCollectionRate;
+
+  /// No description provided for @trackerOutstandingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding Customer Balance'**
+  String get trackerOutstandingBalance;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

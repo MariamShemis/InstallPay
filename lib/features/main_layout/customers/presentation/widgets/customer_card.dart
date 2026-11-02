@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
@@ -32,6 +34,37 @@ class CustomerCard extends StatelessWidget {
     return '${names.first[0]}${names.last[0]}'.toUpperCase();
   }
 
+  String _statusLabel(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    switch (customer.status.trim().toLowerCase()) {
+      case 'paid':
+        return appLocalizations.paid;
+      case 'due':
+        return appLocalizations.due;
+      case 'overdue':
+        return appLocalizations.overdue;
+      case 'unpaid':
+      default:
+        return appLocalizations.unpaid;
+    }
+  }
+
+  Color _statusTextColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    switch (customer.status.trim().toLowerCase()) {
+      case 'paid':
+        return  isDark ? ColorManager.darkAccentGreen1 : ColorManager.green;
+      case 'overdue':
+        return ColorManager.red;
+      case 'due':
+        return ColorManager.warningOrange;
+      case 'unpaid':
+        return ColorManager.redDark;
+      default:
+        return ColorManager.greenAccent;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
@@ -43,23 +76,28 @@ class CustomerCard extends StatelessWidget {
     final innerCardBg = isDark
         ? ColorManager.darkSurfaceVariant
         : ColorManager.blueSoftBackground;
-    final primaryTextColor =
-    isDark ? ColorManager.white : ColorManager.navyText;
-    final secondaryTextColor =
-    isDark ? ColorManager.darkMutedText : ColorManager.greyDark;
-    final avatarBg =
-    isDark ? ColorManager.navyDark : ColorManager.greyLight;
-    final avatarTextColor =
-    isDark ? ColorManager.darkAccentGreen1 : ColorManager.green;
+    final primaryTextColor = isDark
+        ? ColorManager.white
+        : ColorManager.navyText;
+    final secondaryTextColor = isDark
+        ? ColorManager.darkMutedText
+        : ColorManager.greyDark;
+    final avatarBg = isDark ? ColorManager.navyDark : ColorManager.greyLight;
+    final avatarTextColor = isDark
+        ? ColorManager.darkAccentGreen1
+        : ColorManager.green;
     final accentGreenBg = isDark
         ? ColorManager.darkGreenOpacity30
         : ColorManager.greenOpacity10;
-    final accentGreenText =
-    isDark ? ColorManager.darkAccentGreen1 : ColorManager.green;
-    final progressColor =
-    isDark ? ColorManager.darkAccentGreen : ColorManager.green;
-    final primaryBtnColor =
-    isDark ? ColorManager.darkAccentGreen : ColorManager.primaryColor;
+    final accentGreenText = isDark
+        ? ColorManager.darkAccentGreen1
+        : ColorManager.green;
+    final progressColor = isDark
+        ? ColorManager.darkAccentGreen
+        : ColorManager.green;
+    final primaryBtnColor = isDark
+        ? ColorManager.darkAccentGreen
+        : ColorManager.primaryColor;
 
     final secondaryBtnBg = isDark
         ? ColorManager.darkCardBg
@@ -126,20 +164,44 @@ class CustomerCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: REdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: innerCardBg,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  customer.groupName,
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w600,
-                    color: primaryTextColor,
+              Row(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    child: Container(
+                      padding: REdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: _statusTextColor(context).withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(color: _statusTextColor(context).withOpacity(0.35)),
+                      ),
+                      child: Text(
+                        _statusLabel(context),
+                        style: TextStyle(
+                          color:_statusTextColor(context),
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(width: 5.w,),
+                  Container(
+                    padding: REdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: innerCardBg,
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Text(
+                      customer.groupName,
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w600,
+                        color: primaryTextColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -155,17 +217,16 @@ class CustomerCard extends StatelessWidget {
               children: [
                 Text(
                   'Next Due Date:',
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    color: secondaryTextColor,
-                  ),
+                  style: TextStyle(fontSize: 11.sp, color: secondaryTextColor),
                 ),
                 Text(
                   customer.nextDueDate,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? ColorManager.redErrorDark : ColorManager.red,
+                    color: isDark
+                        ? ColorManager.redErrorDark
+                        : ColorManager.red,
                   ),
                 ),
               ],
@@ -176,8 +237,7 @@ class CustomerCard extends StatelessWidget {
             children: [
               _buildStatBox(
                 label: appLocalizations.totalValue,
-                value:
-                '${customer.sellingPrice.toStringAsFixed(0)} $currency',
+                value: '${customer.sellingPrice.toStringAsFixed(0)} $currency',
                 bg: innerCardBg,
                 textColor: primaryTextColor,
               ),
@@ -192,7 +252,7 @@ class CustomerCard extends StatelessWidget {
               _buildStatBox(
                 label: appLocalizations.debt,
                 value:
-                '${customer.remainingValue.toStringAsFixed(0)} $currency',
+                    '${customer.remainingValue.toStringAsFixed(0)} $currency',
                 bg: innerCardBg,
                 textColor: primaryTextColor,
               ),
@@ -242,7 +302,7 @@ class CustomerCard extends StatelessWidget {
                       color: primaryTextColor,
                     ),
                     label: Text(
-                      'View Details',
+                      appLocalizations.customerDetails,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,

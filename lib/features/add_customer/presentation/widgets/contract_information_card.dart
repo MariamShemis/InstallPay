@@ -60,7 +60,7 @@ class ContractInformationCard extends StatelessWidget {
       }
     }
 
-    return '$installmentsCount ${l10n.installment} • $installmentsCount $unitText$durationDetail';
+    return '$installmentsCount ${l10n.installment} • $installmentsCount $unitText';
   }
 
   @override

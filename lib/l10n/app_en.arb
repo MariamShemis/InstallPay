@@ -405,5 +405,112 @@
   "accountSecurityDescription": "Keep your account secure with a strong password and a verified email address. Security actions will be enabled after their services are configured.",
   "deleteAccountWarning": "Are you sure you want to delete your account? This action is permanent and cannot be undone.",
   "featureComingSoon": "This feature will be enabled after connecting the required security services.",
-  "retry": "Retry"
+  "deleteCustomerTitle": "Delete Customer",
+    "deleteCustomerConfirmation": "Are you sure you want to delete {customerName}? This action cannot be undone.",
+    "@deleteCustomerConfirmation": {
+      "placeholders": {
+        "customerName": {
+          "type": "String"
+        }
+      }
+    },
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "deleteCustomerFailed": "Failed to delete customer. Please try again.",
+  "deleteCustomerSuccess": "Customer deleted successfully",
+  "filterCustomers": "Filter Customers",
+  "filterGroups": "Filter Groups",
+  "groupStatus": "Group Status",
+  "applyFilters": "Apply Filters",
+  "reset": "Reset",
+  "paymentStatus": "Payment Status",
+  "allGroups": "All Groups",
+  "other": "Other",
+  "no_customers_match_your_search_or_filter": "No customers match your search or filter.",
+  "admin": "Admin",
+  "deletePartner": "Delete partner",
+  "confirmDeletePartner": "Are you sure you want to delete {name}?",
+  "@confirmDeletePartner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "editPartner": "Edit Partner",
+  "updatePartner": "Update Partner",
+  "addNewPartner": "Add New Partner",
+  "addPartnerBtn": "Add Partner",
+  "deletePartner": "Delete Partner",
+  "confirmDeletePartner": "Are you sure you want to delete {name}?",
+  "@confirmDeletePartner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "partnerAddedSuccessfully": "Partner added successfully",
+  "partnerUpdatedSuccessfully": "Partner updated successfully",
+  "partnerDeletedSuccessfully": "Partner deleted successfully",
+  "operationFailed": "Operation failed. Please try again.",
+  "no_partners_match_your_search_or_filter": "No partners match your search or filter.",
+  "onlyOneAdminAllowed": "Only one Admin is allowed.",
+  "secondaryProfitLimitExceeded": "The total Secondary profit percentage cannot exceed 100%.",
+  "invalidProfitMargin": "Profit percentage must be between 0 and 100.",
+  "invalidMainCapital": "Please enter a valid capital amount.",
+  "partnerNotFound": "Partner not found.",
+  "retry": "Retry",
+  "choosePartnerPhoto": "Choose partner photo",
+  "secondaryProfitTotal": "Secondary profit total",
+  "groupDetails": "Group Details",
+  "groupCustomers": "Group Customers",
+  "collectorPhone": "Collector Phone",
+  "totalContractValue": "Total Contract Value",
+  "totalCollected": "Total Collected",
+  "totalRemaining": "Total Remaining",
+  "completedCustomers": "Completed Customers",
+  "overdueCustomers": "Overdue Customers",
+  "editGroup": "Edit Group",
+  "deleteGroup": "Delete Group",
+  "deleteGroupConfirmation": "Are you sure you want to delete this group? Its customers will be kept and moved to Other.",
+  "groupUpdatedSuccessfully": "Group updated successfully",
+  "groupDeletedSuccessfully": "Group deleted successfully",
+  "noCustomersInGroup": "There are no customers in this group yet.",
+  "errorLoadingGroup": "Could not load group details. Please try again.",
+  "requiredField": "This field is required",
+  "editGroup": "Edit Group",
+  "saveChanges": "Save Changes",
+  "requiredField": "This field is required",
+  "optionalProfilePhoto": "Add optional profile photo",
+  "removePhoto": "Remove photo",
+  "trackerCapitalSection": "Capital & Partners",
+  "trackerMainCapital": "Main Capital",
+  "trackerNewCapital": "New Capital",
+  "trackerExpectedProfit": "Expected Profit",
+  "trackerPartnersCount": "Number of Partners",
+  "trackerCustomersSection": "Customers & Contracts",
+  "trackerCustomersCount": "Number of Customers",
+  "trackerTotalSales": "Total Contract Value",
+  "trackerTotalCollected": "Total Collected",
+  "trackerRemainingAmount": "Remaining from Customers",
+  "trackerAutoUpdateNote": "Values update automatically when partner or customer data changes.",
+  "trackerLoadError": "Unable to load the financial data. Please try again.",
+  "trackerCapitalSubtitle": "Capital and expected growth from partners",
+  "trackerProfitEquation": "Expected Profit = New Capital - Main Capital",
+  "trackerCalculationOutput": "CALCULATION OUTPUT",
+  "trackerCapitalGrowthRate": "Capital Growth Rate",
+  "trackerPartnerSummary": "Partner Capital Summary",
+  "trackerCombinedPartnerCapital": "Combined capital for all registered partners",
+  "trackerPartnerTotalEquation": "Total = Admin + Primary + Secondary Partners",
+  "trackerTotalPartners": "Total Partners",
+  "trackerCombinedMainCapital": "Combined Main Capital",
+  "trackerCombinedNewCapital": "Combined New Capital",
+  "trackerPartnerCapitalNote": "Capital totals include Admin, Primary, and Secondary partners.",
+  "trackerCustomerSummarySubtitle": "Sales, collections and outstanding installments",
+  "trackerRemainingEquation": "Remaining = Total Sales - Amount Collected",
+  "trackerCollectionStatus": "COLLECTION STATUS",
+  "trackerCollectionRate": "Collection Rate",
+  "trackerOutstandingBalance": "Outstanding Customer Balance",
+  "edit": "Edit"
 }

@@ -7,13 +7,19 @@ import 'package:smart_installment_management/l10n/app_localizations.dart';
 class PartnerCard extends StatelessWidget {
   final PartnerModel partner;
   final String currency;
+  final double secondaryProfitTotal;
   final VoidCallback? onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   const PartnerCard({
     super.key,
     required this.partner,
     required this.currency,
+    this.secondaryProfitTotal = 0,
     this.onTap,
+    this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -22,30 +28,32 @@ class PartnerCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final cardBg = isDark ? ColorManager.darkSurface : ColorManager.white;
-    final borderColor = isDark ? ColorManager.darkSurfaceVariant : ColorManager.blueLightTint;
-    final innerBg = isDark ? ColorManager.darkSurfaceVariant : ColorManager.blueSoftBackground;
-    final primaryTextColor = isDark ? ColorManager.white : ColorManager.navyText;
-    final secondaryTextColor = isDark ? ColorManager.darkMutedText : ColorManager.greyDark;
-    final accentGreenText = isDark ? ColorManager.darkAccentGreen1 : ColorManager.green;
-    final accentGreenBg = isDark ? ColorManager.darkGreenOpacity30 : ColorManager.greenOpacity10;
+    final innerBg = isDark
+        ? ColorManager.darkSurfaceVariant
+        : ColorManager.blueSoftBackground;
+    final textColor = isDark ? ColorManager.white : ColorManager.navyText;
+    final mutedColor = isDark
+        ? ColorManager.darkMutedText
+        : ColorManager.greyDark;
+    final accentColor = isDark
+        ? ColorManager.darkAccentGreen
+        : ColorManager.green;
 
-    final typeBadgeBg = partner.isAdmin
-        ? (isDark ? ColorManager.darkBlueSurface : ColorManager.blueAccent)
-        : partner.isPrimary
-        ? (isDark ? ColorManager.darkGreenOpacity30 : ColorManager.greenOpacity15)
-        : (isDark ? ColorManager.darkYellowOpacity30 : ColorManager.lightBeg);
-
-    final typeBadgeText = partner.isAdmin
-        ? (isDark ? ColorManager.secondary : ColorManager.navyDark)
-        : partner.isPrimary
-        ? accentGreenText
-        : (isDark ? ColorManager.warningYellow : ColorManager.lightBrown);
-
-    final typeBadgeLabel = partner.isAdmin
-        ? 'Admin'
+    final typeLabel = partner.isAdmin
+        ? l10n.admin
         : partner.isPrimary
         ? l10n.primaryPartner
         : l10n.secondaryPartner;
+
+    final profitLabel = partner.isAdmin
+        ? '+100%'
+        : '+${partner.profitMargin.toStringAsFixed(0)}%';
+
+    ImageProvider? imageProvider;
+
+    if (partner.imagePath != null && partner.imagePath!.isNotEmpty) {
+      imageProvider = NetworkImage(partner.imagePath!);
+    }
 
     return InkWell(
       onTap: onTap,
@@ -55,7 +63,11 @@ class PartnerCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: cardBg,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: borderColor, width: 1.w),
+          border: Border.all(
+            color: isDark
+                ? ColorManager.darkSurfaceVariant
+                : ColorManager.blueLightTint,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,162 +75,238 @@ class PartnerCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  radius: 20.r,
+                  radius: 24.r,
                   backgroundColor: innerBg,
-                  child: Text(
-                    partner.name.isNotEmpty ? partner.name[0].toUpperCase() : 'P',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: accentGreenText,
-                    ),
-                  ),
+                  backgroundImage: imageProvider,
+                  child: imageProvider == null
+                      ? Text(
+                          partner.name.isEmpty
+                              ? 'P'
+                              : partner.name[0].toUpperCase(),
+                          style: TextStyle(
+                            color: accentColor,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : null,
                 ),
                 SizedBox(width: 10.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              partner.name,
-                              style: TextStyle(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                                color: primaryTextColor,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(width: 6.w),
-                          Container(
-                            padding: REdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: typeBadgeBg,
-                              borderRadius: BorderRadius.circular(6.r),
-                            ),
-                            child: Text(
-                              typeBadgeLabel,
-                              style: TextStyle(
-                                fontSize: 9.5.sp,
-                                fontWeight: FontWeight.bold,
-                                color: typeBadgeText,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        partner.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      SizedBox(height: 2.h),
-                      Row(
-                        children: [
-                          Icon(Icons.phone_outlined, size: 11.r, color: secondaryTextColor),
-                          SizedBox(width: 4.w),
-                          Text(
-                            partner.phone,
-                            style: TextStyle(fontSize: 11.sp, color: secondaryTextColor),
+                      SizedBox(height: 4.h),
+                      Container(
+                        padding: REdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: innerBg,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Text(
+                          typeLabel,
+                          style: TextStyle(
+                            color: accentColor,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w600,
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: REdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: accentGreenBg,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Text(
-                    '+${partner.profitMargin.toStringAsFixed(0)}% ${l10n.profit}',
-                    style: TextStyle(
-                      fontSize: 10.5.sp,
-                      fontWeight: FontWeight.bold,
-                      color: accentGreenText,
+                SizedBox(width: 6.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      profitLabel,
+                      style: TextStyle(
+                        color: accentColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.sp,
+                      ),
                     ),
-                  ),
+                    if (partner.isAdmin) ...[
+                      SizedBox(height: 3.h),
+                      Text(
+                        '${l10n.secondaryProfitTotal}: '
+                        '${secondaryProfitTotal.toStringAsFixed(0)}%',
+                        textAlign: TextAlign.end,
+                        style: TextStyle(color: mutedColor, fontSize: 9.sp),
+                      ),
+                    ],
+                  ],
+                ),
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      onEdit?.call();
+                    } else if (value == 'delete') {
+                      onDelete?.call();
+                    }
+                  },
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.edit_outlined),
+                          SizedBox(width: 8.w),
+                          Text(l10n.edit),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.delete_outline, color: Colors.red),
+                          SizedBox(width: 8.w),
+                          Text(l10n.delete),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            SizedBox(height: 10.h),
-
+            SizedBox(
+              height: partner.phone.isNotEmpty && partner.address.isNotEmpty
+                  ? 10.h
+                  : 0.h,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.location_on_outlined, size: 12.r, color: secondaryTextColor),
-                SizedBox(width: 4.w),
-                Expanded(
-                  child: Text(
-                    partner.address,
-                    style: TextStyle(fontSize: 11.5.sp, color: secondaryTextColor),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                if (partner.phone.isNotEmpty) ...[
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.phone_outlined,
+                          size: 15.r,
+                          color: mutedColor,
+                        ),
+                        SizedBox(width: 6.w),
+                        Expanded(
+                          child: Text(
+                            partner.phone,
+                            style: TextStyle(
+                              color: mutedColor,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
+                if (partner.address.isNotEmpty) ...[
+                  SizedBox(width: 6.h),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 15.r,
+                          color: mutedColor,
+                        ),
+                        SizedBox(width: 6.w),
+                        Expanded(
+                          child: Text(
+                            partner.address,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: mutedColor,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
             SizedBox(height: 12.h),
-
             Row(
               children: [
                 Expanded(
-                  child: Container(
-                    padding: REdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: innerBg,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          l10n.mainCapital,
-                          style: TextStyle(fontSize: 10.sp, color: secondaryTextColor),
-                        ),
-                        SizedBox(height: 3.h),
-                        Text(
-                          '${partner.mainCapital.toStringAsFixed(0)} $currency',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                            color: primaryTextColor,
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: _capitalBox(
+                    label: l10n.mainCapital,
+                    value:
+                        '${partner.mainCapital.toStringAsFixed(2)} $currency',
+                    background: innerBg,
+                    labelColor: mutedColor,
+                    valueColor: textColor,
                   ),
                 ),
-                SizedBox(width: 8.w),
+                SizedBox(width: 10.w),
                 Expanded(
-                  child: Container(
-                    padding: REdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: accentGreenBg,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          l10n.newCapital,
-                          style: TextStyle(fontSize: 10.sp, color: accentGreenText),
-                        ),
-                        SizedBox(height: 3.h),
-                        Text(
-                          '${partner.newCapital.toStringAsFixed(0)} $currency',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                            color: accentGreenText,
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: _capitalBox(
+                    label: l10n.newCapital,
+                    value: '${partner.newCapital.toStringAsFixed(2)} $currency',
+                    background: innerBg,
+                    labelColor: mutedColor,
+                    valueColor: accentColor,
                   ),
                 ),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _capitalBox({
+    required String label,
+    required String value,
+    required Color background,
+    required Color labelColor,
+    required Color valueColor,
+  }) {
+    return Container(
+      padding: REdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+      child: Column(
+        children: [
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 10.sp, color: labelColor),
+          ),
+          SizedBox(height: 5.h),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.bold,
+              color: valueColor,
+            ),
+          ),
+        ],
       ),
     );
   }

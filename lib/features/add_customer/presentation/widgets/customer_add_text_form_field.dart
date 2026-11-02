@@ -34,7 +34,7 @@ class CustomersAddTextFormField extends StatelessWidget {
     this.onChanged,
     this.onTap,
     this.readOnly = false,
-    this.enabled = true, // <-- القيمة الافتراضية true
+    this.enabled = true, 
     this.multiLine = false,
     this.isCurrency = false,
   });

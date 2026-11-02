@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_installment_management/core/firebase/taqseet_firestore_services.dart';
 import 'package:smart_installment_management/core/services/cloudinary_services.dart';
+import 'package:smart_installment_management/core/utils/helper/payment_status_helper.dart';
 import 'package:smart_installment_management/features/add_customer/data/cubit/add_customer_state.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/installment_model.dart';
@@ -21,9 +22,6 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
     if (debt <= 0 || installmentAmount <= 0) {
       return 0;
     }
-
-    // مثال: 15000 / 500 = 30 قسط.
-    // لو الناتج فيه كسر، بنضيف قسط أخير بالمبلغ المتبقي.
     return (debt / installmentAmount).ceil();
   }
 
@@ -64,9 +62,6 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
 
     for (int i = 0; i < count; i++) {
       if (remainingDebt <= 0) break;
-
-      // القسط المعتاد بالقيمة التي أدخلها المستخدم،
-      // وآخر قسط يكون المتبقي فقط إذا كان أقل.
       final amount = remainingDebt < installmentAmount
           ? remainingDebt
           : installmentAmount;
@@ -88,6 +83,7 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
           amount: double.parse(amount.toStringAsFixed(2)),
           paidAmount: 0,
           isPaid: false,
+          status: PaymentStatusHelper.statusForDate(_formatDate(dueDate)),
         ),
       );
 
@@ -96,6 +92,7 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
 
     return schedule;
   }
+
 
   Future<void> addCustomer({
     required CustomerModel customer,
@@ -120,7 +117,12 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
         throw Exception('Down payment cannot exceed selling price.');
       }
 
-      final debt = calculateDebt(customer.sellingPrice, customer.downPayment);
+      final bool isEditing = customer.id.isNotEmpty;
+
+      final debt = calculateDebt(
+        customer.sellingPrice,
+        customer.downPayment,
+      );
 
       if (debt > 0 && customer.installmentAmount <= 0) {
         throw Exception('Please enter a valid installment amount.');
@@ -131,51 +133,66 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
         throw Exception('Please select a valid first installment date.');
       }
 
-      final schedule = debt > 0
-          ? _createSchedule(
-              debt: debt,
-              installmentAmount: customer.installmentAmount,
-              firstDate: customer.firstInstallmentDate,
-              installmentType: customer.installmentType,
-            )
-          : <InstallmentModel>[];
-
-      final expectedCount = calculateInstallmentsCount(
-        debt: debt,
-        installmentAmount: customer.installmentAmount,
-      );
-
-      if (schedule.length != expectedCount) {
-        throw Exception('Could not create the installment schedule.');
-      }
-
       String imageUrl = customer.imageUrl;
 
       if (image != null) {
         imageUrl = await CloudinaryServices.uploadImage(image);
       }
 
-      final preparedCustomer = customer.copyWith(
-        imageUrl: imageUrl,
-        debtAmount: debt,
-        installmentsCount: schedule.length,
+      // When editing, preserve the existing installment schedule
+      // and all previously recorded payments.
+      final schedule = isEditing
+          ? customer.schedule
+          : debt > 0
+          ? _createSchedule(
+        debt: debt,
         installmentAmount: customer.installmentAmount,
-        schedule: schedule,
-        nextDueDate: schedule.isNotEmpty ? schedule.first.dueDate : '',
-        paidValue: 0,
-        status: debt <= 0 ? 'Up to Date' : 'Up to Date',
+        firstDate: customer.firstInstallmentDate,
+        installmentType: customer.installmentType,
+      )
+          : <InstallmentModel>[];
+
+      if (!isEditing) {
+        final expectedCount = calculateInstallmentsCount(
+          debt: debt,
+          installmentAmount: customer.installmentAmount,
+        );
+
+        if (schedule.length != expectedCount) {
+          throw Exception('Could not create the installment schedule.');
+        }
+      }
+
+      final preparedCustomer = PaymentStatusHelper.updateCustomer(
+        customer.copyWith(
+          imageUrl: imageUrl,
+          debtAmount: debt,
+          installmentsCount: schedule.length,
+          schedule: schedule,
+          // Never reset previous payments while editing.
+          paidValue: isEditing ? customer.paidValue : 0,
+          nextDueDate: schedule.isNotEmpty
+              ? schedule.firstWhere(
+                (item) => !item.isPaid,
+            orElse: () => schedule.last,
+          ).dueDate
+              : '',
+        ),
       );
 
       final customerId = await TaqseetFirestoreServices.saveRecord(
         type: 'customer',
+        documentId: isEditing ? customer.id : null,
         data: preparedCustomer.toMap(),
       );
 
-      emit(AddCustomerSuccess(preparedCustomer.copyWith(id: customerId)));
+      emit(
+        AddCustomerSuccess(
+          preparedCustomer.copyWith(id: customerId),
+        ),
+      );
     } catch (error, stackTrace) {
-      // ignore: avoid_print
-      print('Add customer error: $error');
-      // ignore: avoid_print
+      print('Save customer error: $error');
       print(stackTrace);
 
       final message = error.toString().startsWith('Exception: ')
@@ -185,4 +202,5 @@ class AddCustomerCubit extends Cubit<AddCustomerState> {
       emit(AddCustomerFailure(message));
     }
   }
+
 }

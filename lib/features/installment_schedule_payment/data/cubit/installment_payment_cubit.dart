@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_installment_management/core/firebase/taqseet_firestore_services.dart';
+import 'package:smart_installment_management/core/utils/helper/payment_status_helper.dart';
 import 'package:smart_installment_management/features/installment_schedule_payment/data/cubit/installment_payment_state.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/customer_model.dart';
 import 'package:smart_installment_management/features/main_layout/customers/data/model/installment_model.dart';
@@ -18,9 +19,7 @@ class InstallmentPaymentCubit extends Cubit<InstallmentPaymentState> {
     if (state is InstallmentPaymentLoading) return;
 
     if (customer.id.isEmpty) {
-      emit(
-        InstallmentPaymentError('Customer ID is missing. Cannot save payment.'),
-      );
+      emit(InstallmentPaymentError('Customer ID is missing.'));
       return;
     }
 
@@ -34,85 +33,70 @@ class InstallmentPaymentCubit extends Cubit<InstallmentPaymentState> {
     emit(InstallmentPaymentLoading());
 
     try {
-      final hasDownPayment = customer.downPayment > 0;
-      final isDownPaymentSelected = hasDownPayment && selectedIndex == 0;
+      final String paymentDateString = DateFormat(
+        'dd/MM/yyyy',
+      ).format(paymentDate);
 
-      final dateString = DateFormat('dd/MM/yyyy').format(paymentDate);
+      final bool hasDownPayment = customer.downPayment > 0;
+      final bool isDownPaymentSelected = hasDownPayment && selectedIndex == 0;
 
       CustomerModel updatedCustomer;
 
       if (isDownPaymentSelected) {
         if (customer.isDownPaymentPaid) {
-          throw Exception('The down payment has already been paid.');
+          emit(
+            InstallmentPaymentError('The down payment has already been paid.'),
+          );
+          return;
         }
 
-        // The current model cannot store partial down-payment amounts.
-        if (paidAmount != customer.downPayment) {
-          throw Exception('Please pay the full down payment amount.');
-        }
-
+        // Save the exact amount paid toward the down payment.
+        // It can be less than or greater than the original amount.
         updatedCustomer = customer.copyWith(
           isDownPaymentPaid: true,
-          downPaymentPaidAtDate: dateString,
+          downPaymentPaidAmount: paidAmount,
+          downPaymentPaidAtDate: paymentDateString,
         );
       } else {
-        final scheduleIndex = hasDownPayment
+        final int scheduleIndex = hasDownPayment
             ? selectedIndex - 1
             : selectedIndex;
 
         if (scheduleIndex < 0 || scheduleIndex >= customer.schedule.length) {
-          throw Exception('Invalid installment selection.');
+          emit(InstallmentPaymentError('Invalid installment selected.'));
+          return;
         }
 
-        final updatedSchedule = List<InstallmentModel>.from(customer.schedule);
+        final InstallmentModel selectedInstallment =
+            customer.schedule[scheduleIndex];
 
-        final installment = updatedSchedule[scheduleIndex];
-        if (installment.isPaid) {
-          throw Exception('This installment has already been paid.');
+        if (selectedInstallment.isPaid || selectedInstallment.paidAmount > 0) {
+          emit(
+            InstallmentPaymentError('This installment has already been paid.'),
+          );
+          return;
         }
-        final newPaidAmount = installment.paidAmount + paidAmount;
-        final isFullyPaid = newPaidAmount >= installment.amount;
 
-        updatedSchedule[scheduleIndex] = installment.copyWith(
-          paidAmount: newPaidAmount,
-          isPaid: isFullyPaid,
-          paidAtDate: dateString,
+        final List<InstallmentModel> updatedSchedule =
+            List<InstallmentModel>.from(customer.schedule);
+
+        // Record the entire amount on this installment only.
+        // Do not distribute extra money to other installments.
+        updatedSchedule[scheduleIndex] = selectedInstallment.copyWith(
+          paidAmount: paidAmount,
+          isPaid: true,
+          paidAtDate: paymentDateString,
+          status: 'paid',
         );
+
         updatedCustomer = customer.copyWith(
           schedule: updatedSchedule,
           paidValue: customer.paidValue + paidAmount,
         );
       }
 
-      // Choose the next outstanding due date.
-      String nextDueDate = '';
+      updatedCustomer = PaymentStatusHelper.updateCustomer(updatedCustomer);
 
-      if (updatedCustomer.downPayment > 0 &&
-          !updatedCustomer.isDownPaymentPaid) {
-        nextDueDate = updatedCustomer.contractDate;
-      } else {
-        for (final installment in updatedCustomer.schedule) {
-          if (!installment.isPaid) {
-            nextDueDate = installment.dueDate;
-            break;
-          }
-        }
-      }
-
-      if (nextDueDate.isEmpty) {
-        nextDueDate = updatedCustomer.nextDueDate;
-      }
-
-      final updatedStatus = updatedCustomer.remainingValue <= 0
-          ? 'Completed'
-          : _calculateStatus(nextDueDate);
-
-      updatedCustomer = updatedCustomer.copyWith(
-        nextDueDate: nextDueDate,
-        status: updatedStatus,
-      );
-
-      // Save the complete updated customer to Firestore.
       await TaqseetFirestoreServices.saveRecord(
         type: 'customer',
         documentId: updatedCustomer.id,
@@ -120,53 +104,102 @@ class InstallmentPaymentCubit extends Cubit<InstallmentPaymentState> {
       );
 
       customer = updatedCustomer;
+
       emit(InstallmentPaymentSuccess(updatedCustomer));
     } catch (error) {
-      final message = error.toString().replaceFirst('Exception: ', '');
-      emit(InstallmentPaymentError(message));
+      emit(InstallmentPaymentError('Could not save the payment: $error'));
     }
   }
 
-  String _calculateStatus(String dueDate) {
-    final parsedDate = _parseDate(dueDate);
+  Future<void> editPaymentAmount({
+    required int selectedIndex,
+    required double newAmount,
+  }) async {
+    if (state is InstallmentPaymentLoading) return;
 
-    if (parsedDate == null) return 'Up to Date';
-
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-
-    if (parsedDate.isBefore(today)) return 'Overdue';
-    if (parsedDate.isAtSameMomentAs(today)) return 'Due Now';
-
-    return 'Up to Date';
-  }
-
-  DateTime? _parseDate(String value) {
-    final date = value.trim();
-
-    if (date.isEmpty) return null;
-
-    final parsed = DateTime.tryParse(date);
-    if (parsed != null) {
-      return DateTime(parsed.year, parsed.month, parsed.day);
+    if (newAmount <= 0) {
+      emit(
+        InstallmentPaymentError('Payment amount must be greater than zero.'),
+      );
+      return;
     }
 
-    final formats = <String>[
-      'dd/MM/yyyy',
-      'd/M/yyyy',
-      'dd MMM yyyy',
-      'd MMM yyyy',
-    ];
+    if (customer.id.isEmpty) {
+      emit(InstallmentPaymentError('Customer ID is missing.'));
+      return;
+    }
 
-    for (final format in formats) {
-      try {
-        final result = DateFormat(format, 'en').parseStrict(date);
-        return DateTime(result.year, result.month, result.day);
-      } catch (_) {
-        // Try the next supported format.
+    emit(InstallmentPaymentLoading());
+
+    try {
+      final bool hasDownPayment = customer.downPayment > 0;
+      final bool isDownPaymentSelected = hasDownPayment && selectedIndex == 0;
+
+      CustomerModel updatedCustomer;
+
+      if (isDownPaymentSelected) {
+        if (!customer.isDownPaymentPaid) {
+          emit(
+            InstallmentPaymentError('The down payment has not been paid yet.'),
+          );
+          return;
+        }
+
+        updatedCustomer = customer.copyWith(downPaymentPaidAmount: newAmount);
+      } else {
+        final int scheduleIndex = hasDownPayment
+            ? selectedIndex - 1
+            : selectedIndex;
+
+        if (scheduleIndex < 0 || scheduleIndex >= customer.schedule.length) {
+          emit(InstallmentPaymentError('Invalid installment selected.'));
+          return;
+        }
+
+        final List<InstallmentModel> updatedSchedule =
+            List<InstallmentModel>.from(customer.schedule);
+
+        final InstallmentModel installment = updatedSchedule[scheduleIndex];
+
+        if (!installment.isPaid && installment.paidAmount <= 0) {
+          emit(
+            InstallmentPaymentError(
+              'This installment has no recorded payment to edit.',
+            ),
+          );
+          return;
+        }
+
+        // Adjust the customer's installment total by the difference.
+        final double difference = newAmount - installment.paidAmount;
+
+        updatedSchedule[scheduleIndex] = installment.copyWith(
+          paidAmount: newAmount,
+          isPaid: true,
+          status: 'paid',
+        );
+
+        updatedCustomer = customer.copyWith(
+          schedule: updatedSchedule,
+          paidValue: (customer.paidValue + difference)
+              .clamp(0.0, double.infinity)
+              .toDouble(),
+        );
       }
-    }
 
-    return null;
+      updatedCustomer = PaymentStatusHelper.updateCustomer(updatedCustomer);
+
+      await TaqseetFirestoreServices.saveRecord(
+        type: 'customer',
+        documentId: updatedCustomer.id,
+        data: updatedCustomer.toMap(),
+      );
+
+      customer = updatedCustomer;
+
+      emit(InstallmentPaymentSuccess(updatedCustomer));
+    } catch (error) {
+      emit(InstallmentPaymentError('Could not update the payment: $error'));
+    }
   }
 }

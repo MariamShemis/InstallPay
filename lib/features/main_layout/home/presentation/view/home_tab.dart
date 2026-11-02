@@ -35,7 +35,6 @@ class _HomeTabState extends State<HomeTab> {
     await SessionServices.setPrivacyHidden(_isPrivacyHidden);
   }
 
-  /// إرجاع الصورة أو الأيقونة فقط بدون أي تغليف بالـ Border أو Container
   Widget _buildProfileImage(String? imageUrl) {
     final url = imageUrl?.trim() ?? '';
 
@@ -56,7 +55,11 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       color: ColorManager.navyDark,
       alignment: Alignment.center,
-      child: Icon(Icons.person, color: ColorManager.white, size: 24.r),
+      child: Icon(
+        Icons.person,
+        color: ColorManager.white,
+        size: 24.r,
+      ),
     );
   }
 
@@ -99,15 +102,21 @@ class _HomeTabState extends State<HomeTab> {
 
           String name = '';
           String? imageUrl;
+          double cashPartner = 0;
+          double outMoney = 0;
 
           if (state is HomeSuccess) {
             name = state.user.name.trim();
             imageUrl = state.user.image;
+            cashPartner = state.cashPartner;
+            outMoney = state.outMoney;
           }
-
           return SingleChildScrollView(
             child: Padding(
-              padding: REdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              padding: REdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 16,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -132,10 +141,13 @@ class _HomeTabState extends State<HomeTab> {
                   SizedBox(height: 12.h),
                   _isPrivacyHidden
                       ? HiddenPrivacyPlaceholder(
-                          userName: name,
-                          onUnhideTap: _togglePrivacy,
-                        )
-                      : const FinancialSummarySection(),
+                    userName: name,
+                    onUnhideTap: _togglePrivacy,
+                  )
+                      : FinancialSummarySection(
+                    cashPartner: cashPartner,
+                    outMoney: outMoney,
+                  ),
                   SizedBox(height: 30.h),
                 ],
               ),

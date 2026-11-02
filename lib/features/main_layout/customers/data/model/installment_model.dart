@@ -6,14 +6,16 @@ class InstallmentModel {
   final double paidAmount;
   final bool isPaid;
   final String paidAtDate;
+  final String status;
 
   const InstallmentModel({
     required this.installmentNumber,
     required this.dueDate,
     required this.amount,
     this.paidAmount = 0,
-    required this.isPaid,
+    this.isPaid = false,
     this.paidAtDate = '',
+    this.status = 'unpaid',
   });
 
   double get remainingAmount {
@@ -29,23 +31,25 @@ class InstallmentModel {
       'paidAmount': paidAmount,
       'isPaid': isPaid,
       'paidAtDate': paidAtDate,
+      'status': status,
     };
   }
 
   factory InstallmentModel.fromMap(Map<String, dynamic> map) {
-    final amount = (map['amount'] as num?)?.toDouble() ?? 0;
-    final isPaid = map['isPaid'] == true;
+    final amount = (map['amount'] as num?)?.toDouble() ?? 0.0;
+    final isPaid = map['isPaid'] as bool? ?? false;
+
+    final savedPaidAmount = (map['paidAmount'] as num?)?.toDouble();
 
     return InstallmentModel(
       installmentNumber:
       (map['installmentNumber'] as num?)?.toInt() ?? 0,
       dueDate: map['dueDate']?.toString() ?? '',
       amount: amount,
-      // يدعم الأقساط القديمة التي لم يكن لها paidAmount.
-      paidAmount: (map['paidAmount'] as num?)?.toDouble() ??
-          (isPaid ? amount : 0),
+      paidAmount: savedPaidAmount ?? (isPaid ? amount : 0.0),
       isPaid: isPaid,
       paidAtDate: map['paidAtDate']?.toString() ?? '',
+      status: map['status']?.toString() ?? 'unpaid',
     );
   }
 
@@ -56,6 +60,7 @@ class InstallmentModel {
     double? paidAmount,
     bool? isPaid,
     String? paidAtDate,
+    String? status,
   }) {
     return InstallmentModel(
       installmentNumber: installmentNumber ?? this.installmentNumber,
@@ -64,6 +69,7 @@ class InstallmentModel {
       paidAmount: paidAmount ?? this.paidAmount,
       isPaid: isPaid ?? this.isPaid,
       paidAtDate: paidAtDate ?? this.paidAtDate,
+      status: status ?? this.status,
     );
   }
 }

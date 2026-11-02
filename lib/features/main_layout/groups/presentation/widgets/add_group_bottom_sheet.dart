@@ -5,14 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_installment_management/core/costants/color_manager.dart';
+import 'package:smart_installment_management/core/firebase/taqseet_firestore_services.dart';
+import 'package:smart_installment_management/core/services/cloudinary_services.dart';
 import 'package:smart_installment_management/core/utils/ui_utils.dart';
 import 'package:smart_installment_management/features/add_customer/presentation/widgets/customer_add_text_form_field.dart';
 import 'package:smart_installment_management/features/main_layout/groups/data/cubit/group_cubit.dart';
-import 'package:smart_installment_management/features/main_layout/groups/data/cubit/group_state.dart';
+import 'package:smart_installment_management/features/main_layout/groups/data/model/group_model.dart';
 import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class AddGroupBottomSheet extends StatefulWidget {
-  const AddGroupBottomSheet({super.key});
+  final GroupModel? group;
+
+  const AddGroupBottomSheet({super.key, this.group});
 
   static Future<void> show(BuildContext context) {
     final groupsCubit = context.read<GroupsCubit>();
@@ -26,6 +30,17 @@ class AddGroupBottomSheet extends StatefulWidget {
           value: groupsCubit,
           child: const AddGroupBottomSheet(),
         );
+      },
+    );
+  }
+
+  static Future<bool?> showEdit(BuildContext context, GroupModel group) {
+    return showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return AddGroupBottomSheet(group: group);
       },
     );
   }
@@ -47,7 +62,22 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
   final TextEditingController _addressController = TextEditingController();
 
   File? _selectedImage;
+  String? _existingImageUrl;
   bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final group = widget.group;
+
+    if (group != null) {
+      _groupNameController.text = group.groupTitle;
+      _collectorNameController.text = group.collectorName;
+      _phoneController.text = group.collectorPhone;
+      _addressController.text = group.address;
+    }
+  }
 
   @override
   void dispose() {
@@ -97,37 +127,73 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
   Future<void> _saveGroup() async {
     if (_isSaving) return;
 
+    final groupName = _groupNameController.text.trim();
+    final collectorName = _collectorNameController.text.trim();
+
+    // Group name and collector name are required.
+    if (groupName.isEmpty || collectorName.isEmpty) {
+      UiUtils.showError(context, AppLocalizations.of(context)!.requiredField);
+      return;
+    }
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isSaving = true;
     });
 
-    final cubit = context.read<GroupsCubit>();
+    bool success = false;
 
-    final success = await cubit.addGroup(
-      groupTitle: _groupNameController.text,
-      collectorName: _collectorNameController.text,
-      collectorPhone: _phoneController.text,
-      address: _addressController.text,
-      image: _selectedImage,
-    );
+    try {
+      final existingGroup = widget.group;
+
+      if (existingGroup == null) {
+        // Add a new group.
+        success = await context.read<GroupsCubit>().addGroup(
+          groupTitle: groupName,
+          collectorName: collectorName,
+          collectorPhone: _phoneController.text.trim(),
+          address: _addressController.text.trim(),
+          image: _selectedImage,
+        );
+      } else {
+        // Edit the existing group.
+        String? imageUrl = _existingImageUrl;
+
+        if (_selectedImage != null) {
+          imageUrl = await CloudinaryServices.uploadImage(_selectedImage!);
+        }
+
+        final updatedGroup = existingGroup.copyWith(
+          groupTitle: groupName,
+          collectorName: collectorName,
+          collectorPhone: _phoneController.text.trim(),
+          address: _addressController.text.trim(),
+          imageUrl: imageUrl,
+        );
+
+        await TaqseetFirestoreServices.saveRecord(
+          type: 'group',
+          documentId: existingGroup.id,
+          data: updatedGroup.toMap(),
+        );
+
+        success = true;
+      }
+    } catch (error) {
+      success = false;
+    }
 
     if (!mounted) return;
 
     setState(() {
       _isSaving = false;
     });
+
     if (success) {
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(true);
     } else {
-      final state = cubit.state;
-
-      final message = state is GroupsSaveError
-          ? state.message
-          : 'Could not save the group. Please try again.';
-
-      UiUtils.showError(context, message);
+      UiUtils.showError(context, AppLocalizations.of(context)!.operationFailed);
     }
   }
 
@@ -184,16 +250,16 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
                     ),
                   ),
                 ),
-
                 Text(
-                  appLocalizations.addNewGroup,
+                  widget.group == null
+                      ? appLocalizations.addNewGroup
+                      : appLocalizations.editGroup,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                     color: primaryTextColor,
                   ),
                 ),
-
                 SizedBox(height: 20.h),
 
                 Center(
@@ -208,10 +274,16 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
                               backgroundColor: avatarBg,
                               backgroundImage: _selectedImage != null
                                   ? FileImage(_selectedImage!)
-                                  : null,
-                              child: _selectedImage == null
+                                  : (_existingImageUrl != null &&
+                                            _existingImageUrl!.trim().isNotEmpty
+                                        ? NetworkImage(_existingImageUrl!)
+                                        : null),
+                              child:
+                                  _selectedImage == null &&
+                                      (_existingImageUrl == null ||
+                                          _existingImageUrl!.trim().isEmpty)
                                   ? Icon(
-                                      Icons.person,
+                                      Icons.group_outlined,
                                       size: 36.r,
                                       color: avatarTextColor,
                                     )
@@ -325,7 +397,11 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
                               color: Colors.white,
                             ),
                           )
-                        : Text(appLocalizations.save),
+                        : Text(
+                            widget.group == null
+                                ? appLocalizations.save
+                                : appLocalizations.saveChanges,
+                          ),
                   ),
                 ),
 

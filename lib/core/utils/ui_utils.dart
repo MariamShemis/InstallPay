@@ -7,20 +7,21 @@ import 'package:smart_installment_management/l10n/app_localizations.dart';
 
 class UiUtils {
   static bool _isLoadingShowing = false;
+  static DialogRoute<void>? _loadingRoute;
+  static NavigatorState? _loadingNavigator;
 
   static void showLoading(BuildContext context, {bool isDismissible = false}) {
-    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    if (_isLoadingShowing) return;
+    if (!context.mounted || _isLoadingShowing) return;
 
-    _isLoadingShowing = true;
+    final appLocalizations = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navigator = Navigator.of(context, rootNavigator: true);
 
-    showDialog(
+    final route = DialogRoute<void>(
       context: context,
       barrierDismissible: isDismissible,
       barrierColor: Colors.black.withOpacity(0.35),
-      useRootNavigator: true,
-      builder: (_) {
+      builder: (dialogContext) {
         return PopScope(
           canPop: isDismissible,
           child: Center(
@@ -74,53 +75,77 @@ class UiUtils {
           ),
         );
       },
-    ).then((_) {
-      _isLoadingShowing = false;
+    );
+
+    _isLoadingShowing = true;
+    _loadingRoute = route;
+    _loadingNavigator = navigator;
+
+    route.completed.then((_) {
+      if (identical(_loadingRoute, route)) {
+        _loadingRoute = null;
+        _loadingNavigator = null;
+        _isLoadingShowing = false;
+      }
     });
+
+    navigator.push<void>(route);
   }
 
   static void hideLoading(BuildContext context) {
-    if (_isLoadingShowing) {
+    final route = _loadingRoute;
+    final navigator = _loadingNavigator;
+
+    if (!_isLoadingShowing || route == null || navigator == null) {
+      return;
+    }
+
+    // Close the loading dialog itself, not whichever route happens
+    // to be on top of the Navigator.
+    if (route.isActive) {
+      navigator.removeRoute(route);
+    } else {
+      _loadingRoute = null;
+      _loadingNavigator = null;
       _isLoadingShowing = false;
-      if (Navigator.of(context, rootNavigator: true).canPop()) {
-        Navigator.of(context, rootNavigator: true).pop();
-      }
     }
   }
 
   static void showMessage(BuildContext context, String message) {
-    showDialog(
+    showDialog<void>(
       context: context,
-      builder: (_) => AlertDialog(content: Text(message)),
+      builder: (dialogContext) => AlertDialog(content: Text(message)),
     );
   }
 
   static void showSuccess(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
   }
 
   static void showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
   }
 
   static void showToast(
-      String message, {
-        Color backgroundColor = Colors.green,
-      }) {
+    String message, {
+    Color backgroundColor = Colors.green,
+  }) {
     Fluttertoast.showToast(
       msg: message,
       gravity: ToastGravity.BOTTOM,

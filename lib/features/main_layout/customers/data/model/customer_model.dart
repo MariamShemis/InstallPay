@@ -29,6 +29,7 @@ class CustomerModel {
   final String nextDueDate;
   final String description;
   final List<InstallmentModel> schedule;
+  final double downPaymentPaidAmount;
 
   const CustomerModel({
     this.id = '',
@@ -55,6 +56,7 @@ class CustomerModel {
     required this.nextDueDate,
     required this.description,
     this.schedule = const [],
+    this.downPaymentPaidAmount = 0,
   });
 
   double get totalPaid {
@@ -103,6 +105,7 @@ class CustomerModel {
       'nextDueDate': nextDueDate,
       'description': description,
       'schedule': schedule.map((item) => item.toMap()).toList(),
+      'downPaymentPaidAmount': downPaymentPaidAmount,
     };
   }
 
@@ -148,6 +151,11 @@ class CustomerModel {
       nextDueDate: map['nextDueDate']?.toString() ?? '',
       description: map['description']?.toString() ?? '',
       schedule: parsedSchedule,
+      downPaymentPaidAmount:
+          (map['downPaymentPaidAmount'] as num?)?.toDouble() ??
+          ((map['isDownPaymentPaid'] == true)
+              ? ((map['downPayment'] as num?)?.toDouble() ?? 0)
+              : 0),
     );
   }
 
@@ -176,6 +184,7 @@ class CustomerModel {
     String? nextDueDate,
     String? description,
     List<InstallmentModel>? schedule,
+    double? downPaymentPaidAmount,
   }) {
     return CustomerModel(
       id: id ?? this.id,
@@ -203,6 +212,8 @@ class CustomerModel {
       nextDueDate: nextDueDate ?? this.nextDueDate,
       description: description ?? this.description,
       schedule: schedule ?? this.schedule,
+      downPaymentPaidAmount:
+          downPaymentPaidAmount ?? this.downPaymentPaidAmount,
     );
   }
 }

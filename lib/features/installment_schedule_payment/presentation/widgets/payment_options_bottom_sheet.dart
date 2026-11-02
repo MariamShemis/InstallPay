@@ -324,41 +324,9 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: widget.primaryColor,
+                    backgroundColor: ColorManager.greenMedium.withOpacity(0.8),
                     foregroundColor: ColorManager.white,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.h),
-              SizedBox(
-                width: double.infinity,
-                height: 48.h,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    _confirmPayment(useCustomAmount: false);
-                  },
-                  icon: Icon(
-                    Icons.check_rounded,
-                    size: 18.r,
-                    color: widget.primaryColor,
-                  ),
-                  label: Text(
-                    l10n.payFullInstallmentBtn(
-                      '${widget.amount.toStringAsFixed(0)} ${widget.currency}',
-                    ),
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.bold,
-                      color: primaryTextColor,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: primaryTextColor,
-                    side: BorderSide(color: widget.primaryColor, width: 1.2.w),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
@@ -422,6 +390,38 @@ class _PaymentOptionsBottomSheetState extends State<PaymentOptionsBottomSheet> {
                   ),
                 ),
               ],
+              SizedBox(height: 10.h),
+              SizedBox(
+                width: double.infinity,
+                height: 48.h,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    _confirmPayment(useCustomAmount: false);
+                  },
+                  icon: Icon(
+                    Icons.check_rounded,
+                    size: 18.r,
+                    color: widget.primaryColor,
+                  ),
+                  label: Text(
+                    l10n.payFullInstallmentBtn(
+                      '${widget.amount.toStringAsFixed(0)} ${widget.currency}',
+                    ),
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.bold,
+                      color: primaryTextColor,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: primaryTextColor,
+                    side: BorderSide(color: widget.primaryColor, width: 1.2.w),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 25.h),
             ],
           ),

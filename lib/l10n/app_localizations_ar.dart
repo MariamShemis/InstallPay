@@ -135,7 +135,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwords_do_not_match => 'كلمتا المرور غير متطابقتين';
 
   @override
-  String get saveChanges => 'حفظ التغييرات';
+  String get saveChanges => 'حفظ التعديلات';
 
   @override
   String get choose_your_preferred_language_for_the_app_interface => 'اختر لغتك المفضلة لواجهة التطبيق.';
@@ -1003,5 +1003,240 @@ class AppLocalizationsAr extends AppLocalizations {
   String get featureComingSoon => 'سيتم تفعيل هذه الخاصية بعد ربطها بالخدمات الأمنية.';
 
   @override
-  String get retry => 'Retry';
+  String get deleteCustomerTitle => 'حذف العميل';
+
+  @override
+  String deleteCustomerConfirmation(String customerName) {
+    return 'هل أنت متأكد من حذف العميل $customerName؟ لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String get deleteCustomerFailed => 'فشل حذف العميل، حاول مرة أخرى.';
+
+  @override
+  String get deleteCustomerSuccess => 'تم حذف العميل بنجاح';
+
+  @override
+  String get filterCustomers => 'تصفية العملاء';
+
+  @override
+  String get filterGroups => 'تصفية المجموعات';
+
+  @override
+  String get groupStatus => 'حالة المجموعة';
+
+  @override
+  String get applyFilters => 'تطبيق التصفية';
+
+  @override
+  String get reset => 'إعادة ضبط';
+
+  @override
+  String get paymentStatus => 'حالة الدفع';
+
+  @override
+  String get allGroups => 'جميع المجموعات';
+
+  @override
+  String get other => 'أخرى';
+
+  @override
+  String get no_customers_match_your_search_or_filter => 'لا يوجد عملاء يطابقون بحثك أو التصفية الحالية.';
+
+  @override
+  String get admin => 'المسؤول';
+
+  @override
+  String get deletePartner => 'حذف الشريك';
+
+  @override
+  String confirmDeletePartner(String name) {
+    return 'هل أنت متأكد من حذف $name؟';
+  }
+
+  @override
+  String get editPartner => 'تعديل الشريك';
+
+  @override
+  String get updatePartner => 'تحديث الشريك';
+
+  @override
+  String get partnerAddedSuccessfully => 'تمت إضافة الشريك بنجاح';
+
+  @override
+  String get partnerUpdatedSuccessfully => 'تم تحديث بيانات الشريك بنجاح';
+
+  @override
+  String get partnerDeletedSuccessfully => 'تم حذف الشريك بنجاح';
+
+  @override
+  String get operationFailed => 'فشلت العملية، حاول مرة أخرى.';
+
+  @override
+  String get no_partners_match_your_search_or_filter => 'لا يوجد شركاء مطابقون للبحث أو الفلتر.';
+
+  @override
+  String get onlyOneAdminAllowed => 'مسموح بوجود أدمن واحد فقط.';
+
+  @override
+  String get secondaryProfitLimitExceeded => 'مجموع نسب أرباح الشركاء الثانويين لا يمكن أن يتجاوز 100%.';
+
+  @override
+  String get invalidProfitMargin => 'يجب أن تكون نسبة الربح بين 0 و100.';
+
+  @override
+  String get invalidMainCapital => 'من فضلك أدخل مبلغ رأس مال صحيحًا.';
+
+  @override
+  String get partnerNotFound => 'لم يتم العثور على الشريك.';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get choosePartnerPhoto => 'اختاري صورة الشريك';
+
+  @override
+  String get secondaryProfitTotal => 'إجمالي نسب أرباح الشركاء الثانويين';
+
+  @override
+  String get groupDetails => 'تفاصيل المجموعة';
+
+  @override
+  String get groupCustomers => 'عملاء المجموعة';
+
+  @override
+  String get collectorPhone => 'رقم هاتف المحصل';
+
+  @override
+  String get totalContractValue => 'إجمالي قيمة العقود';
+
+  @override
+  String get totalCollected => 'إجمالي المبلغ المحصل';
+
+  @override
+  String get totalRemaining => 'إجمالي المبلغ المتبقي';
+
+  @override
+  String get completedCustomers => 'العملاء المكتملون';
+
+  @override
+  String get overdueCustomers => 'العملاء المتأخرون';
+
+  @override
+  String get editGroup => 'تعديل الجروب';
+
+  @override
+  String get deleteGroup => 'حذف المجموعة';
+
+  @override
+  String get deleteGroupConfirmation => 'هل أنت متأكد من حذف المجموعة؟ سيتم الاحتفاظ بالعملاء ونقلهم إلى مجموعة أخرى.';
+
+  @override
+  String get groupUpdatedSuccessfully => 'تم تعديل المجموعة بنجاح';
+
+  @override
+  String get groupDeletedSuccessfully => 'تم حذف المجموعة بنجاح';
+
+  @override
+  String get noCustomersInGroup => 'لا يوجد عملاء في هذه المجموعة حتى الآن.';
+
+  @override
+  String get errorLoadingGroup => 'تعذر تحميل تفاصيل المجموعة. حاول مرة أخرى.';
+
+  @override
+  String get requiredField => 'هذا الحقل مطلوب';
+
+  @override
+  String get optionalProfilePhoto => 'إضافة صورة اختيارية';
+
+  @override
+  String get removePhoto => 'حذف الصورة';
+
+  @override
+  String get trackerCapitalSection => 'رأس المال والشركاء';
+
+  @override
+  String get trackerMainCapital => 'رأس المال الأساسي';
+
+  @override
+  String get trackerNewCapital => 'رأس المال الجديد';
+
+  @override
+  String get trackerExpectedProfit => 'الربح المتوقع';
+
+  @override
+  String get trackerPartnersCount => 'عدد الشركاء';
+
+  @override
+  String get trackerCustomersSection => 'العملاء والعقود';
+
+  @override
+  String get trackerCustomersCount => 'عدد العملاء';
+
+  @override
+  String get trackerTotalSales => 'إجمالي قيمة العقود';
+
+  @override
+  String get trackerTotalCollected => 'إجمالي المبالغ المحصّلة';
+
+  @override
+  String get trackerRemainingAmount => 'المبالغ المتبقية على العملاء';
+
+  @override
+  String get trackerAutoUpdateNote => 'تتحدث القيم تلقائيًا عند تغيير بيانات الشركاء أو العملاء.';
+
+  @override
+  String get trackerLoadError => 'تعذر تحميل البيانات المالية. حاولي مرة أخرى.';
+
+  @override
+  String get trackerCapitalSubtitle => 'رأس المال والنمو المتوقع من الشركاء';
+
+  @override
+  String get trackerProfitEquation => 'الربح المتوقع = رأس المال الجديد - رأس المال الأساسي';
+
+  @override
+  String get trackerCalculationOutput => 'نتائج الحساب';
+
+  @override
+  String get trackerCapitalGrowthRate => 'معدل نمو رأس المال';
+
+  @override
+  String get trackerPartnerSummary => 'ملخص رؤوس أموال الشركاء';
+
+  @override
+  String get trackerCombinedPartnerCapital => 'إجمالي رأس المال لجميع الشركاء المسجلين';
+
+  @override
+  String get trackerPartnerTotalEquation => 'الإجمالي = المدير + الشركاء الأساسيون + الشركاء الثانويون';
+
+  @override
+  String get trackerTotalPartners => 'إجمالي الشركاء';
+
+  @override
+  String get trackerCombinedMainCapital => 'إجمالي رأس المال الأساسي';
+
+  @override
+  String get trackerCombinedNewCapital => 'إجمالي رأس المال الجديد';
+
+  @override
+  String get trackerPartnerCapitalNote => 'تشمل إجماليات رأس المال المدير والشركاء الأساسيين والثانويين.';
+
+  @override
+  String get trackerCustomerSummarySubtitle => 'المبيعات والتحصيل والأقساط المستحقة';
+
+  @override
+  String get trackerRemainingEquation => 'المتبقي = إجمالي المبيعات - المبلغ المحصل';
+
+  @override
+  String get trackerCollectionStatus => 'حالة التحصيل';
+
+  @override
+  String get trackerCollectionRate => 'نسبة التحصيل';
+
+  @override
+  String get trackerOutstandingBalance => 'رصيد العملاء المستحق';
+
+  @override
+  String get edit => 'تعديل';
 }
